@@ -20,10 +20,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pheng Mengheak | Full-Stack & AI Systems Architect",
+  title: "Pheng Mengheak | Backend Developer",
   description: "Backend engineer and MIS student at SETEC Institute. Resilient backend microservices, high-concurrency database systems, and autonomous AI pipelines.",
   icons: {
-    icon: "/LOGO.png",
+    icon: "/logo.jpg",
   },
 };
 
