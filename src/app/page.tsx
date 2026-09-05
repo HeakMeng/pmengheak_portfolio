@@ -4,26 +4,111 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   Server,
-  Cpu,
   Database,
   ArrowRight,
-  ArrowUpRight,
   Send,
   Check,
   Copy,
   ChevronUp,
   X,
-  CheckCircle2,
-  ExternalLink,
-  Sparkles,
   Layout,
   Boxes,
   ShieldCheck,
   Download,
-  Play
+  Play,
+  Mail
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import {
+  SiSpringboot,
+  SiFastapi,
+  SiPython,
+  SiPostgresql,
+  SiMysql,
+  SiRedis,
+  SiMongodb,
+  SiDocker,
+  SiLinux,
+  SiNginx,
+  SiJenkins,
+  SiGit,
+  SiJsonwebtokens,
+  SiKeycloak,
+  SiSpringsecurity,
+  SiNextdotjs,
+  SiReact,
+  SiTypescript,
+  SiTailwindcss,
+  SiGithub,
+  SiTelegram
+} from "react-icons/si";
+import { FaJava, FaKey, FaShieldHalved, FaNetworkWired, FaLinkedin } from "react-icons/fa6";
+import { TbApi } from "react-icons/tb";
+
+interface MilestoneItem {
+  id: string;
+  year: string;
+  organization: string;
+  logo: string;
+  role: string;
+  location: string;
+  locationIcon: string;
+  status: string;
+  statusType: "current" | "defense" | "completed" | "graduated";
+  category: "EXPERIENCE & TRAINING" | "EDUCATION";
+}
+
+const MILESTONES: MilestoneItem[] = [
+  {
+    id: "kshrd",
+    year: "2026",
+    organization: "Korea Software HRD Center",
+    logo: "/hrd.png",
+    role: "Software Development Trainee (Advanced Java, Spring Boot, Microservices)",
+    location: "Phnom Penh, KH",
+    locationIcon: "📍",
+    status: "CURRENT",
+    statusType: "current",
+    category: "EXPERIENCE & TRAINING"
+  },
+  {
+    id: "setec",
+    year: "2024 – PRESENT",
+    organization: "SETEC Institute",
+    logo: "/SETTTTTEC.png",
+    role: "Bachelor's Degree in MIS (System Analysis Defense, Distributed DB)",
+    location: "MIS Dept // Phnom Penh",
+    locationIcon: "🏛️",
+    status: "DEGREE DEFENSE",
+    statusType: "defense",
+    category: "EDUCATION"
+  },
+  {
+    id: "proseth",
+    year: "MAY 2025 – DEC 2025",
+    organization: "PROSETH SOLUTIONS CO., LTD.",
+    logo: "/prosethsolutions.jpg",
+    role: "IT Intern (Database Systems, Server Operations, Infrastructure)",
+    location: "Phnom Penh, KH",
+    locationIcon: "📍",
+    status: "COMPLETED",
+    statusType: "completed",
+    category: "EXPERIENCE & TRAINING"
+  },
+  {
+    id: "puc",
+    year: "2023 – 2025",
+    organization: "PUC Institute of Foreign Languages",
+    logo: "/images.png",
+    role: "Diploma in English Communication",
+    location: "Phnom Penh, KH",
+    locationIcon: "📍",
+    status: "GRADUATED",
+    statusType: "graduated",
+    category: "EDUCATION"
+  }
+];
 
 export default function Home() {
   // Contact Form State
@@ -36,8 +121,18 @@ export default function Home() {
   // Interactive System Case Study Modal State
   const [selectedCaseStudy, setSelectedCaseStudy] = useState<"cortex" | "gamehub" | "snappos" | null>(null);
 
-  // Interactive Milestones Tab State
-  const [milestoneTab, setMilestoneTab] = useState<"EXPERIENCE & TRAINING" | "EDUCATION" | "ALL MILESTONES">("EXPERIENCE & TRAINING");
+  // Interactive Milestones Tab & Active Row State
+  const [milestoneTab, setMilestoneTab] = useState<"ALL MILESTONES" | "EXPERIENCE & TRAINING" | "EDUCATION">("ALL MILESTONES");
+  const [activeMilestoneId, setActiveMilestoneId] = useState<string>("kshrd");
+
+  const handleTabChange = (tab: "ALL MILESTONES" | "EXPERIENCE & TRAINING" | "EDUCATION") => {
+    setMilestoneTab(tab);
+    if (tab === "EDUCATION") {
+      setActiveMilestoneId("setec");
+    } else {
+      setActiveMilestoneId("kshrd");
+    }
+  };
 
   // Keyboard escape handler for modal
   useEffect(() => {
@@ -150,7 +245,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               
               {/* CARD 01: CORTEX */}
-              <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
+              <div id="project-01" className="scroll-mt-24 bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
                 <div>
                   {/* Card Media Preview with Subtle Diagonal Striping */}
                   <div className="relative aspect-[16/10] bg-diagonal-stripes-light border-b border-slate-200 overflow-hidden">
@@ -221,7 +316,7 @@ export default function Home() {
               </div>
 
               {/* CARD 02: GAMEHUB — VIDEO GAME DISCOVERY & CATALOG */}
-              <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
+              <div id="project-02" className="scroll-mt-24 bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
                 <div>
                   {/* Card Media Preview with Subtle Diagonal Striping */}
                   <div className="relative aspect-[16/10] bg-diagonal-stripes-light border-b border-slate-200 overflow-hidden">
@@ -292,7 +387,7 @@ export default function Home() {
               </div>
 
               {/* CARD 03: ENTERPRISE POS SYSTEM */}
-              <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
+              <div id="project-03" className="scroll-mt-24 bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
                 <div>
                   {/* Card Media Preview with Subtle Diagonal Striping */}
                   <div className="relative aspect-[16/10] bg-diagonal-stripes-light border-b border-slate-200 overflow-hidden">
@@ -368,7 +463,7 @@ export default function Home() {
 
 
         {/* ======================================================== */}
-        {/* SECTION 3: ENGINEERING MILESTONES (CONFERENCES & EVENTS) */}
+        {/* SECTION 3: CAREER & MILESTONES                           */}
         {/* ======================================================== */}
         <section id="milestones" className="py-24 px-6 relative border-t border-slate-200/80 bg-[#F1F5F9]">
           <div className="max-w-7xl mx-auto space-y-12">
@@ -376,15 +471,15 @@ export default function Home() {
             {/* Section Header */}
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] font-mono text-xs font-semibold tracking-wide">
-                [ 03 // CAREER PATH &amp; EVENTS ]
+                [ 03 // CAREER &amp; MILESTONES ]
               </div>
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
                   <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 uppercase tracking-tight">
-                    Conferences &amp; Events
+                    CAREER &amp; MILESTONES
                   </h2>
                   <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl font-normal leading-relaxed">
-                    Engineering milestones, academic research defense, and high-concurrency enterprise training trajectory.
+                    Engineering journey, professional milestones, and technical training.
                   </p>
                 </div>
                 <div className="font-mono text-xs text-slate-500 flex items-center gap-2 font-medium">
@@ -396,11 +491,11 @@ export default function Home() {
 
             {/* Interactive Segmented Tab Switcher */}
             <div className="flex justify-center">
-              <div className="inline-flex items-center p-1.5 bg-slate-100 rounded-full border border-slate-200/80 mb-10 overflow-x-auto max-w-full">
-                {(["EXPERIENCE & TRAINING", "EDUCATION", "ALL MILESTONES"] as const).map((tab) => (
+              <div className="inline-flex items-center p-1.5 bg-slate-100 rounded-full border border-slate-200/80 mb-10 overflow-x-auto max-w-full shadow-xs">
+                {(["ALL MILESTONES", "EXPERIENCE & TRAINING", "EDUCATION"] as const).map((tab) => (
                   <button
                     key={tab}
-                    onClick={() => setMilestoneTab(tab)}
+                    onClick={() => handleTabChange(tab)}
                     className={`px-5 sm:px-6 py-2 text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer whitespace-nowrap ${
                       milestoneTab === tab
                         ? "bg-white text-slate-900 shadow-sm border border-slate-200/60 font-bold"
@@ -413,132 +508,194 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Horizontal Data Table (Oskar Kadera Layout) */}
-            <div className="divide-y divide-slate-200 border-y border-slate-200 transition-opacity duration-300">
-              
-              {/* ROW 1: Korea Software HRD Center (Shown in 'EXPERIENCE & TRAINING' and 'ALL MILESTONES') */}
-              {(milestoneTab === "EXPERIENCE & TRAINING" || milestoneTab === "ALL MILESTONES") && (
-                <div className="py-7 px-4 sm:px-6 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center hover:bg-white/60 transition-colors rounded-xl">
-                  <div className="md:col-span-2">
-                    <span className="font-mono text-sm font-bold text-[#2563EB] tracking-wider">
-                      2026
-                    </span>
-                  </div>
-                  
-                  <div className="md:col-span-4">
-                    <h3 className="text-lg sm:text-xl font-black text-slate-900 uppercase tracking-tight">
-                      Korea Software HRD Center
-                    </h3>
-                  </div>
+            {/* Architectural Framing Container Card with Diagonal Stripes */}
+            <div className="relative rounded-3xl border border-slate-200/90 bg-white/50 p-3 sm:p-5 md:p-6 shadow-sm overflow-hidden">
+              {/* Architectural 45-degree diagonal pattern background */}
+              <div className="absolute inset-0 bg-diagonal-stripes-light opacity-60 pointer-events-none" />
 
-                  <div className="md:col-span-4">
-                    <p className="text-xs sm:text-sm text-slate-600 font-normal">
-                      Software Development Trainee (Advanced Java, Spring Boot, Microservices)
-                    </p>
-                  </div>
+              {/* Milestone Rows */}
+              <div className="relative z-10 space-y-3">
+                {MILESTONES.filter((item) => {
+                  if (milestoneTab === "ALL MILESTONES") return true;
+                  return item.category === milestoneTab;
+                }).map((item) => {
+                  const isElevated = activeMilestoneId === item.id;
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => setActiveMilestoneId(item.id)}
+                      className={`transition-all duration-300 group/row cursor-pointer ${
+                        isElevated
+                          ? "bg-white rounded-2xl shadow-md sm:shadow-lg border border-slate-200/90 p-4 sm:p-5 ring-1 ring-slate-900/5 my-1"
+                          : "bg-white/50 hover:bg-white border border-transparent hover:border-slate-200/80 border-b-slate-200/70 rounded-2xl p-4 sm:p-5 hover:shadow-sm"
+                      }`}
+                    >
+                      {/* Desktop 5-Column Grid (>= lg) */}
+                      <div className="hidden lg:grid lg:grid-cols-12 lg:gap-5 lg:items-center">
+                        {/* Col 1: Year tag */}
+                        <div className="lg:col-span-2">
+                          <span
+                            className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
+                              isElevated
+                                ? "font-bold text-[#2563EB]"
+                                : "font-semibold text-slate-500"
+                            }`}
+                          >
+                            {item.year}
+                          </span>
+                        </div>
 
-                  <div className="md:col-span-2 flex justify-start md:justify-end items-center">
-                    <span className="px-3.5 py-1 rounded-full bg-white text-slate-700 font-mono text-xs font-semibold border border-slate-200 flex items-center gap-1.5 shadow-xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                      CURRENT
-                    </span>
-                  </div>
-                </div>
-              )}
+                        {/* Col 2: Organization Logo + Name */}
+                        <div className="lg:col-span-3 flex items-center gap-3.5 min-w-0">
+                          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                            <Image
+                              src={item.logo}
+                              alt={item.organization}
+                              width={40}
+                              height={40}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <h3 className="font-extrabold text-slate-900 text-base tracking-tight leading-snug">
+                            {item.organization}
+                          </h3>
+                        </div>
 
-              {/* ROW 2: ACTIVE HIGHLIGHTED WHITE ROW (SETEC Institute - Shown in 'EDUCATION' and 'ALL MILESTONES') */}
-              {(milestoneTab === "EDUCATION" || milestoneTab === "ALL MILESTONES") && (
-                <div className="my-2 p-6 sm:p-8 bg-white text-slate-900 rounded-3xl shadow-lg border border-slate-200/90 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center transform hover:scale-[1.01] transition-all">
-                  <div className="md:col-span-2">
-                    <span className="font-mono text-sm sm:text-base font-black text-[#FF5722] tracking-wider">
-                      2024 - 2026
-                    </span>
-                  </div>
-                  
-                  <div className="md:col-span-4">
-                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
-                      SETEC Institute
-                    </h3>
-                    <span className="text-xs font-mono text-slate-500 uppercase tracking-wider font-semibold">
-                      MIS Department // KH
-                    </span>
-                  </div>
+                        {/* Col 3: Role & Core Responsibilities */}
+                        <div className="lg:col-span-3">
+                          <p className="text-sm text-slate-600 font-normal leading-relaxed">
+                            {item.role}
+                          </p>
+                        </div>
 
-                  <div className="md:col-span-4">
-                    <p className="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                      Bachelor&apos;s Degree in MIS (System Analysis Defense, Distributed DB)
-                    </p>
-                  </div>
+                        {/* Col 4: Location / Context Tag */}
+                        <div className="lg:col-span-2">
+                          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-600 font-medium px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200/70 whitespace-nowrap">
+                            <span className="text-sm">{item.locationIcon}</span>
+                            <span>{item.location}</span>
+                          </div>
+                        </div>
 
-                  <div className="md:col-span-2 flex justify-start md:justify-end items-center gap-3">
-                    <span className="px-3.5 py-1.5 rounded-full bg-[#FF5722] text-white font-mono text-xs font-bold uppercase shadow-sm">
-                      DEGREE DEFENSE
-                    </span>
-                    <div className="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center shadow-xs">
-                      <ArrowUpRight className="w-4 h-4" />
+                        {/* Col 5: Interactive Status Pill or Action Button */}
+                        <div className="lg:col-span-2 flex items-center justify-end gap-2.5">
+                          {item.statusType === "current" && (
+                            <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/90 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs whitespace-nowrap">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                              CURRENT
+                            </span>
+                          )}
+                          {item.statusType === "defense" && (
+                            <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200/90 font-mono text-xs font-bold uppercase shadow-xs whitespace-nowrap">
+                              DEGREE DEFENSE
+                            </span>
+                          )}
+                          {item.statusType === "completed" && (
+                            <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
+                              COMPLETED
+                            </span>
+                          )}
+                          {item.statusType === "graduated" && (
+                            <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
+                              GRADUATED
+                            </span>
+                          )}
+
+                          {isElevated ? (
+                            <div
+                              className="w-10 h-10 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0 group-hover/row:scale-105 transition-all"
+                              aria-label={`Current milestone: ${item.organization}`}
+                            >
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          ) : (
+                            <div
+                              className="w-9 h-9 rounded-full bg-slate-100 group-hover/row:bg-slate-200 border border-slate-200 text-slate-500 group-hover/row:text-slate-900 flex items-center justify-center transition-all shrink-0"
+                              aria-label={`Select ${item.organization}`}
+                            >
+                              <ArrowRight className="w-4 h-4 group-hover/row:translate-x-0.5 transition-transform" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Mobile / Tablet Responsive Layout (< lg) */}
+                      <div className="lg:hidden space-y-3">
+                        {/* Top Line: Year + Status Pill */}
+                        <div className="flex items-center justify-between gap-2">
+                          <span
+                            className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
+                              isElevated
+                                ? "font-bold text-[#2563EB]"
+                                : "font-semibold text-slate-500"
+                            }`}
+                          >
+                            {item.year}
+                          </span>
+                          {item.statusType === "current" && (
+                            <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                              CURRENT
+                            </span>
+                          )}
+                          {item.statusType === "defense" && (
+                            <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200 font-mono text-xs font-bold uppercase shadow-xs">
+                              DEGREE DEFENSE
+                            </span>
+                          )}
+                          {item.statusType === "completed" && (
+                            <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs">
+                              COMPLETED
+                            </span>
+                          )}
+                          {item.statusType === "graduated" && (
+                            <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs">
+                              GRADUATED
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Brand: Logo Badge + Org Name */}
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                            <Image
+                              src={item.logo}
+                              alt={item.organization}
+                              width={40}
+                              height={40}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <div>
+                            <h3 className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight leading-snug">
+                              {item.organization}
+                            </h3>
+                            <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-500 mt-1">
+                              <span>{item.locationIcon}</span>
+                              <span>{item.location}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom: Role + Circle arrow button */}
+                        <div className="flex items-end justify-between gap-4 pt-1">
+                          <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
+                            {item.role}
+                          </p>
+                          {isElevated ? (
+                            <div className="w-9 h-9 rounded-full bg-[#FF5722] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0">
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
-
-              {/* ROW 3: PROSETH SOLUTIONS CO., LTD. (Shown in 'EXPERIENCE & TRAINING' and 'ALL MILESTONES') */}
-              {(milestoneTab === "EXPERIENCE & TRAINING" || milestoneTab === "ALL MILESTONES") && (
-                <div className="py-7 px-4 sm:px-6 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center hover:bg-white/60 transition-colors rounded-xl">
-                  <div className="md:col-span-2">
-                    <span className="font-mono text-sm font-bold text-[#2563EB] tracking-wider">
-                      2025
-                    </span>
-                  </div>
-                  
-                  <div className="md:col-span-4">
-                    <h3 className="text-lg sm:text-xl font-black text-slate-900 uppercase tracking-tight">
-                      PROSETH SOLUTIONS CO., LTD.
-                    </h3>
-                  </div>
-
-                  <div className="md:col-span-4">
-                    <p className="text-xs sm:text-sm text-slate-600 font-normal">
-                      IT Intern (Database Systems, Server Operations, Infrastructure)
-                    </p>
-                  </div>
-
-                  <div className="md:col-span-2 flex justify-start md:justify-end items-center">
-                    <span className="px-3.5 py-1 rounded-full bg-white text-slate-700 font-mono text-xs font-medium border border-slate-200 shadow-xs">
-                      COMPLETED
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {/* ROW 4: PUC Institute of Foreign Languages (Shown in 'EDUCATION' and 'ALL MILESTONES') */}
-              {(milestoneTab === "EDUCATION" || milestoneTab === "ALL MILESTONES") && (
-                <div className="py-7 px-4 sm:px-6 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 items-center hover:bg-white/60 transition-colors rounded-xl">
-                  <div className="md:col-span-2">
-                    <span className="font-mono text-sm font-bold text-[#2563EB] tracking-wider">
-                      2022 - 2025
-                    </span>
-                  </div>
-                  
-                  <div className="md:col-span-4">
-                    <h3 className="text-lg sm:text-xl font-black text-slate-900 uppercase tracking-tight">
-                      PUC Institute of Foreign Languages
-                    </h3>
-                  </div>
-
-                  <div className="md:col-span-4">
-                    <p className="text-xs sm:text-sm text-slate-600 font-normal">
-                      Diploma in English Communication
-                    </p>
-                  </div>
-
-                  <div className="md:col-span-2 flex justify-start md:justify-end items-center">
-                    <span className="px-3.5 py-1 rounded-full bg-white text-slate-700 font-mono text-xs font-medium border border-slate-200 shadow-xs">
-                      GRADUATED
-                    </span>
-                  </div>
-                </div>
-              )}
-
+                  );
+                })}
+              </div>
             </div>
 
           </div>
@@ -568,9 +725,9 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               
               {/* Card 01: Backend & API Engineering (Consolidated, Spans 2 Cols) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs md:col-span-2 lg:col-span-2">
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs md:col-span-2 lg:col-span-2">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center font-bold shadow-2xs">
                     <Server className="w-5 h-5" />
                   </div>
                   <div>
@@ -583,26 +740,35 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["Java", "Spring Boot", "FastAPI", "Python", "PostgreSQL", "REST APIs", "Microservices"].map((tech) => (
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                  {[
+                    { name: "Java", icon: FaJava, color: "text-[#E11D48]" },
+                    { name: "Spring Boot", icon: SiSpringboot, color: "text-[#6DB33F]" },
+                    { name: "FastAPI", icon: SiFastapi, color: "text-[#009688]" },
+                    { name: "Python", icon: SiPython, color: "text-[#3776AB]" },
+                    { name: "PostgreSQL", icon: SiPostgresql, color: "text-[#4169E1]" },
+                    { name: "REST APIs", icon: TbApi, color: "text-[#2563EB]" },
+                    { name: "Microservices", icon: FaNetworkWired, color: "text-[#6366F1]" }
+                  ].map((tech) => (
                     <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
+                      key={tech.name}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
-                      {tech}
+                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
+                      <span>{tech.name}</span>
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Card 02: Database Systems */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-emerald-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center font-bold shadow-2xs">
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
                       Database Systems
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -611,26 +777,32 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["PostgreSQL", "MySQL", "Redis", "MongoDB"].map((tech) => (
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                  {[
+                    { name: "PostgreSQL", icon: SiPostgresql, color: "text-[#4169E1]" },
+                    { name: "MySQL", icon: SiMysql, color: "text-[#4479A1]" },
+                    { name: "Redis", icon: SiRedis, color: "text-[#DC382D]" },
+                    { name: "MongoDB", icon: SiMongodb, color: "text-[#47A248]" }
+                  ].map((tech) => (
                     <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
+                      key={tech.name}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
-                      {tech}
+                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
+                      <span>{tech.name}</span>
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Card 03: DevOps & Infrastructure */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-sky-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center font-bold shadow-2xs">
                     <Boxes className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
                       DevOps &amp; Infrastructure
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -639,26 +811,33 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["Docker", "Linux", "Nginx", "Jenkins", "Git"].map((tech) => (
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                  {[
+                    { name: "Docker", icon: SiDocker, color: "text-[#2496ED]" },
+                    { name: "Linux", icon: SiLinux, color: "text-[#FCC624]" },
+                    { name: "Nginx", icon: SiNginx, color: "text-[#009639]" },
+                    { name: "Jenkins", icon: SiJenkins, color: "text-[#D24939]" },
+                    { name: "Git", icon: SiGit, color: "text-[#F05032]" }
+                  ].map((tech) => (
                     <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
+                      key={tech.name}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
-                      {tech}
+                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
+                      <span>{tech.name}</span>
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Card 04: Security & Authentication */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-purple-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center font-bold shadow-2xs">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-purple-600 transition-colors">
                       Security &amp; Authentication
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -667,26 +846,33 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["OAuth 2.0", "JWT", "Keycloak", "Spring Security", "RBAC"].map((tech) => (
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                  {[
+                    { name: "OAuth 2.0", icon: FaKey, color: "text-[#3B82F6]" },
+                    { name: "JWT", icon: SiJsonwebtokens, color: "text-[#D63AFF]" },
+                    { name: "Keycloak", icon: SiKeycloak, color: "text-[#008A87]" },
+                    { name: "Spring Security", icon: SiSpringsecurity, color: "text-[#6DB33F]" },
+                    { name: "RBAC", icon: FaShieldHalved, color: "text-[#8B5CF6]" }
+                  ].map((tech) => (
                     <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
+                      key={tech.name}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
-                      {tech}
+                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
+                      <span>{tech.name}</span>
                     </span>
                   ))}
                 </div>
               </div>
 
               {/* Card 05: Frontend Development */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-amber-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center font-bold shadow-2xs">
                     <Layout className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
                       Frontend Development
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -695,13 +881,19 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["Next.js", "React", "TypeScript", "Tailwind CSS"].map((tech) => (
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
+                  {[
+                    { name: "Next.js", icon: SiNextdotjs, color: "text-slate-900" },
+                    { name: "React", icon: SiReact, color: "text-[#61DAFB]" },
+                    { name: "TypeScript", icon: SiTypescript, color: "text-[#3178C6]" },
+                    { name: "Tailwind CSS", icon: SiTailwindcss, color: "text-[#06B6D4]" }
+                  ].map((tech) => (
                     <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
+                      key={tech.name}
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
-                      {tech}
+                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
+                      <span>{tech.name}</span>
                     </span>
                   ))}
                 </div>
@@ -720,120 +912,140 @@ export default function Home() {
             
             {/* Section Header */}
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-[#2563EB] font-mono text-xs font-bold tracking-wide shadow-sm">
-                [ 05 // DIRECT COMMUNICATIONS ]
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] font-mono text-xs font-semibold tracking-wide">
+                [ 05 // GET IN TOUCH ]
               </div>
               <h2 className="text-3xl sm:text-5xl font-black text-slate-900 uppercase tracking-tight">
-                Get in Touch
+                Let&apos;s Build Something Reliable.
               </h2>
-              <p className="text-slate-600 text-sm sm:text-base max-w-xl font-normal">
-                Initiate a technical conversation regarding backend microservices, database optimizations, or scalable distributed systems.
+              <p className="text-slate-600 text-sm sm:text-base max-w-xl font-normal leading-relaxed">
+                Whether you have an inquiry about backend architecture, Spring microservices, or want to discuss an engineering opportunity, my inbox is open.
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
               
-              {/* Left Column: Direct Links & Coordinates */}
-              <div className="lg:col-span-5 space-y-6">
-                
-                {/* Email Direct Box */}
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 space-y-3 shadow-sm hover:shadow-md transition-shadow">
-                  <span className="font-mono text-[10px] text-[#2563EB] uppercase tracking-wider block font-bold">
-                    Direct Electronic Mail
-                  </span>
-                  <div className="flex items-center justify-between gap-3">
-                    <a
-                      href="mailto:pmengheak168@gmail.com"
-                      className="font-mono text-sm text-slate-900 font-bold hover:text-[#2563EB] transition-colors truncate"
-                    >
-                      pmengheak168@gmail.com
-                    </a>
-                    <button
+              {/* Left Column: Cohesive Contact Card (Cortex Design Language) */}
+              <div className="lg:col-span-5">
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-sm space-y-6">
+                  
+                  {/* Direct Email Row (Interactive copy-to-clipboard row with hover state) */}
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                      Direct Email
+                    </span>
+                    <div
                       onClick={copyEmail}
-                      className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 transition-colors cursor-pointer"
-                      title="Copy email to clipboard"
+                      className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 transition-all cursor-pointer group/email"
+                      title="Click to copy email address"
                     >
-                      {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                    </button>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-9 h-9 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
+                          <Mail className="w-4 h-4" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-slate-900 group-hover/email:text-blue-600 transition-colors truncate">
+                            pmengheak168@gmail.com
+                          </p>
+                          <p className="text-xs text-slate-500">
+                            Click to copy to clipboard
+                          </p>
+                        </div>
+                      </div>
+                      <div className="p-2 rounded-lg bg-white border border-slate-200/90 text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
+                        {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs text-slate-500">
-                    Response time usually under 24 business hours.
-                  </p>
-                </div>
 
-                {/* Location Box */}
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 space-y-2 shadow-sm hover:shadow-md transition-shadow">
-                  <span className="font-mono text-[10px] text-[#2563EB] uppercase tracking-wider block font-bold">
-                    Station Coordinates
-                  </span>
-                  <p className="font-bold text-slate-900 text-base">
-                    Phnom Penh, Cambodia
-                  </p>
-                  <p className="text-xs text-slate-500 font-mono">
-                    Timezone: UTC+07:00 (Indochina Time)
-                  </p>
-                </div>
+                  {/* Subtle Divider */}
+                  <div className="h-px bg-slate-100" />
 
-                {/* Social Quick Links */}
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 space-y-4 shadow-sm hover:shadow-md transition-shadow">
-                  <span className="font-mono text-[10px] text-[#2563EB] uppercase tracking-wider block font-bold">
-                    Verified Channels
-                  </span>
-                  <div className="grid grid-cols-3 gap-3">
-                    {/* GitHub */}
-                    <a
-                      href="https://github.com/HeakMeng"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-[#FF5722] hover:bg-white text-slate-700 hover:text-slate-900 transition-all group cursor-pointer shadow-sm"
-                    >
-                      <svg className="w-5 h-5 fill-current mb-1 text-slate-800 group-hover:text-[#FF5722] transition-colors" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                      </svg>
-                      <span className="font-mono text-[10px] font-bold">GitHub</span>
-                    </a>
-
-                    {/* LinkedIn */}
-                    <a
-                      href="https://www.linkedin.com/in/pheng-mengheak-598442354/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-[#FF5722] hover:bg-white text-slate-700 hover:text-slate-900 transition-all group cursor-pointer shadow-sm"
-                    >
-                      <svg className="w-5 h-5 fill-current mb-1 text-slate-800 group-hover:text-[#FF5722] transition-colors" viewBox="0 0 24 24">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                      </svg>
-                      <span className="font-mono text-[10px] font-bold">LinkedIn</span>
-                    </a>
-
-                    {/* Telegram */}
-                    <a
-                      href="https://t.me/pmengheak"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-[#FF5722] hover:bg-white text-slate-700 hover:text-slate-900 transition-all group cursor-pointer shadow-sm"
-                      aria-label="Telegram @pmengheak"
-                    >
-                      <Send className="w-5 h-5 mb-1 text-slate-800 group-hover:text-[#FF5722] transition-colors" />
-                      <span className="font-mono text-[10px] font-bold">@pmengheak</span>
-                    </a>
+                  {/* Location Row */}
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                      Location &amp; Availability
+                    </span>
+                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                      <div className="w-9 h-9 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center text-slate-600 shadow-2xs shrink-0 mt-0.5">
+                        <span className="text-base leading-none">📍</span>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm font-bold text-slate-900">
+                            Phnom Penh, Cambodia
+                          </p>
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Active
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 font-mono">
+                          Timezone: UTC+07:00 (Indochina Time)
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
 
+                  {/* Subtle Divider */}
+                  <div className="h-px bg-slate-100" />
+
+                  {/* Social Channels Badges */}
+                  <div>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2.5 block">
+                      Verified Channels
+                    </span>
+                    <div className="flex flex-wrap gap-2.5">
+                      {/* GitHub */}
+                      <a
+                        href="https://github.com/HeakMeng"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-slate-300 text-xs font-semibold text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
+                      >
+                        <SiGithub className="w-4 h-4 text-slate-800 group-hover/soc:scale-110 transition-transform shrink-0" />
+                        <span>GitHub</span>
+                      </a>
+
+                      {/* LinkedIn */}
+                      <a
+                        href="https://www.linkedin.com/in/pheng-mengheak-598442354/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-blue-200 text-xs font-semibold text-slate-700 hover:text-[#0A66C2] shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
+                      >
+                        <FaLinkedin className="w-4 h-4 text-[#0A66C2] group-hover/soc:scale-110 transition-transform shrink-0" />
+                        <span>LinkedIn</span>
+                      </a>
+
+                      {/* Telegram */}
+                      <a
+                        href="https://t.me/pmengheak"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-sky-200 text-xs font-semibold text-slate-700 hover:text-[#26A5E4] shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
+                      >
+                        <SiTelegram className="w-4 h-4 text-[#26A5E4] group-hover/soc:scale-110 transition-transform shrink-0" />
+                        <span>@pmengheak</span>
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
               </div>
 
-              {/* Right Column: Form */}
+              {/* Right Column: Clean Elevated Form Card */}
               <div className="lg:col-span-7">
                 <form
                   onSubmit={handleSubmit}
                   noValidate
-                  className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm"
+                  className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {/* Name */}
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                        [ 01 // YOUR NAME ]
+                    {/* Your Name */}
+                    <div>
+                      <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                        Your Name
                       </label>
                       <input
                         type="text"
@@ -842,18 +1054,18 @@ export default function Home() {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className={`w-full px-4 py-3.5 bg-slate-50 border rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/10 font-mono transition-all ${
+                        className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm ${
                           errors.name ? "border-red-400" : "border-slate-200"
                         }`}
-                        placeholder="John Doe"
+                        placeholder="e.g. Alex Morgan"
                       />
-                      {errors.name && <span className="text-xs text-red-500 font-mono">Please specify your name.</span>}
+                      {errors.name && <span className="text-xs text-red-500 mt-1 block">Please enter your name.</span>}
                     </div>
 
-                    {/* Email */}
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                        [ 02 // EMAIL ADDRESS ]
+                    {/* Email Address */}
+                    <div>
+                      <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                        Email Address
                       </label>
                       <input
                         type="email"
@@ -862,19 +1074,19 @@ export default function Home() {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className={`w-full px-4 py-3.5 bg-slate-50 border rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/10 font-mono transition-all ${
+                        className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm ${
                           errors.email ? "border-red-400" : "border-slate-200"
                         }`}
-                        placeholder="john@example.com"
+                        placeholder="alex@company.com"
                       />
-                      {errors.email && <span className="text-xs text-red-500 font-mono">Valid email address required.</span>}
+                      {errors.email && <span className="text-xs text-red-500 mt-1 block">Valid email address required.</span>}
                     </div>
                   </div>
 
                   {/* Message */}
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-xs font-mono font-bold uppercase tracking-wider text-slate-700">
-                      [ 03 // TECHNICAL INQUIRY OR MESSAGE ]
+                  <div>
+                    <label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                      Message
                     </label>
                     <textarea
                       id="message"
@@ -883,21 +1095,21 @@ export default function Home() {
                       value={formData.message}
                       onChange={handleInputChange}
                       required
-                      className={`w-full px-4 py-3.5 bg-slate-50 border rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-blue-500/10 font-mono transition-all resize-none ${
+                      className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm resize-none ${
                         errors.message ? "border-red-400" : "border-slate-200"
                       }`}
-                      placeholder="Discussing microservices architecture, FastAPI pipelines, or role availability..."
+                      placeholder="Tell me about your project, architecture goals, or inquiry..."
                     ></textarea>
-                    {errors.message && <span className="text-xs text-red-500 font-mono">Please provide message details.</span>}
+                    {errors.message && <span className="text-xs text-red-500 mt-1 block">Please enter your message details.</span>}
                   </div>
 
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-white bg-[#FF5722] hover:bg-[#FF6B2C] transition-all shadow-lg hover:shadow-orange-500/25 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer group/btn"
                   >
-                    DISPATCH TRANSMISSION
-                    <Send className="w-4 h-4" />
+                    <span>Send Message</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </form>
               </div>
@@ -920,7 +1132,7 @@ export default function Home() {
               PHENG MENGHEAK
             </span>
             <span className="font-mono text-xs text-slate-500">
-              // PORTFOLIO 2026
+              {"// PORTFOLIO 2026"}
             </span>
           </a>
 
@@ -961,8 +1173,8 @@ export default function Home() {
             </a>
 
             <a
-              href="/resume.pdf"
-              download
+              href="/pmengheak.pdf"
+              download="pmengheak.pdf"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white font-mono text-xs font-bold transition-all shadow-md"
             >
               <span>RESUME.PDF</span>

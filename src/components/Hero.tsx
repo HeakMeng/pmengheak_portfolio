@@ -46,8 +46,8 @@ export default function Hero() {
             </a>
 
             <a
-              href="/resume.pdf"
-              download
+              href="/pmengheak.pdf"
+              download="pmengheak.pdf"
               className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#2563EB] tracking-wide transition-colors group cursor-pointer py-2"
             >
               <span>Download Résumé</span>
@@ -70,19 +70,27 @@ export default function Hero() {
 
         {/* Right Column (Visual Anchor - lg:col-span-6 with visible negative space >= 64px) */}
         <div className="lg:col-span-6 w-full flex items-center justify-center lg:justify-end relative lg:pl-10">
-          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center">
-            
-            {/* Pure Clean Solid White Card Backdrop */}
-            <div className="absolute inset-0 bg-white border border-slate-200/80 rounded-3xl shadow-sm pointer-events-none z-0"></div>
-
+          <div
+            className="border-2 border-slate-300 rounded-3xl overflow-visible relative p-6 shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center"
+            style={{
+              backgroundColor: "#f8fafc",
+              backgroundImage: `repeating-linear-gradient(
+                45deg,
+                #cbd5e1 0px,
+                #cbd5e1 1.5px,
+                transparent 1.5px,
+                transparent 12px
+              )`
+            }}
+          >
             {/* Subtle Ambient Grounding Shadow underneath */}
-            <div className="absolute -bottom-2 right-4 w-[80%] h-12 bg-slate-900/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-[85%] h-10 bg-slate-900/10 rounded-full blur-xl pointer-events-none -z-10"></div>
 
             {/* 3D Illustration */}
             <img 
               src="/images/heak-isometric.png?v=2" 
               alt="HEAK 3D Setup" 
-              className="w-full h-auto object-contain select-none drop-shadow-xl hover:scale-[1.02] transition-transform duration-500 relative z-10 p-5 sm:p-7"
+              className="w-full h-auto object-contain select-none drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 relative z-10"
             />
 
             {/* Badge 1 (Top Left): Spring Boot */}
@@ -128,12 +136,12 @@ export default function Hero() {
           
           {/* Card 01 Teaser */}
           <a
-            href="#systems"
-            className="group block p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md transition-all duration-300"
+            href="#project-01"
+            className="group block p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-300 transition-all duration-300 cursor-pointer"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] border border-blue-100 uppercase tracking-wider">
-                ACADEMIC PLATFORM
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200/60 uppercase tracking-wider">
+                ACADEMIC SYSTEM
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#2563EB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
@@ -141,18 +149,18 @@ export default function Hero() {
               01 / CORTEX PLATFORM
             </h3>
             <p className="text-[12px] text-slate-500 mt-1 truncate font-medium">
-              Autonomous Academic Copilot &amp; Learning Platform
+              Interactive Learning &amp; Course Management System
             </p>
           </a>
 
           {/* Card 02 Teaser */}
           <a
-            href="#systems"
-            className="group block p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md transition-all duration-300"
+            href="#project-02"
+            className="group block p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-300 transition-all duration-300 cursor-pointer"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-100 uppercase tracking-wider">
-                FULL-STACK WEB
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-200/60 uppercase tracking-wider">
+                REACT &amp; SPRING
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#2563EB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
@@ -160,26 +168,26 @@ export default function Hero() {
               02 / GAMEHUB
             </h3>
             <p className="text-[12px] text-slate-500 mt-1 truncate font-medium">
-              Video Game Discovery &amp; Catalog
+              Video Game Discovery Engine &amp; REST API Catalog
             </p>
           </a>
 
           {/* Card 03 Teaser */}
           <a
-            href="#systems"
-            className="group block p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md transition-all duration-300"
+            href="#project-03"
+            className="group block p-4 sm:p-5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-slate-300 transition-all duration-300 cursor-pointer"
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase tracking-wider">
-                FINTECH
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 border border-emerald-200/60 uppercase tracking-wider">
+                FINTECH BACKEND
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#2563EB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
             <h3 className="font-mono text-xs font-bold tracking-wider text-slate-900 uppercase group-hover:text-[#2563EB] transition-colors">
-              03 / ENTERPRISE BACKEND
+              03 / ENTERPRISE POS SYSTEM
             </h3>
             <p className="text-[12px] text-slate-500 mt-1 truncate font-medium">
-              SnapPOS High-Throughput Engine &amp; KHQR
+              High-Throughput Retail POS &amp; Bakong KHQR Gateway
             </p>
           </a>
 
