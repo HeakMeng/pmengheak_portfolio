@@ -1,9 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { Play, ArrowRight, ArrowUpRight, Send } from "lucide-react";
 
 export default function Hero() {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const normX = (x - centerX) / centerX;
+    const normY = (y - centerY) / centerY;
+
+    // Small cursor-based tilt: rotateX ±3°, rotateY ±4°
+    const rotateX = Math.max(-3, Math.min(3, -normY * 3));
+    const rotateY = Math.max(-4, Math.min(4, normX * 4));
+
+    setTilt({ rotateX, rotateY });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+  }, []);
+
   return (
     <section
       id="hero"
@@ -70,51 +95,80 @@ export default function Hero() {
 
         {/* Right Column (Visual Anchor - lg:col-span-6 with visible negative space >= 64px) */}
         <div className="lg:col-span-6 w-full flex items-center justify-center lg:justify-end relative lg:pl-10">
-          <div
-            className="border-2 border-slate-300 rounded-3xl overflow-visible relative p-6 shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center bg-[#f8fafc]"
-          >
-            {/* Subtle Ambient Grounding Shadow underneath */}
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-[85%] h-10 bg-slate-900/10 rounded-full blur-xl pointer-events-none -z-10"></div>
+          <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl animate-hero-entrance">
+            <div
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="border border-slate-200/90 rounded-3xl overflow-visible relative p-8 cursor-default flex items-center justify-center bg-white"
+              style={{
+                backgroundColor: "#ffffff",
+                boxShadow:
+                  "0 30px 70px rgba(15, 35, 70, 0.10), 0 8px 24px rgba(15, 35, 70, 0.06)",
+                transform: `perspective(1000px) rotateX(${tilt.rotateX.toFixed(2)}deg) rotateY(${tilt.rotateY.toFixed(2)}deg)`,
+                transformStyle: "preserve-3d",
+                transition: "transform 250ms ease, box-shadow 250ms ease",
+              }}
+            >
+              {/* Subtle Ambient Grounding Shadow underneath */}
+              <div
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-[85%] h-10 bg-slate-900/10 rounded-full blur-xl pointer-events-none -z-10"
+                style={{ transform: "translateZ(-10px)" }}
+              ></div>
 
-            {/* 3D Illustration */}
-            <img 
-              src="/images/heak-isometric.png?v=2" 
-              alt="HEAK 3D Setup" 
-              className="w-full h-auto object-contain select-none drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 relative z-10"
-            />
+              {/* 3D Illustration with breathing room & translateZ */}
+              <img 
+                src="/images/heak-isometric.png?v=2" 
+                alt="HEAK 3D Setup" 
+                className="heak-artwork w-full h-auto object-contain select-none drop-shadow-2xl scale-[0.96] mx-auto relative z-10 hover:scale-[0.98] transition-transform duration-300"
+                style={{ transform: "translateZ(30px)" }}
+              />
 
-            {/* Badge 1 (Top Left): Spring Boot */}
-            <div className="absolute -top-4 -left-4 z-20 hidden sm:flex animate-float-1">
-              <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                <img src="/images/spring.svg" alt="Spring Boot" className="w-4 h-4 object-contain" />
-                <span>Spring Boot</span>
+              {/* Badge 1 (Top Left): Spring Boot */}
+              <div
+                className="absolute -top-3.5 -left-3.5 sm:-top-4 sm:-left-4 z-20 hidden sm:flex"
+                style={{ transform: "translateZ(35px)" }}
+              >
+                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/spring.svg" alt="Spring Boot" className="w-4 h-4 object-contain" />
+                  <span>Spring Boot</span>
+                </div>
               </div>
-            </div>
 
-            {/* Badge 2 (Top Right): FastAPI */}
-            <div className="absolute top-4 -right-4 z-20 hidden sm:flex animate-float-2">
-              <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                <img src="/images/fastapi.svg" alt="FastAPI" className="w-4 h-4 object-contain" />
-                <span>FastAPI</span>
+              {/* Badge 2 (Top Right): FastAPI */}
+              <div
+                className="absolute -top-3.5 -right-3.5 sm:-top-4 sm:-right-4 z-20 hidden sm:flex"
+                style={{ transform: "translateZ(35px)" }}
+              >
+                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/fastapi.svg" alt="FastAPI" className="w-4 h-4 object-contain" />
+                  <span>FastAPI</span>
+                </div>
               </div>
-            </div>
 
-            {/* Badge 3 (Bottom Left): Docker & Linux */}
-            <div className="absolute bottom-8 -left-6 z-20 hidden sm:flex animate-float-3">
-              <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                <img src="/images/docker.svg" alt="Docker & Linux" className="w-4 h-4 object-contain" />
-                <span>Docker &amp; Linux</span>
+              {/* Badge 3 (Bottom Left): Docker & Linux */}
+              <div
+                className="absolute -bottom-3.5 -left-3.5 sm:-bottom-4 sm:-left-4 z-20 hidden sm:flex"
+                style={{ transform: "translateZ(35px)" }}
+              >
+                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/docker.svg" alt="Docker & Linux" className="w-4 h-4 object-contain" />
+                  <span>Docker &amp; Linux</span>
+                </div>
               </div>
-            </div>
 
-            {/* Badge 4 (Bottom Right): Next.js 15 */}
-            <div className="absolute -bottom-4 right-6 z-20 hidden sm:flex animate-float-4">
-              <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                <img src="/images/nextjs.svg" alt="Next.js 15" className="w-4 h-4 object-contain" />
-                <span>Next.js 15</span>
+              {/* Badge 4 (Bottom Right): Next.js */}
+              <div
+                className="absolute -bottom-3.5 -right-3.5 sm:-bottom-4 sm:-right-4 z-20 hidden sm:flex"
+                style={{ transform: "translateZ(35px)" }}
+              >
+                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/nextjs.svg" alt="Next.js" className="w-4 h-4 object-contain" />
+                  <span>Next.js</span>
+                </div>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
 
