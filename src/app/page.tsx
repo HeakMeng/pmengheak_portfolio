@@ -13,7 +13,6 @@ import {
   Copy,
   ChevronUp,
   X,
-  Bot,
   CheckCircle2,
   ExternalLink,
   Sparkles,
@@ -35,7 +34,7 @@ export default function Home() {
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   // Interactive System Case Study Modal State
-  const [selectedCaseStudy, setSelectedCaseStudy] = useState<"cortex" | "gateway" | "snappos" | null>(null);
+  const [selectedCaseStudy, setSelectedCaseStudy] = useState<"cortex" | "gamehub" | "snappos" | null>(null);
 
   // Interactive Milestones Tab State
   const [milestoneTab, setMilestoneTab] = useState<"EXPERIENCE & TRAINING" | "EDUCATION" | "ALL MILESTONES">("EXPERIENCE & TRAINING");
@@ -138,7 +137,7 @@ export default function Home() {
                     Featured Systems
                   </h2>
                   <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl font-normal leading-relaxed">
-                    High-throughput microservices, vector intelligence, and enterprise retail engines designed for resilience and performance.
+                    Full-stack web applications, asynchronous bot gateways, and enterprise retail engines designed for resilience and performance.
                   </p>
                 </div>
                 <span className="font-mono text-xs text-slate-500 font-medium">
@@ -150,14 +149,14 @@ export default function Home() {
             {/* 3 Prominent Vertical Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               
-              {/* CARD 01: CORTEX AI PLATFORM */}
+              {/* CARD 01: CORTEX */}
               <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
                 <div>
                   {/* Card Media Preview with Subtle Diagonal Striping */}
                   <div className="relative aspect-[16/10] bg-diagonal-stripes-light border-b border-slate-200 overflow-hidden">
                     <Image
                       src="/assets/Cortex.png"
-                      alt="Cortex AI Platform"
+                      alt="Cortex Academic Platform"
                       fill
                       className="object-cover object-top opacity-95 group-hover:scale-105 transition-all duration-500"
                     />
@@ -169,7 +168,7 @@ export default function Home() {
                         01
                       </span>
                       <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white font-mono text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                        AUTONOMOUS COPILOT
+                        ACADEMIC PLATFORM
                       </span>
                     </div>
                   </div>
@@ -178,23 +177,23 @@ export default function Home() {
                   <div className="p-6 sm:p-7 space-y-4">
                     <div>
                       <div className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider mb-1">
-                        01 / AUTONOMOUS COPILOT
+                        01 / ACADEMIC PLATFORM
                       </div>
                       <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight group-hover:text-[#2563EB] transition-colors">
-                        CORTEX AI PLATFORM
+                        CORTEX
                       </h3>
                       <p className="text-xs text-slate-500 font-mono mt-1 font-semibold">
-                        Autonomous Academic Copilot &amp; Vector RAG
+                        Autonomous Academic Copilot &amp; Learning Platform
                       </p>
                     </div>
 
                     <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                      Full-stack AI ecosystem with RAG vector search, local LLM streaming, multimodal vision, and document indexing.
+                      Full-stack educational platform with intuitive knowledge navigation, structured course indexing, and responsive user interfaces.
                     </p>
 
-                    {/* Stack Badges: FastAPI · ChromaDB · Ollama · Next.js */}
+                    {/* Stack Badges: Java · Spring Boot · PostgreSQL · Docker · Next.js */}
                     <div className="flex flex-wrap gap-1.5 pt-2">
-                      {["FastAPI", "ChromaDB", "Ollama", "Next.js"].map((tech) => (
+                      {["Java", "Spring Boot", "PostgreSQL", "Docker", "Next.js"].map((tech) => (
                         <span
                           key={tech}
                           className="px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 font-mono text-[11px] text-slate-700 font-medium"
@@ -214,43 +213,34 @@ export default function Home() {
                   <button
                     onClick={() => setSelectedCaseStudy("cortex")}
                     className="w-11 h-11 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center transition-all group/btn shadow-md hover:shadow-lg shadow-orange-500/25 cursor-pointer"
-                    aria-label="Explore Cortex AI Platform"
+                    aria-label="Explore Cortex Academic Platform"
                   >
                     <Play className="w-4 h-4 fill-current ml-0.5 group-hover/btn:scale-110 transition-transform" />
                   </button>
                 </div>
               </div>
 
-              {/* CARD 02: TELEGRAM BOT GATEWAY */}
+              {/* CARD 02: GAMEHUB — VIDEO GAME DISCOVERY & CATALOG */}
               <div className="bg-white border border-slate-200/90 hover:border-slate-300 rounded-3xl overflow-hidden flex flex-col justify-between group shadow-sm hover:shadow-xl transition-all duration-300">
                 <div>
                   {/* Card Media Preview with Subtle Diagonal Striping */}
-                  <div className="relative aspect-[16/10] bg-diagonal-stripes-light border-b border-slate-200 p-5 flex flex-col justify-between overflow-hidden">
+                  <div className="relative aspect-[16/10] bg-diagonal-stripes-light border-b border-slate-200 overflow-hidden">
+                    <Image
+                      src="/assets/gamehub.png"
+                      alt="GameHub — Video Game Discovery & Catalog"
+                      fill
+                      className="object-cover object-top opacity-95 group-hover:scale-105 transition-all duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                    
                     {/* Top Pill Tag & Numbering */}
-                    <div className="relative z-10 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="px-3 py-1 rounded-full bg-white text-slate-900 font-mono text-xs font-bold shadow-sm border border-slate-200/60">
-                          02
-                        </span>
-                        <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white font-mono text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                          MULTIMODAL AGENT
-                        </span>
-                      </div>
-                      <Bot className="w-5 h-5 text-slate-600" />
-                    </div>
-
-                    {/* Terminal Graphic Mock */}
-                    <div className="relative z-10 font-mono text-[11px] space-y-1.5 bg-slate-900 p-3.5 rounded-xl border border-slate-800 text-slate-300 shadow-sm">
-                      <div className="text-emerald-400 flex items-center justify-between">
-                        <span>&gt; topic_id: #2945</span>
-                        <span className="text-[9px] text-blue-300">THREAD-LOCKED</span>
-                      </div>
-                      <div className="text-slate-200 truncate">
-                        payload: &#123; multimodal: true, pdf_stream: true &#125;
-                      </div>
-                      <div className="text-blue-300 text-[10px]">
-                        status: 200 OK • dispatch: 12ms
-                      </div>
+                    <div className="absolute top-4 left-4 flex items-center gap-2">
+                      <span className="px-3 py-1 rounded-full bg-white text-slate-900 font-mono text-xs font-bold shadow-sm border border-slate-200/60">
+                        02
+                      </span>
+                      <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white font-mono text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                        FULL-STACK WEB APP
+                      </span>
                     </div>
                   </div>
 
@@ -258,23 +248,23 @@ export default function Home() {
                   <div className="p-6 sm:p-7 space-y-4">
                     <div>
                       <div className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider mb-1">
-                        02 / MULTIMODAL AGENT
+                        02 / FULL-STACK WEB APP
                       </div>
                       <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight group-hover:text-[#2563EB] transition-colors">
-                        TELEGRAM BOT GATEWAY
+                        GAMEHUB
                       </h3>
                       <p className="text-xs text-slate-500 font-mono mt-1 font-semibold">
-                        Topic-Aware Multimodal Team Gateway
+                        Video Game Discovery &amp; Catalog
                       </p>
                     </div>
 
                     <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                      Real-time bot gateway running inside isolated Telegram forum topics (#2945), processing vision analysis, PDF streaming, and natural text queries.
+                      Interactive game discovery platform built while mastering React client architecture, powered by a Java Spring Boot REST API for genres, dynamic search, sorting by platform/relevance, and detailed game views.
                     </p>
 
-                    {/* Stack Badges: Python · python-telegram-bot · AsyncIO */}
+                    {/* Stack Badges: React · TypeScript · Spring Boot · REST API · Tailwind CSS */}
                     <div className="flex flex-wrap gap-1.5 pt-2">
-                      {["Python", "python-telegram-bot", "AsyncIO", "REST API"].map((tech) => (
+                      {["React", "TypeScript", "Spring Boot", "REST API", "Tailwind CSS"].map((tech) => (
                         <span
                           key={tech}
                           className="px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 font-mono text-[11px] text-slate-700 font-medium"
@@ -289,12 +279,12 @@ export default function Home() {
                 {/* Card Action */}
                 <div className="p-6 sm:p-7 pt-0 flex items-center justify-between border-t border-slate-100 mt-4">
                   <span className="font-mono text-xs text-slate-500 font-bold uppercase tracking-wider">
-                    VIEW GATEWAY SPECS
+                    EXPLORE CASE STUDY
                   </span>
                   <button
-                    onClick={() => setSelectedCaseStudy("gateway")}
+                    onClick={() => setSelectedCaseStudy("gamehub")}
                     className="w-11 h-11 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center transition-all group/btn shadow-md hover:shadow-lg shadow-orange-500/25 cursor-pointer"
-                    aria-label="View Gateway Specs"
+                    aria-label="Explore GameHub Case Study"
                   >
                     <Play className="w-4 h-4 fill-current ml-0.5 group-hover/btn:scale-110 transition-transform" />
                   </button>
@@ -570,31 +560,31 @@ export default function Home() {
                 ENGINEERING SKILLS & TECH STACK
               </h2>
               <p className="text-slate-600 text-sm sm:text-base max-w-2xl font-normal">
-                Core technical proficiencies across backend microservices, local AI systems, and infrastructure.
+                Core technical proficiencies across backend microservices, REST APIs, and scalable infrastructure.
               </p>
             </div>
 
-            {/* 6-Card Bento Grid */}
+            {/* Bento Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               
-              {/* Card 01: Backend Engineering */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
+              {/* Card 01: Backend & API Engineering (Consolidated, Spans 2 Cols) */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs md:col-span-2 lg:col-span-2">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
                     <Server className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      Backend Engineering
+                      Backend &amp; API Engineering
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Clean service layer architecture, microservices, and high-concurrency APIs.
+                      Clean service layer architecture, enterprise microservices, and high-concurrency RESTful APIs.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["Java", "Spring Boot", "FastAPI", "Node.js"].map((tech) => (
+                  {["Java", "Spring Boot", "FastAPI", "Python", "PostgreSQL", "REST APIs", "Microservices"].map((tech) => (
                     <span
                       key={tech}
                       className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
@@ -605,35 +595,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 02: AI & RAG Systems */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
-                    <Bot className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      AI & RAG Systems
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Document-question-answering and local model orchestration.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["Ollama", "vLLM", "LangChain", "LangGraph", "ChromaDB"].map((tech) => (
-                    <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Card 03: Database Systems */}
+              {/* Card 02: Database Systems */}
               <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
@@ -644,13 +606,13 @@ export default function Home() {
                       Database Systems
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Relational data modeling, vector embeddings, and NoSQL storage.
+                      Relational data modeling, ACID transactions, and optimized storage engines.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["PostgreSQL", "ChromaDB", "MongoDB"].map((tech) => (
+                  {["PostgreSQL", "MySQL", "Redis", "MongoDB"].map((tech) => (
                     <span
                       key={tech}
                       className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
@@ -661,35 +623,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 04: Frontend Development */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
-                    <Layout className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      Frontend Development
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Modern, type-safe, responsive client interfaces.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["Next.js", "React", "TypeScript", "Tailwind CSS"].map((tech) => (
-                    <span
-                      key={tech}
-                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Card 05: DevOps & Infrastructure */}
+              {/* Card 03: DevOps & Infrastructure */}
               <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
@@ -697,7 +631,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      DevOps & Infrastructure
+                      DevOps &amp; Infrastructure
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                       Containerization, continuous integration, and server configuration.
@@ -717,7 +651,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 06: API Architecture & Security */}
+              {/* Card 04: Security & Authentication */}
               <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
@@ -725,16 +659,44 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      API Architecture & Security
+                      Security &amp; Authentication
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Distributed services, access control, and identity flows.
+                      Distributed access control, identity flows, and token-based authorization.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                  {["REST APIs", "Microservices", "OAuth 2.0", "JWT", "Keycloak"].map((tech) => (
+                  {["OAuth 2.0", "JWT", "Keycloak", "Spring Security", "RBAC"].map((tech) => (
+                    <span
+                      key={tech}
+                      className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Card 05: Frontend Development */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 transition-all duration-300 group flex flex-col justify-between space-y-5 shadow-xs">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-[#2563EB] flex items-center justify-center font-bold">
+                    <Layout className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                      Frontend Development
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Modern, type-safe, responsive client interfaces.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
+                  {["Next.js", "React", "TypeScript", "Tailwind CSS"].map((tech) => (
                     <span
                       key={tech}
                       className="bg-slate-100 text-slate-800 border border-slate-200 group-hover:border-blue-200 text-xs font-mono font-medium px-2.5 py-1 rounded-md transition-colors"
@@ -765,7 +727,7 @@ export default function Home() {
                 Get in Touch
               </h2>
               <p className="text-slate-600 text-sm sm:text-base max-w-xl font-normal">
-                Initiate a technical conversation regarding backend microservices, database optimizations, or autonomous AI pipelines.
+                Initiate a technical conversation regarding backend microservices, database optimizations, or scalable distributed systems.
               </p>
             </div>
 
@@ -846,13 +808,14 @@ export default function Home() {
 
                     {/* Telegram */}
                     <a
-                      href="https://t.me/mengheak"
+                      href="https://t.me/pmengheak"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-[#FF5722] hover:bg-white text-slate-700 hover:text-slate-900 transition-all group cursor-pointer shadow-sm"
+                      aria-label="Telegram @pmengheak"
                     >
                       <Send className="w-5 h-5 mb-1 text-slate-800 group-hover:text-[#FF5722] transition-colors" />
-                      <span className="font-mono text-[10px] font-bold">Telegram</span>
+                      <span className="font-mono text-[10px] font-bold">@pmengheak</span>
                     </a>
                   </div>
                 </div>
@@ -988,11 +951,11 @@ export default function Home() {
             </a>
 
             <a
-              href="https://t.me/mengheak"
+              href="https://t.me/pmengheak"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-slate-100 hover:bg-[#FF5722] border border-slate-200 text-slate-700 hover:text-white flex items-center justify-center transition-all hover:scale-105 shadow-sm"
-              aria-label="Telegram"
+              aria-label="Telegram (@pmengheak)"
             >
               <Send className="w-4 h-4" />
             </a>
@@ -1038,10 +1001,10 @@ export default function Home() {
                     SYSTEM CASE STUDY 01
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase">
-                    Cortex Community AI Platform
+                    Cortex Academic Platform
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-mono">
-                    Autonomous Academic Copilot & Community Platform
+                    Autonomous Academic Copilot &amp; Learning Platform
                   </p>
                 </div>
 
@@ -1050,7 +1013,7 @@ export default function Home() {
                     src="/assets/Cortex.png"
                     alt="Cortex Interface"
                     fill
-                    className="object-cover"
+                    className="object-cover object-top"
                   />
                 </div>
 
@@ -1061,21 +1024,21 @@ export default function Home() {
                   <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">RAG Vector Retrieval:</strong> Dynamic semantic chunking with ChromaDB vector embeddings achieves &gt;0.94 cosine similarity for academic domain knowledge.</span>
+                      <span><strong className="text-slate-900">Structured Knowledge Navigation:</strong> Full-stack educational platform with intuitive curriculum indexing, course material search, and responsive user interfaces.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Local Model Streaming:</strong> Powered by Ollama running local quantized models (gemma2) for zero data leakage and instantaneous token streaming.</span>
+                      <span><strong className="text-slate-900">Robust Java Spring Boot Backend:</strong> Enterprise RESTful service architecture backed by PostgreSQL database persistence, connection pooling, and Docker deployment.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Multimodal Vision & PDF Parsing:</strong> Ingests student slides, research papers, and technical diagrams directly through FastAPI workers.</span>
+                      <span><strong className="text-slate-900">Interactive Client Interface:</strong> Next.js frontend with fast static routing, type-safe data validation, and clean study group workflows.</span>
                     </li>
                   </ul>
                 </div>
 
                 <div className="border-t border-slate-200 pt-4 flex items-center justify-between">
-                  <span className="font-mono text-xs text-slate-500">Stack: FastAPI, Ollama, ChromaDB, Next.js</span>
+                  <span className="font-mono text-xs text-slate-500">Stack: Java, Spring Boot, PostgreSQL, Docker, Next.js</span>
                   <button
                     onClick={() => setSelectedCaseStudy(null)}
                     className="px-6 py-2.5 rounded-xl bg-[#FF5722] hover:bg-[#FF6B2C] text-white font-mono text-xs font-bold cursor-pointer shadow-md"
@@ -1086,50 +1049,52 @@ export default function Home() {
               </div>
             )}
 
-            {/* Modal Content - GATEWAY */}
-            {selectedCaseStudy === "gateway" && (
+            {/* Modal Content - GAMEHUB */}
+            {selectedCaseStudy === "gamehub" && (
               <div className="space-y-6">
                 <div className="space-y-2">
                   <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-[10px] font-bold uppercase">
                     SYSTEM CASE STUDY 02
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase">
-                    Topic-Locked Telegram Bot Gateway
+                    GameHub — Video Game Discovery &amp; Catalog
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-mono">
-                    Topic-Aware Multimodal Team Gateway
+                    Full-Stack Web App · React &amp; Spring Boot Architecture
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 text-slate-200 font-mono text-xs space-y-2 shadow-sm">
-                  <div className="text-emerald-400">&gt; Telegram Forum Topic: #2945 (Cortex Copilot)</div>
-                  <div className="text-blue-300">&gt; AsyncIO Worker Pool: 8 concurrent dispatchers</div>
-                  <div className="text-blue-300">&gt; Media Pipelines: Image OCR + PDF Streaming + Markdown Rendering</div>
-                  <div className="text-cyan-400">&gt; Latency: Sub-200ms dispatch to FastAPI endpoints</div>
+                <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-diagonal-stripes-light">
+                  <Image
+                    src="/assets/gamehub.png"
+                    alt="GameHub Interface"
+                    fill
+                    className="object-cover object-top"
+                  />
                 </div>
 
                 <div className="space-y-4">
                   <h4 className="font-mono text-xs font-bold text-[#FF5722] uppercase tracking-wider">
-                    Engineering Specifications
+                    Key Features &amp; Architectural Highlights
                   </h4>
                   <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Topic Isolation:</strong> Routes user requests within specific Telegram forum topics, preventing state leakage across study groups.</span>
+                      <span><strong className="text-slate-900">Dynamic Filtering &amp; Multi-Platform Sorting:</strong> Real-time genre filtering and multi-platform query sorting by relevance, release date, and Metacritic rating scores.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Asynchronous Event Loop:</strong> Leverages Python AsyncIO and python-telegram-bot v20+ with non-blocking webhooks.</span>
+                      <span><strong className="text-slate-900">Decoupled Full-Stack Architecture:</strong> Clean client-server separation consuming custom Java Spring Boot REST backend endpoints for genres, catalog search, and game details.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Fallback Resiliency:</strong> Automatic graceful degradation to cached responses during high-throughput burst loads.</span>
+                      <span><strong className="text-slate-900">Interactive Responsive Client:</strong> Modern game card grid featuring Metacritic score badges, system/platform icons, instant dark mode toggle, and detail routing.</span>
                     </li>
                   </ul>
                 </div>
 
                 <div className="border-t border-slate-200 pt-4 flex items-center justify-between">
-                  <span className="font-mono text-xs text-slate-500">Stack: Python, AsyncIO, Telegram API</span>
+                  <span className="font-mono text-xs text-slate-500">Stack: React, TypeScript, Spring Boot, REST API, Tailwind CSS</span>
                   <button
                     onClick={() => setSelectedCaseStudy(null)}
                     className="px-6 py-2.5 rounded-xl bg-[#FF5722] hover:bg-[#FF6B2C] text-white font-mono text-xs font-bold cursor-pointer shadow-md"

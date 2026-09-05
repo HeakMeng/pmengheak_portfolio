@@ -21,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Pheng Mengheak | Backend Developer",
-  description: "Backend engineer and MIS student at SETEC Institute. Resilient backend microservices, high-concurrency database systems, and autonomous AI pipelines.",
+  description: "Backend Engineer specializing in Java, Spring Boot microservices, high-performance APIs, and scalable distributed systems.",
   icons: {
     icon: "/logo.jpg",
   },

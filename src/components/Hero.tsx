@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Play, ArrowRight, ArrowUpRight } from "lucide-react";
+import { Play, ArrowRight, ArrowUpRight, Send } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -17,9 +17,9 @@ export default function Hero() {
         {/* Left Column (Text & Positioning - lg:col-span-6) */}
         <div className="lg:col-span-6 space-y-6 text-left">
           
-          {/* Category Pre-title: SOFTWARE DEVELOPER · LOCAL AI */}
+          {/* Category Pre-title: BACKEND DEVELOPER */}
           <div className="text-[11px] font-bold tracking-[0.3em] text-[#2563EB] uppercase">
-            SOFTWARE DEVELOPER · LOCAL AI
+            BACKEND DEVELOPER
           </div>
 
           {/* Clean Solid Dark Navy Headline: PHENG MENGHEAK (Space Grotesk) */}
@@ -29,11 +29,11 @@ export default function Hero() {
           </h1>
 
           {/* Strengthened Role Statement with widened max-width to avoid awkward wrapping */}
-          <p className="text-slate-600 max-w-[460px] text-sm sm:text-[15px] font-normal leading-relaxed">
-            Backend Engineer specializing in Spring microservices and local AI systems.
+          <p className="text-slate-600 max-w-[540px] text-sm sm:text-[15px] font-normal leading-relaxed">
+            Backend Engineer specializing in Java, Spring Boot microservices, high-performance APIs, and scalable distributed systems.
           </p>
 
-          {/* Action CTAs: Primary [ VIEW PROJECTS ] with tighter glow + Secondary [ Download Résumé → ] */}
+          {/* Action CTAs: Primary [ VIEW PROJECTS ] + Secondary [ Download Résumé ] + Telegram [@pmengheak] */}
           <div className="pt-2 flex flex-wrap items-center gap-5">
             <a
               href="#systems"
@@ -52,6 +52,17 @@ export default function Hero() {
             >
               <span>Download Résumé</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </a>
+
+            <a
+              href="https://t.me/pmengheak"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-[#2563EB] tracking-wide transition-colors group cursor-pointer py-2"
+              aria-label="Telegram @pmengheak"
+            >
+              <Send className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <span>@pmengheak</span>
             </a>
           </div>
 
@@ -82,11 +93,11 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Badge 2 (Top Right): Ollama Local AI */}
+            {/* Badge 2 (Top Right): FastAPI */}
             <div className="absolute top-4 -right-4 z-20 hidden sm:flex animate-float-2">
               <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                <img src="/images/ollama.png" alt="Ollama Local AI" className="w-4 h-4 object-contain" />
-                <span>Ollama Local AI</span>
+                <img src="/images/fastapi.svg" alt="FastAPI" className="w-4 h-4 object-contain" />
+                <span>FastAPI</span>
               </div>
             </div>
 
@@ -122,15 +133,15 @@ export default function Hero() {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] border border-blue-100 uppercase tracking-wider">
-                AI / RAG
+                ACADEMIC PLATFORM
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#2563EB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
             <h3 className="font-mono text-xs font-bold tracking-wider text-slate-900 uppercase group-hover:text-[#2563EB] transition-colors">
-              01 / CORTEX AI PLATFORM
+              01 / CORTEX PLATFORM
             </h3>
             <p className="text-[12px] text-slate-500 mt-1 truncate font-medium">
-              Autonomous Academic Copilot &amp; Vector RAG
+              Autonomous Academic Copilot &amp; Learning Platform
             </p>
           </a>
 
@@ -141,15 +152,15 @@ export default function Hero() {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-100 uppercase tracking-wider">
-                MESSAGING
+                FULL-STACK WEB
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#2563EB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
             <h3 className="font-mono text-xs font-bold tracking-wider text-slate-900 uppercase group-hover:text-[#2563EB] transition-colors">
-              02 / TELEGRAM GATEWAY
+              02 / GAMEHUB
             </h3>
             <p className="text-[12px] text-slate-500 mt-1 truncate font-medium">
-              Topic-Locked Multimodal Bot (#2945)
+              Video Game Discovery &amp; Catalog
             </p>
           </a>
 

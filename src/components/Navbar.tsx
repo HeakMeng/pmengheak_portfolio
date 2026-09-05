@@ -79,11 +79,11 @@ export default function Navbar() {
 
           {/* Telegram */}
           <a
-            href="https://t.me/mengheak"
+            href="https://t.me/pmengheak"
             target="_blank"
             rel="noopener noreferrer"
             className="w-8 h-8 rounded-full bg-slate-100 hover:bg-[#FF5722] border border-slate-200 hover:border-[#FF5722] flex items-center justify-center text-slate-700 hover:text-white transition-all shadow-xs"
-            aria-label="Telegram Direct"
+            aria-label="Telegram @pmengheak"
           >
             <Send className="w-3.5 h-3.5 text-slate-700 group-hover:text-white" />
           </a>
