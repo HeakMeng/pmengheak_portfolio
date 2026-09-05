@@ -71,17 +71,7 @@ export default function Hero() {
         {/* Right Column (Visual Anchor - lg:col-span-6 with visible negative space >= 64px) */}
         <div className="lg:col-span-6 w-full flex items-center justify-center lg:justify-end relative lg:pl-10">
           <div
-            className="border-2 border-slate-300 rounded-3xl overflow-visible relative p-6 shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center"
-            style={{
-              backgroundColor: "#f8fafc",
-              backgroundImage: `repeating-linear-gradient(
-                45deg,
-                #cbd5e1 0px,
-                #cbd5e1 1.5px,
-                transparent 1.5px,
-                transparent 12px
-              )`
-            }}
+            className="border-2 border-slate-300 rounded-3xl overflow-visible relative p-6 shadow-lg w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl flex items-center justify-center bg-[#f8fafc]"
           >
             {/* Subtle Ambient Grounding Shadow underneath */}
             <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-[85%] h-10 bg-slate-900/10 rounded-full blur-xl pointer-events-none -z-10"></div>
