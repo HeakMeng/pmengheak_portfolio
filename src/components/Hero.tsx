@@ -126,44 +126,44 @@ export default function Hero() {
 
               {/* Badge 1 (Top Left): Spring Boot */}
               <div
-                className="absolute -top-3.5 -left-3.5 sm:-top-4 sm:-left-4 z-20 hidden sm:flex"
+                className="absolute -top-2.5 -left-2 sm:-top-4 sm:-left-4 z-20 flex"
                 style={{ transform: "translateZ(35px)" }}
               >
-                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                  <img src="/images/spring.svg" alt="Spring Boot" className="w-4 h-4 object-contain" />
+                <div className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-[11px] sm:text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/spring.svg" alt="Spring Boot" className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain" />
                   <span>Spring Boot</span>
                 </div>
               </div>
 
               {/* Badge 2 (Top Right): FastAPI */}
               <div
-                className="absolute -top-3.5 -right-3.5 sm:-top-4 sm:-right-4 z-20 hidden sm:flex"
+                className="absolute -top-2.5 -right-2 sm:-top-4 sm:-right-4 z-20 flex"
                 style={{ transform: "translateZ(35px)" }}
               >
-                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                  <img src="/images/fastapi.svg" alt="FastAPI" className="w-4 h-4 object-contain" />
+                <div className="flex items-center gap-2.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-[11px] sm:text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/fastapi.svg" alt="FastAPI" className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain" />
                   <span>FastAPI</span>
                 </div>
               </div>
 
               {/* Badge 3 (Bottom Left): Docker & Linux */}
               <div
-                className="absolute -bottom-3.5 -left-3.5 sm:-bottom-4 sm:-left-4 z-20 hidden sm:flex"
+                className="absolute -bottom-2.5 -left-2 sm:-bottom-4 sm:-left-4 z-20 flex"
                 style={{ transform: "translateZ(35px)" }}
               >
-                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                  <img src="/images/docker.svg" alt="Docker & Linux" className="w-4 h-4 object-contain" />
+                <div className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-[11px] sm:text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/docker.svg" alt="Docker & Linux" className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain" />
                   <span>Docker &amp; Linux</span>
                 </div>
               </div>
 
               {/* Badge 4 (Bottom Right): Next.js */}
               <div
-                className="absolute -bottom-3.5 -right-3.5 sm:-bottom-4 sm:-right-4 z-20 hidden sm:flex"
+                className="absolute -bottom-2.5 -right-2 sm:-bottom-4 sm:-right-4 z-20 flex"
                 style={{ transform: "translateZ(35px)" }}
               >
-                <div className="flex items-center gap-2.5 px-3.5 py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
-                  <img src="/images/nextjs.svg" alt="Next.js" className="w-4 h-4 object-contain" />
+                <div className="flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md rounded-full text-[11px] sm:text-xs font-semibold text-slate-800 whitespace-nowrap select-none hover:scale-105 hover:border-blue-400 transition-all cursor-pointer">
+                  <img src="/images/nextjs.svg" alt="Next.js" className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain" />
                   <span>Next.js</span>
                 </div>
               </div>
@@ -223,15 +223,15 @@ export default function Hero() {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 border border-emerald-200/60 uppercase tracking-wider">
-                FINTECH BACKEND
+                FULL-STACK APP
               </span>
               <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-[#2563EB] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
             <h3 className="font-mono text-xs font-bold tracking-wider text-slate-900 uppercase group-hover:text-[#2563EB] transition-colors">
-              03 / ENTERPRISE POS SYSTEM
+              03 / SNAPPOS RETAIL ENGINE
             </h3>
             <p className="text-[12px] text-slate-500 mt-1 truncate font-medium">
-              High-Throughput Retail POS &amp; Bakong KHQR Gateway
+              Full-Stack POS Platform &amp; Bakong KHQR Gateway
             </p>
           </a>
 

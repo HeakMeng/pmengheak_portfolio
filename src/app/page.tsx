@@ -10,13 +10,16 @@ import {
   Check,
   Copy,
   ChevronUp,
+  ChevronDown,
+  ChevronRight,
   X,
   Layout,
   Boxes,
   ShieldCheck,
   Download,
   Play,
-  Mail
+  Mail,
+  Layers
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -26,12 +29,10 @@ import {
   SiPython,
   SiPostgresql,
   SiMysql,
-  SiRedis,
   SiMongodb,
   SiDocker,
   SiLinux,
   SiNginx,
-  SiJenkins,
   SiGit,
   SiJsonwebtokens,
   SiKeycloak,
@@ -46,6 +47,13 @@ import {
 import { FaJava, FaKey, FaShieldHalved, FaNetworkWired, FaLinkedin } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
 
+interface MilestoneTrack {
+  title: string;
+  badge: string;
+  description?: string;
+  modules: string[];
+}
+
 interface MilestoneItem {
   id: string;
   year: string;
@@ -57,6 +65,7 @@ interface MilestoneItem {
   status: string;
   statusType: "current" | "defense" | "completed" | "graduated";
   category: "EXPERIENCE & TRAINING" | "EDUCATION";
+  tracks?: MilestoneTrack[];
 }
 
 const MILESTONES: MilestoneItem[] = [
@@ -65,12 +74,47 @@ const MILESTONES: MilestoneItem[] = [
     year: "2026",
     organization: "Korea Software HRD Center",
     logo: "/hrd.png",
-    role: "Software Development Trainee (Advanced Java, Spring Boot, Microservices)",
+    role: "Software Development Trainee (Advanced Spring, Android Kotlin & Local LLM)",
     location: "Phnom Penh, KH",
     locationIcon: "📍",
     status: "CURRENT",
     statusType: "current",
-    category: "EXPERIENCE & TRAINING"
+    category: "EXPERIENCE & TRAINING",
+    tracks: [
+      {
+        title: "Spring Advanced & Microservices",
+        badge: "CORE BACKEND",
+        description: "Enterprise microservice architectures, cloud-native APIs, and message queues.",
+        modules: [
+          "Spring Boot 3, Spring Cloud & Microservices Architecture",
+          "OAuth2, Keycloak & Distributed Security",
+          "RabbitMQ & Apache Kafka Message Streaming",
+          "Docker, Docker Compose & Spring AI Integration"
+        ]
+      },
+      {
+        title: "Mobile Development (Android)",
+        badge: "KOTLIN & JETPACK",
+        description: "Native Android applications built with declarative UI and clean architecture.",
+        modules: [
+          "Kotlin and Object-Oriented Foundations",
+          "Modern UI Design & Layout with Jetpack Compose",
+          "MVVM Architecture & Reactive State Management",
+          "Networking Integration (Retrofit) & Hilt Dependency Injection"
+        ]
+      },
+      {
+        title: "AI Engineering: Local LLMs",
+        badge: "AX SPECIALIST",
+        description: "Private on-premise model serving and autonomous agent workflows.",
+        modules: [
+          "Linux GPU Setup, Ollama & vLLM High-Throughput Serving",
+          "RAG Architectures with Vector DBs & Knowledge Retrieval",
+          "LangChain & LlamaIndex Framework Orchestration",
+          "Autonomous Agent Tool Calling, Quantization & Docker"
+        ]
+      }
+    ]
   },
   {
     id: "setec",
@@ -82,7 +126,19 @@ const MILESTONES: MilestoneItem[] = [
     locationIcon: "🏛️",
     status: "DEGREE DEFENSE",
     statusType: "defense",
-    category: "EDUCATION"
+    category: "EDUCATION",
+    tracks: [
+      {
+        title: "Management Information Systems (MIS)",
+        badge: "DEGREE PROGRAM",
+        description: "Enterprise system modeling, distributed database architectures, and IT infrastructure defense.",
+        modules: [
+          "System Analysis, Process Engineering & Enterprise Architecture",
+          "Distributed Relational Database Management (PostgreSQL & MySQL)",
+          "Data Modeling, ER Diagrams & Business Logic Defense"
+        ]
+      }
+    ]
   },
   {
     id: "proseth",
@@ -94,7 +150,19 @@ const MILESTONES: MilestoneItem[] = [
     locationIcon: "📍",
     status: "COMPLETED",
     statusType: "completed",
-    category: "EXPERIENCE & TRAINING"
+    category: "EXPERIENCE & TRAINING",
+    tracks: [
+      {
+        title: "Systems, Infrastructure & Database Operations",
+        badge: "INDUSTRY INTERNSHIP",
+        description: "Operational system administration, server maintenance, and database continuity.",
+        modules: [
+          "Linux Server Environment Administration & Shell Utilities",
+          "Relational Database Backup, Recovery & Maintenance",
+          "Network Infrastructure Troubleshooting & Server Monitoring"
+        ]
+      }
+    ]
   },
   {
     id: "puc",
@@ -106,7 +174,19 @@ const MILESTONES: MilestoneItem[] = [
     locationIcon: "📍",
     status: "GRADUATED",
     statusType: "graduated",
-    category: "EDUCATION"
+    category: "EDUCATION",
+    tracks: [
+      {
+        title: "Professional English Communication",
+        badge: "INSTITUTE DIPLOMA",
+        description: "Advanced English proficiency tailored for engineering collaboration and presentations.",
+        modules: [
+          "Technical Documentation & Engineering System Specifications",
+          "Professional Cross-Border Communication & Technical Writing",
+          "Academic Presentation & Analytical Discussions"
+        ]
+      }
+    ]
   }
 ];
 
@@ -123,15 +203,15 @@ export default function Home() {
 
   // Interactive Milestones Tab & Active Row State
   const [milestoneTab, setMilestoneTab] = useState<"ALL MILESTONES" | "EXPERIENCE & TRAINING" | "EDUCATION">("ALL MILESTONES");
-  const [activeMilestoneId, setActiveMilestoneId] = useState<string>("kshrd");
+  const [activeMilestoneId, setActiveMilestoneId] = useState<string | null>(null);
+
+  const toggleMilestone = (id: string) => {
+    setActiveMilestoneId((prev) => (prev === id ? null : id));
+  };
 
   const handleTabChange = (tab: "ALL MILESTONES" | "EXPERIENCE & TRAINING" | "EDUCATION") => {
     setMilestoneTab(tab);
-    if (tab === "EDUCATION") {
-      setActiveMilestoneId("setec");
-    } else {
-      setActiveMilestoneId("kshrd");
-    }
+    setActiveMilestoneId(null);
   };
 
   // Keyboard escape handler for modal
@@ -405,7 +485,7 @@ export default function Home() {
                         03
                       </span>
                       <span className="px-3 py-1 rounded-full bg-[#FF5722] text-white font-mono text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                        HIGH-THROUGHPUT BACKEND
+                        FULL-STACK APPLICATION
                       </span>
                     </div>
                   </div>
@@ -414,23 +494,23 @@ export default function Home() {
                   <div className="p-6 sm:p-7 space-y-4">
                     <div>
                       <div className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider mb-1">
-                        03 / HIGH-THROUGHPUT BACKEND
+                        03 / FULL-STACK APPLICATION
                       </div>
                       <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight group-hover:text-[#2563EB] transition-colors">
                         ENTERPRISE POS SYSTEM
                       </h3>
                       <p className="text-xs text-slate-500 font-mono mt-1 font-semibold">
-                        SnapPOS Retail Engine &amp; KHQR Gateway
+                        SnapPOS Retail Platform &amp; KHQR Gateway
                       </p>
                     </div>
 
                     <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                      Multi-branch POS engine supporting real-time stock control, automated KHQR payment integrations, and role-based access tokens.
+                      Full-stack multi-branch POS platform with real-time stock control, responsive cashier checkout UI, automated KHQR payment integration, and role-based security.
                     </p>
 
-                    {/* Stack Badges: Java · Spring Boot · PostgreSQL · Docker */}
+                    {/* Stack Badges */}
                     <div className="flex flex-wrap gap-1.5 pt-2">
-                      {["Java", "Spring Boot", "PostgreSQL", "Docker"].map((tech) => (
+                      {["Next.js", "React", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Docker"].map((tech) => (
                         <span
                           key={tech}
                           className="px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 font-mono text-[11px] text-slate-700 font-medium"
@@ -523,175 +603,244 @@ export default function Home() {
                   return (
                     <div
                       key={item.id}
-                      onClick={() => setActiveMilestoneId(item.id)}
-                      className={`transition-all duration-300 group/row cursor-pointer ${
+                      className={`transition-all duration-300 group/row ${
                         isElevated
                           ? "bg-white rounded-2xl shadow-md sm:shadow-lg border border-slate-200/90 p-4 sm:p-5 ring-1 ring-slate-900/5 my-1"
                           : "bg-white/50 hover:bg-white border border-transparent hover:border-slate-200/80 border-b-slate-200/70 rounded-2xl p-4 sm:p-5 hover:shadow-sm"
                       }`}
                     >
-                      {/* Desktop 5-Column Grid (>= lg) */}
-                      <div className="hidden lg:grid lg:grid-cols-12 lg:gap-5 lg:items-center">
-                        {/* Col 1: Year tag */}
-                        <div className="lg:col-span-2">
-                          <span
-                            className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
-                              isElevated
-                                ? "font-bold text-[#2563EB]"
-                                : "font-semibold text-slate-500"
-                            }`}
-                          >
-                            {item.year}
-                          </span>
-                        </div>
-
-                        {/* Col 2: Organization Logo + Name */}
-                        <div className="lg:col-span-3 flex items-center gap-3.5 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
-                            <Image
-                              src={item.logo}
-                              alt={item.organization}
-                              width={40}
-                              height={40}
-                              className="w-full h-full object-contain"
-                            />
-                          </div>
-                          <h3 className="font-extrabold text-slate-900 text-base tracking-tight leading-snug">
-                            {item.organization}
-                          </h3>
-                        </div>
-
-                        {/* Col 3: Role & Core Responsibilities */}
-                        <div className="lg:col-span-3">
-                          <p className="text-sm text-slate-600 font-normal leading-relaxed">
-                            {item.role}
-                          </p>
-                        </div>
-
-                        {/* Col 4: Location / Context Tag */}
-                        <div className="lg:col-span-2">
-                          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-600 font-medium px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200/70 whitespace-nowrap">
-                            <span className="text-sm">{item.locationIcon}</span>
-                            <span>{item.location}</span>
-                          </div>
-                        </div>
-
-                        {/* Col 5: Interactive Status Pill or Action Button */}
-                        <div className="lg:col-span-2 flex items-center justify-end gap-2.5">
-                          {item.statusType === "current" && (
-                            <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/90 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs whitespace-nowrap">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                              CURRENT
-                            </span>
-                          )}
-                          {item.statusType === "defense" && (
-                            <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200/90 font-mono text-xs font-bold uppercase shadow-xs whitespace-nowrap">
-                              DEGREE DEFENSE
-                            </span>
-                          )}
-                          {item.statusType === "completed" && (
-                            <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
-                              COMPLETED
-                            </span>
-                          )}
-                          {item.statusType === "graduated" && (
-                            <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
-                              GRADUATED
-                            </span>
-                          )}
-
-                          {isElevated ? (
-                            <div
-                              className="w-10 h-10 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0 group-hover/row:scale-105 transition-all"
-                              aria-label={`Current milestone: ${item.organization}`}
+                      {/* Clickable Header Row to toggle open / close */}
+                      <div
+                        onClick={() => toggleMilestone(item.id)}
+                        className="cursor-pointer select-none"
+                      >
+                        {/* Desktop 5-Column Grid (>= lg) */}
+                        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-5 lg:items-center">
+                          {/* Col 1: Year tag */}
+                          <div className="lg:col-span-2">
+                            <span
+                              className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
+                                isElevated
+                                  ? "font-bold text-[#2563EB]"
+                                  : "font-semibold text-slate-500"
+                              }`}
                             >
-                              <ArrowRight className="w-4 h-4" />
-                            </div>
-                          ) : (
-                            <div
-                              className="w-9 h-9 rounded-full bg-slate-100 group-hover/row:bg-slate-200 border border-slate-200 text-slate-500 group-hover/row:text-slate-900 flex items-center justify-center transition-all shrink-0"
-                              aria-label={`Select ${item.organization}`}
-                            >
-                              <ArrowRight className="w-4 h-4 group-hover/row:translate-x-0.5 transition-transform" />
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Mobile / Tablet Responsive Layout (< lg) */}
-                      <div className="lg:hidden space-y-3">
-                        {/* Top Line: Year + Status Pill */}
-                        <div className="flex items-center justify-between gap-2">
-                          <span
-                            className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
-                              isElevated
-                                ? "font-bold text-[#2563EB]"
-                                : "font-semibold text-slate-500"
-                            }`}
-                          >
-                            {item.year}
-                          </span>
-                          {item.statusType === "current" && (
-                            <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                              CURRENT
+                              {item.year}
                             </span>
-                          )}
-                          {item.statusType === "defense" && (
-                            <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200 font-mono text-xs font-bold uppercase shadow-xs">
-                              DEGREE DEFENSE
-                            </span>
-                          )}
-                          {item.statusType === "completed" && (
-                            <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs">
-                              COMPLETED
-                            </span>
-                          )}
-                          {item.statusType === "graduated" && (
-                            <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs">
-                              GRADUATED
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Brand: Logo Badge + Org Name */}
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
-                            <Image
-                              src={item.logo}
-                              alt={item.organization}
-                              width={40}
-                              height={40}
-                              className="w-full h-full object-contain"
-                            />
                           </div>
-                          <div>
-                            <h3 className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight leading-snug">
+
+                          {/* Col 2: Organization Logo + Name */}
+                          <div className="lg:col-span-3 flex items-center gap-3.5 min-w-0">
+                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                              <Image
+                                src={item.logo}
+                                alt={item.organization}
+                                width={40}
+                                height={40}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <h3 className="font-extrabold text-slate-900 text-base tracking-tight leading-snug">
                               {item.organization}
                             </h3>
-                            <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-500 mt-1">
-                              <span>{item.locationIcon}</span>
+                          </div>
+
+                          {/* Col 3: Role & Core Responsibilities */}
+                          <div className="lg:col-span-3">
+                            <p className="text-sm text-slate-600 font-normal leading-relaxed">
+                              {item.role}
+                            </p>
+                          </div>
+
+                          {/* Col 4: Location / Context Tag */}
+                          <div className="lg:col-span-2">
+                            <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-600 font-medium px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200/70 whitespace-nowrap">
+                              <span className="text-sm">{item.locationIcon}</span>
                               <span>{item.location}</span>
                             </div>
                           </div>
+
+                          {/* Col 5: Interactive Status Pill or Action Button */}
+                          <div className="lg:col-span-2 flex items-center justify-end gap-2.5">
+                            {item.statusType === "current" && (
+                              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/90 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs whitespace-nowrap">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                CURRENT
+                              </span>
+                            )}
+                            {item.statusType === "defense" && (
+                              <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200/90 font-mono text-xs font-bold uppercase shadow-xs whitespace-nowrap">
+                                DEGREE DEFENSE
+                              </span>
+                            )}
+                            {item.statusType === "completed" && (
+                              <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
+                                COMPLETED
+                              </span>
+                            )}
+                            {item.statusType === "graduated" && (
+                              <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
+                                GRADUATED
+                              </span>
+                            )}
+
+                            {isElevated ? (
+                              <div
+                                className="w-10 h-10 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0 group-hover/row:scale-105 transition-all"
+                                aria-label={`Collapse ${item.organization}`}
+                              >
+                                <ChevronUp className="w-4 h-4" />
+                              </div>
+                            ) : (
+                              <div
+                                className="w-9 h-9 rounded-full bg-slate-100 group-hover/row:bg-slate-200 border border-slate-200 text-slate-500 group-hover/row:text-slate-900 flex items-center justify-center transition-all shrink-0"
+                                aria-label={`Expand ${item.organization}`}
+                              >
+                                <ChevronRight className="w-4 h-4 group-hover/row:translate-x-0.5 transition-transform" />
+                              </div>
+                            )}
+                          </div>
                         </div>
 
-                        {/* Bottom: Role + Circle arrow button */}
-                        <div className="flex items-end justify-between gap-4 pt-1">
-                          <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
-                            {item.role}
-                          </p>
-                          {isElevated ? (
-                            <div className="w-9 h-9 rounded-full bg-[#FF5722] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0">
-                              <ArrowRight className="w-4 h-4" />
+                        {/* Mobile / Tablet Responsive Layout (< lg) */}
+                        <div className="lg:hidden space-y-3">
+                          {/* Top Line: Year + Status Pill */}
+                          <div className="flex items-center justify-between gap-2">
+                            <span
+                              className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
+                                isElevated
+                                  ? "font-bold text-[#2563EB]"
+                                  : "font-semibold text-slate-500"
+                              }`}
+                            >
+                              {item.year}
+                            </span>
+                            {item.statusType === "current" && (
+                              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                CURRENT
+                              </span>
+                            )}
+                            {item.statusType === "defense" && (
+                              <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200 font-mono text-xs font-bold uppercase shadow-xs">
+                                DEGREE DEFENSE
+                              </span>
+                            )}
+                            {item.statusType === "completed" && (
+                              <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs">
+                                COMPLETED
+                              </span>
+                            )}
+                            {item.statusType === "graduated" && (
+                              <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs">
+                                GRADUATED
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Brand: Logo Badge + Org Name */}
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                              <Image
+                                src={item.logo}
+                                alt={item.organization}
+                                width={40}
+                                height={40}
+                                className="w-full h-full object-contain"
+                              />
                             </div>
-                          ) : (
-                            <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center shrink-0">
-                              <ArrowRight className="w-3.5 h-3.5" />
+                            <div>
+                              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight leading-snug">
+                                {item.organization}
+                              </h3>
+                              <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-500 mt-1">
+                                <span>{item.locationIcon}</span>
+                                <span>{item.location}</span>
+                              </div>
                             </div>
-                          )}
+                          </div>
+
+                          {/* Bottom: Role + Circle arrow button */}
+                          <div className="flex items-end justify-between gap-4 pt-1">
+                            <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
+                              {item.role}
+                            </p>
+                            {isElevated ? (
+                              <div className="w-9 h-9 rounded-full bg-[#FF5722] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0">
+                                <ChevronUp className="w-4 h-4" />
+                              </div>
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                                <ChevronRight className="w-3.5 h-3.5" />
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
+
+                      {/* Expanded Interactive Curriculum & Details Drawer */}
+                      {isElevated && item.tracks && item.tracks.length > 0 && (
+                        <div
+                          onClick={(e) => e.stopPropagation()}
+                          className="mt-5 pt-5 border-t border-slate-200/80 space-y-4"
+                        >
+                          <div className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+                            <Layers className="w-3.5 h-3.5 text-[#FF5722]" />
+                            <span>Curricular Tracks &amp; Specialization Modules</span>
+                          </div>
+                          <div
+                            className={`grid grid-cols-1 ${
+                              item.tracks.length >= 3
+                                ? "md:grid-cols-2 lg:grid-cols-3"
+                                : "md:grid-cols-2"
+                            } gap-4`}
+                          >
+                            {item.tracks.map((track, idx) => (
+                              <div
+                                key={idx}
+                                className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200/90 space-y-3.5 hover:bg-white hover:shadow-xs transition-all"
+                              >
+                                <div className="flex items-center justify-between gap-2">
+                                  <h5 className="font-bold text-slate-900 text-sm sm:text-base">
+                                    {track.title}
+                                  </h5>
+                                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider shrink-0">
+                                    {track.badge}
+                                  </span>
+                                </div>
+                                {track.description && (
+                                  <p className="text-xs text-slate-500 leading-relaxed">
+                                    {track.description}
+                                  </p>
+                                )}
+                                <ul className="space-y-2 pt-2 border-t border-slate-200/70">
+                                  {track.modules.map((m, mIdx) => (
+                                    <li
+                                      key={mIdx}
+                                      className="text-xs text-slate-700 flex items-start gap-2.5 leading-relaxed"
+                                    >
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5722] shrink-0 mt-1.5"></span>
+                                      <span className="font-medium">{m}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Subtle Collapse button at bottom for easy closing */}
+                          <div className="flex justify-end pt-2">
+                            <button
+                              type="button"
+                              onClick={() => toggleMilestone(item.id)}
+                              className="text-xs font-mono text-slate-500 hover:text-slate-900 flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+                            >
+                              <ChevronUp className="w-3.5 h-3.5 text-[#FF5722]" />
+                              <span>Collapse details</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
@@ -703,10 +852,11 @@ export default function Home() {
 
 
         {/* ======================================================== */}
-        {/* SECTION 4: ENGINEERING SKILLS & TECH STACK (6-CARD BENTO)*/}
         {/* ======================================================== */}
-        <section id="capabilities" className="py-24 px-6 relative border-t border-slate-200/80 bg-[#F8FAFC]">
-          <div className="max-w-7xl mx-auto space-y-12">
+        {/* SECTION 4: ENGINEERING SKILLS & TECH STACK (TAXONOMY)   */}
+        {/* ======================================================== */}
+        <section id="capabilities" className="py-24 px-6 relative border-t border-slate-200/80 bg-white">
+          <div className="max-w-7xl mx-auto space-y-10">
             
             {/* Section Header */}
             <div className="space-y-4">
@@ -717,18 +867,23 @@ export default function Home() {
                 ENGINEERING SKILLS & TECH STACK
               </h2>
               <p className="text-slate-600 text-sm sm:text-base max-w-2xl font-normal">
-                Core technical proficiencies across backend microservices, REST APIs, and scalable infrastructure.
+                Core technical proficiencies structured across backend microservices, database systems, and infrastructure.
               </p>
             </div>
 
-            {/* Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* High-Density Tech Taxonomy Bento Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               
-              {/* Card 01: Backend & API Engineering (Consolidated, Spans 2 Cols) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-blue-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs md:col-span-2 lg:col-span-2">
+              {/* Layer 01: Core Backend & API Engineering (Spans 2 Cols) */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs md:col-span-2 lg:col-span-2">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center font-bold shadow-2xs">
-                    <Server className="w-5 h-5" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
+                      <Server className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      LAYER 01 // RUNTIME &amp; ARCHITECTURE
+                    </span>
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
@@ -746,13 +901,12 @@ export default function Home() {
                     { name: "Spring Boot", icon: SiSpringboot, color: "text-[#6DB33F]" },
                     { name: "FastAPI", icon: SiFastapi, color: "text-[#009688]" },
                     { name: "Python", icon: SiPython, color: "text-[#3776AB]" },
-                    { name: "PostgreSQL", icon: SiPostgresql, color: "text-[#4169E1]" },
                     { name: "REST APIs", icon: TbApi, color: "text-[#2563EB]" },
                     { name: "Microservices", icon: FaNetworkWired, color: "text-[#6366F1]" }
                   ].map((tech) => (
                     <span
                       key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
                       <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
                       <span>{tech.name}</span>
@@ -761,18 +915,23 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 02: Database Systems */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-emerald-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
+              {/* Layer 02: Database Systems */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center font-bold shadow-2xs">
-                    <Database className="w-5 h-5" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
+                      <Database className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      LAYER 02 // PERSISTENCE
+                    </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       Database Systems
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Relational data modeling, ACID transactions, and optimized storage engines.
+                      Relational data modeling, ACID transactions, and optimized schema design.
                     </p>
                   </div>
                 </div>
@@ -781,12 +940,11 @@ export default function Home() {
                   {[
                     { name: "PostgreSQL", icon: SiPostgresql, color: "text-[#4169E1]" },
                     { name: "MySQL", icon: SiMysql, color: "text-[#4479A1]" },
-                    { name: "Redis", icon: SiRedis, color: "text-[#DC382D]" },
                     { name: "MongoDB", icon: SiMongodb, color: "text-[#47A248]" }
                   ].map((tech) => (
                     <span
                       key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
                       <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
                       <span>{tech.name}</span>
@@ -795,18 +953,23 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 03: DevOps & Infrastructure */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-sky-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
+              {/* Layer 03: DevOps & Infrastructure */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-sky-50 border border-sky-100 text-sky-600 flex items-center justify-center font-bold shadow-2xs">
-                    <Boxes className="w-5 h-5" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
+                      <Boxes className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      LAYER 03 // INFRASTRUCTURE
+                    </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       DevOps &amp; Infrastructure
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Containerization, continuous integration, and server configuration.
+                      Containerization, Linux system administration, and web server configuration.
                     </p>
                   </div>
                 </div>
@@ -816,12 +979,11 @@ export default function Home() {
                     { name: "Docker", icon: SiDocker, color: "text-[#2496ED]" },
                     { name: "Linux", icon: SiLinux, color: "text-[#FCC624]" },
                     { name: "Nginx", icon: SiNginx, color: "text-[#009639]" },
-                    { name: "Jenkins", icon: SiJenkins, color: "text-[#D24939]" },
                     { name: "Git", icon: SiGit, color: "text-[#F05032]" }
                   ].map((tech) => (
                     <span
                       key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
                       <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
                       <span>{tech.name}</span>
@@ -830,14 +992,19 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 04: Security & Authentication */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-purple-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
+              {/* Layer 04: Security & Authentication */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 text-purple-600 flex items-center justify-center font-bold shadow-2xs">
-                    <ShieldCheck className="w-5 h-5" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
+                      <ShieldCheck className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      LAYER 04 // SECURITY &amp; AUTH
+                    </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-purple-600 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       Security &amp; Authentication
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
@@ -856,7 +1023,7 @@ export default function Home() {
                   ].map((tech) => (
                     <span
                       key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
                       <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
                       <span>{tech.name}</span>
@@ -865,18 +1032,23 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Card 05: Frontend Development */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-amber-300 hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
+              {/* Layer 05: Frontend Development */}
+              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center font-bold shadow-2xs">
-                    <Layout className="w-5 h-5" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
+                      <Layout className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      LAYER 05 // CLIENT INTERFACE
+                    </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       Frontend Development
                     </h3>
                     <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Modern, type-safe, responsive client interfaces.
+                      Modern, type-safe, responsive client interfaces and reactive state.
                     </p>
                   </div>
                 </div>
@@ -890,7 +1062,7 @@ export default function Home() {
                   ].map((tech) => (
                     <span
                       key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
                     >
                       <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
                       <span>{tech.name}</span>
@@ -904,10 +1076,10 @@ export default function Home() {
         </section>
 
 
+        {/* ==========================        {/* ======================================================== */}
+        {/* SECTION 5: ARCHITECTURAL CONTACT DISPATCH TERMINAL      */}
         {/* ======================================================== */}
-        {/* SECTION 5: HIGH-CONTRAST CONTACT TERMINAL / FORM         */}
-        {/* ======================================================== */}
-        <section id="contact" className="py-24 px-6 relative border-t border-slate-200/80 bg-[#F1F5F9]">
+        <section id="contact" className="py-24 px-6 relative border-t border-slate-200/80 bg-white">
           <div className="max-w-7xl mx-auto space-y-12">
             
             {/* Section Header */}
@@ -923,198 +1095,226 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-              
-              {/* Left Column: Cohesive Contact Card (Cortex Design Language) */}
-              <div className="lg:col-span-5">
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-sm space-y-6">
-                  
-                  {/* Direct Email Row (Interactive copy-to-clipboard row with hover state) */}
-                  <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
-                      Direct Email
-                    </span>
-                    <div
-                      onClick={copyEmail}
-                      className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 transition-all cursor-pointer group/email"
-                      title="Click to copy email address"
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-9 h-9 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
-                          <Mail className="w-4 h-4" />
+            {/* Architectural Framing Container Card with Diagonal Pattern */}
+            <div className="relative rounded-3xl border border-slate-200/90 bg-white/50 p-4 sm:p-6 md:p-8 shadow-sm overflow-hidden">
+              {/* Architectural 45-degree diagonal pattern background */}
+              <div className="absolute inset-0 bg-diagonal-stripes-light opacity-40 pointer-events-none" />
+
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* Left Column: Direct Communication Channels */}
+                <div className="lg:col-span-5">
+                  <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-xs space-y-6">
+                    
+                    {/* Header bar */}
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                      <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        DIRECT CHANNELS
+                      </span>
+                      <span className="font-mono text-[11px] text-emerald-600 font-semibold flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        AVAILABLE
+                      </span>
+                    </div>
+
+                    {/* Direct Email Row (Interactive copy-to-clipboard row) */}
+                    <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                        Direct Email
+                      </span>
+                      <div
+                        onClick={copyEmail}
+                        className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 transition-all cursor-pointer group/email"
+                        title="Click to copy email address"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-9 h-9 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
+                            <Mail className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-slate-900 group-hover/email:text-blue-600 transition-colors truncate">
+                              pmengheak168@gmail.com
+                            </p>
+                            <p className="text-xs text-slate-500">
+                              Click to copy to clipboard
+                            </p>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold text-slate-900 group-hover/email:text-blue-600 transition-colors truncate">
-                            pmengheak168@gmail.com
-                          </p>
-                          <p className="text-xs text-slate-500">
-                            Click to copy to clipboard
-                          </p>
+                        <div className="p-2 rounded-lg bg-white border border-slate-200/90 text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
+                          {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                         </div>
-                      </div>
-                      <div className="p-2 rounded-lg bg-white border border-slate-200/90 text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
-                        {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                       </div>
                     </div>
-                  </div>
 
-                  {/* Subtle Divider */}
-                  <div className="h-px bg-slate-100" />
+                    {/* Subtle Divider */}
+                    <div className="h-px bg-slate-100" />
 
-                  {/* Location Row */}
-                  <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
-                      Location &amp; Availability
-                    </span>
-                    <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-                      <div className="w-9 h-9 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center text-slate-600 shadow-2xs shrink-0 mt-0.5">
-                        <span className="text-base leading-none">📍</span>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <p className="text-sm font-bold text-slate-900">
-                            Phnom Penh, Cambodia
-                          </p>
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Active
-                          </span>
+                    {/* Location Row */}
+                    <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
+                        Location &amp; Availability
+                      </span>
+                      <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                        <div className="w-9 h-9 rounded-lg bg-white border border-slate-200/90 flex items-center justify-center text-slate-600 shadow-2xs shrink-0 mt-0.5">
+                          <span className="text-base leading-none">📍</span>
                         </div>
-                        <p className="text-xs text-slate-500 font-mono">
-                          Timezone: UTC+07:00 (Indochina Time)
-                        </p>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-bold text-slate-900">
+                              Phnom Penh, Cambodia
+                            </p>
+                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-semibold">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                              Active
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500 font-mono">
+                            Timezone: UTC+07:00 (Indochina Time)
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Subtle Divider */}
-                  <div className="h-px bg-slate-100" />
+                    {/* Subtle Divider */}
+                    <div className="h-px bg-slate-100" />
 
-                  {/* Social Channels Badges */}
-                  <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2.5 block">
-                      Verified Channels
-                    </span>
-                    <div className="flex flex-wrap gap-2.5">
-                      {/* GitHub */}
-                      <a
-                        href="https://github.com/HeakMeng"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-slate-300 text-xs font-semibold text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
-                      >
-                        <SiGithub className="w-4 h-4 text-slate-800 group-hover/soc:scale-110 transition-transform shrink-0" />
-                        <span>GitHub</span>
-                      </a>
+                    {/* Social Channels Badges */}
+                    <div>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2.5 block">
+                        Verified Channels
+                      </span>
+                      <div className="flex flex-wrap gap-2.5">
+                        {/* GitHub */}
+                        <a
+                          href="https://github.com/HeakMeng"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-slate-300 text-xs font-semibold text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
+                        >
+                          <SiGithub className="w-4 h-4 text-slate-800 group-hover/soc:scale-110 transition-transform shrink-0" />
+                          <span>GitHub</span>
+                        </a>
 
-                      {/* LinkedIn */}
-                      <a
-                        href="https://www.linkedin.com/in/pheng-mengheak-598442354/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-blue-200 text-xs font-semibold text-slate-700 hover:text-[#0A66C2] shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
-                      >
-                        <FaLinkedin className="w-4 h-4 text-[#0A66C2] group-hover/soc:scale-110 transition-transform shrink-0" />
-                        <span>LinkedIn</span>
-                      </a>
+                        {/* LinkedIn */}
+                        <a
+                          href="https://www.linkedin.com/in/pheng-mengheak-598442354/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-200 text-xs font-semibold text-slate-700 hover:text-[#0A66C2] shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
+                        >
+                          <FaLinkedin className="w-4 h-4 text-[#0A66C2] group-hover/soc:scale-110 transition-transform shrink-0" />
+                          <span>LinkedIn</span>
+                        </a>
 
-                      {/* Telegram */}
-                      <a
-                        href="https://t.me/pmengheak"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50/90 hover:bg-white border border-slate-200 hover:border-sky-200 text-xs font-semibold text-slate-700 hover:text-[#26A5E4] shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
-                      >
-                        <SiTelegram className="w-4 h-4 text-[#26A5E4] group-hover/soc:scale-110 transition-transform shrink-0" />
-                        <span>@pmengheak</span>
-                      </a>
+                        {/* Telegram */}
+                        <a
+                          href="https://t.me/pmengheak"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50 hover:bg-white border border-slate-200 hover:border-sky-200 text-xs font-semibold text-slate-700 hover:text-[#26A5E4] shadow-2xs hover:shadow-xs hover:scale-105 transition-all cursor-pointer group/soc"
+                        >
+                          <SiTelegram className="w-4 h-4 text-[#26A5E4] group-hover/soc:scale-110 transition-transform shrink-0" />
+                          <span>@pmengheak</span>
+                        </a>
+                      </div>
                     </div>
-                  </div>
 
+                  </div>
                 </div>
-              </div>
 
-              {/* Right Column: Clean Elevated Form Card */}
-              <div className="lg:col-span-7">
-                <form
-                  onSubmit={handleSubmit}
-                  noValidate
-                  className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6"
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {/* Your Name */}
-                    <div>
-                      <label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm ${
-                          errors.name ? "border-red-400" : "border-slate-200"
-                        }`}
-                        placeholder="e.g. Alex Morgan"
-                      />
-                      {errors.name && <span className="text-xs text-red-500 mt-1 block">Please enter your name.</span>}
-                    </div>
-
-                    {/* Email Address */}
-                    <div>
-                      <label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm ${
-                          errors.email ? "border-red-400" : "border-slate-200"
-                        }`}
-                        placeholder="alex@company.com"
-                      />
-                      {errors.email && <span className="text-xs text-red-500 mt-1 block">Valid email address required.</span>}
-                    </div>
-                  </div>
-
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 block">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      required
-                      className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-slate-800 placeholder:text-slate-400 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm resize-none ${
-                        errors.message ? "border-red-400" : "border-slate-200"
-                      }`}
-                      placeholder="Tell me about your project, architecture goals, or inquiry..."
-                    ></textarea>
-                    {errors.message && <span className="text-xs text-red-500 mt-1 block">Please enter your message details.</span>}
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer group/btn"
+                {/* Right Column: Dispatch Console Form */}
+                <div className="lg:col-span-7">
+                  <form
+                    onSubmit={handleSubmit}
+                    noValidate
+                    className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6"
                   >
-                    <span>Send Message</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </form>
-              </div>
+                    {/* Console Header */}
+                    <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                      <span className="font-mono text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        DISPATCH CONSOLE
+                      </span>
+                      <span className="font-mono text-[11px] text-slate-400">
+                        DIRECT INBOX ROUTING
+                      </span>
+                    </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      {/* Your Name */}
+                      <div>
+                        <label htmlFor="name" className="text-xs font-mono font-bold uppercase tracking-wider text-slate-600 mb-2 block">
+                          Your Name
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          required
+                          className={`w-full px-4 py-3 bg-slate-50/80 hover:bg-slate-50 focus:bg-white border rounded-xl text-slate-800 placeholder:text-slate-400 focus:border-[#2563EB] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm ${
+                            errors.name ? "border-red-400" : "border-slate-200"
+                          }`}
+                          placeholder="e.g. Alex Morgan"
+                        />
+                        {errors.name && <span className="text-xs text-red-500 mt-1 block">Please enter your name.</span>}
+                      </div>
+
+                      {/* Email Address */}
+                      <div>
+                        <label htmlFor="email" className="text-xs font-mono font-bold uppercase tracking-wider text-slate-600 mb-2 block">
+                          Email Address
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                          className={`w-full px-4 py-3 bg-slate-50/80 hover:bg-slate-50 focus:bg-white border rounded-xl text-slate-800 placeholder:text-slate-400 focus:border-[#2563EB] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm ${
+                            errors.email ? "border-red-400" : "border-slate-200"
+                          }`}
+                          placeholder="alex@company.com"
+                        />
+                        {errors.email && <span className="text-xs text-red-500 mt-1 block">Valid email address required.</span>}
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label htmlFor="message" className="text-xs font-mono font-bold uppercase tracking-wider text-slate-600 mb-2 block">
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={5}
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        required
+                        className={`w-full px-4 py-3 bg-slate-50/80 hover:bg-slate-50 focus:bg-white border rounded-xl text-slate-800 placeholder:text-slate-400 focus:border-[#2563EB] focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm resize-none ${
+                          errors.message ? "border-red-400" : "border-slate-200"
+                        }`}
+                        placeholder="Tell me about your project, architecture goals, or engineering inquiry..."
+                      ></textarea>
+                      {errors.message && <span className="text-xs text-red-500 mt-1 block">Please enter your message details.</span>}
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 px-6 rounded-xl bg-[#2563EB] hover:bg-blue-700 active:bg-blue-800 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-blue-500/20 transition-all cursor-pointer group/btn"
+                    >
+                      <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                      <span>Dispatch Message</span>
+                    </button>
+                  </form>
+                </div>
+
+              </div>
             </div>
+
           </div>
         </section>
 
@@ -1325,10 +1525,10 @@ export default function Home() {
                     SYSTEM CASE STUDY 03
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase">
-                    SnapPOS Enterprise Retail Backend
+                    SnapPOS Enterprise Full-Stack POS Platform
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-mono">
-                    High-Throughput Retail POS Engine
+                    Full-Stack Retail Platform &amp; Real-Time Checkout UI
                   </p>
                 </div>
 
@@ -1348,21 +1548,25 @@ export default function Home() {
                   <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Spring Boot Engine:</strong> Layered MVC architecture with decoupled Service, Repository, and Security token filters.</span>
+                      <span><strong className="text-slate-900">Next.js &amp; React Frontend:</strong> Modern, high-speed cashier terminal interface with live catalog search, dynamic shopping cart, discount calculators, and Tailwind CSS responsive styling.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">PostgreSQL Concurrency:</strong> Strict ACID transactions for inventory deductions with pessimistic locking on hot stock items.</span>
+                      <span><strong className="text-slate-900">Spring Boot Engine:</strong> Layered MVC backend architecture with decoupled Service, Repository, and JWT/role-based security token filters.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Automated KHQR Integrations:</strong> Dynamic Bakong/KHQR payload generator with webhook verification for cashier checkouts.</span>
+                      <span><strong className="text-slate-900">PostgreSQL Concurrency:</strong> Strict ACID transactions for multi-branch inventory deductions with pessimistic locking on high-velocity stock items.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
+                      <span><strong className="text-slate-900">Automated KHQR Integrations:</strong> Dynamic Bakong/KHQR QR payload generation with real-time payment webhook verification for cashier checkouts.</span>
                     </li>
                   </ul>
                 </div>
 
                 <div className="border-t border-slate-200 pt-4 flex items-center justify-between">
-                  <span className="font-mono text-xs text-slate-500">Stack: Spring Boot, Java, PostgreSQL, Docker</span>
+                  <span className="font-mono text-xs text-slate-500">Stack: Next.js, React, Tailwind CSS, Spring Boot, PostgreSQL, Docker</span>
                   <button
                     onClick={() => setSelectedCaseStudy(null)}
                     className="px-6 py-2.5 rounded-xl bg-[#FF5722] hover:bg-[#FF6B2C] text-white font-mono text-xs font-bold cursor-pointer shadow-md"
