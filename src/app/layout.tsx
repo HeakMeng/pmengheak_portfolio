@@ -20,8 +20,33 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pheng Mengheak | Backend Developer",
-  description: "Backend Engineer specializing in Java, Spring Boot microservices, high-performance APIs, and scalable distributed systems.",
+  metadataBase: new URL("https://pmengheak.vercel.app"),
+  title: "Pheng Mengheak | Backend Engineer",
+  description: "Backend Engineer building Spring Boot microservices, secure APIs, and local AI systems with Java, Docker, PostgreSQL, and MongoDB.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Pheng Mengheak | Backend Engineer",
+    description: "Spring Boot microservices, secure APIs, and local AI systems.",
+    url: "https://pmengheak.vercel.app",
+    siteName: "Pheng Mengheak",
+    images: [
+      {
+        url: "/logo.jpg",
+        width: 800,
+        height: 800,
+        alt: "Pheng Mengheak Portfolio",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pheng Mengheak | Backend Engineer",
+    description: "Spring Boot microservices, secure APIs, and local AI systems.",
+    images: ["/logo.jpg"],
+  },
   icons: {
     icon: "/logo.jpg",
   },

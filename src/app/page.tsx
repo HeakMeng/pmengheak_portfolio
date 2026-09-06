@@ -6,6 +6,7 @@ import {
   Server,
   Database,
   ArrowRight,
+  ArrowUpRight,
   Send,
   Check,
   Copy,
@@ -19,7 +20,11 @@ import {
   Download,
   Play,
   Mail,
-  Layers
+  Layers,
+  Cpu,
+  Sparkles,
+  ExternalLink,
+  Loader2
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
@@ -42,9 +47,12 @@ import {
   SiTypescript,
   SiTailwindcss,
   SiGithub,
-  SiTelegram
+  SiTelegram,
+  SiOllama,
+  SiLangchain,
+  SiNodedotjs
 } from "react-icons/si";
-import { FaJava, FaKey, FaShieldHalved, FaNetworkWired, FaLinkedin } from "react-icons/fa6";
+import { FaJava, FaKey, FaShieldHalved, FaNetworkWired, FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa6";
 import { TbApi } from "react-icons/tb";
 
 interface MilestoneTrack {
@@ -65,21 +73,25 @@ interface MilestoneItem {
   status: string;
   statusType: "current" | "defense" | "completed" | "graduated";
   category: "EXPERIENCE & TRAINING" | "EDUCATION";
+  achievement: string;
+  skills: string[];
   tracks?: MilestoneTrack[];
 }
 
 const MILESTONES: MilestoneItem[] = [
   {
     id: "kshrd",
-    year: "2026",
+    year: "2026 — PRESENT",
     organization: "Korea Software HRD Center",
     logo: "/hrd.png",
-    role: "Software Development Trainee (Advanced Spring, Android Kotlin & Local LLM)",
+    role: "Software Development Trainee",
     location: "Phnom Penh, KH",
     locationIcon: "📍",
     status: "CURRENT",
     statusType: "current",
     category: "EXPERIENCE & TRAINING",
+    achievement: "Intensive full-time engineering training focusing on enterprise Spring Boot microservices, high-throughput local LLM serving with Ollama/RAG, and reactive mobile application development.",
+    skills: ["Java", "Spring Boot 3", "Microservices", "OAuth2 / Keycloak", "RabbitMQ", "Ollama & RAG", "Docker", "Kotlin"],
     tracks: [
       {
         title: "Spring Advanced & Microservices",
@@ -118,15 +130,17 @@ const MILESTONES: MilestoneItem[] = [
   },
   {
     id: "setec",
-    year: "2024 – PRESENT",
+    year: "2024 — PRESENT",
     organization: "SETEC Institute",
     logo: "/SETTTTTEC.png",
-    role: "Bachelor's Degree in MIS (System Analysis Defense, Distributed DB)",
+    role: "Bachelor of Science in MIS",
     location: "MIS Dept // Phnom Penh",
     locationIcon: "🏛️",
     status: "DEGREE DEFENSE",
     statusType: "defense",
     category: "EDUCATION",
+    achievement: "Academic curriculum focused on system analysis defense, distributed relational database systems, schema optimization, and enterprise software architecture.",
+    skills: ["System Analysis & Design", "Distributed Databases", "PostgreSQL", "MySQL", "Data Modeling", "Enterprise Architecture"],
     tracks: [
       {
         title: "Management Information Systems (MIS)",
@@ -142,15 +156,17 @@ const MILESTONES: MilestoneItem[] = [
   },
   {
     id: "proseth",
-    year: "MAY 2025 – DEC 2025",
+    year: "MAY 2025 — DEC 2025",
     organization: "PROSETH SOLUTIONS CO., LTD.",
     logo: "/prosethsolutions.jpg",
-    role: "IT Intern (Database Systems, Server Operations, Infrastructure)",
+    role: "IT & Systems Intern",
     location: "Phnom Penh, KH",
     locationIcon: "📍",
     status: "COMPLETED",
     statusType: "completed",
     category: "EXPERIENCE & TRAINING",
+    achievement: "Maintained client database integrity, monitored Linux server infrastructure uptime, executed scheduled backup routines, and supported network infrastructure operations.",
+    skills: ["Linux Server Admin", "Database Backups", "Infrastructure Monitoring", "Network Troubleshooting"],
     tracks: [
       {
         title: "Systems, Infrastructure & Database Operations",
@@ -166,7 +182,7 @@ const MILESTONES: MilestoneItem[] = [
   },
   {
     id: "puc",
-    year: "2023 – 2025",
+    year: "2023 — 2025",
     organization: "PUC Institute of Foreign Languages",
     logo: "/images.png",
     role: "Diploma in English Communication",
@@ -175,6 +191,8 @@ const MILESTONES: MilestoneItem[] = [
     status: "GRADUATED",
     statusType: "graduated",
     category: "EDUCATION",
+    achievement: "Comprehensive professional English training with an emphasis on technical documentation, cross-cultural engineering team collaboration, and architectural presentations.",
+    skills: ["Technical Documentation", "Engineering Presentations", "Professional English Fluency"],
     tracks: [
       {
         title: "Professional English Communication",
@@ -192,8 +210,11 @@ const MILESTONES: MilestoneItem[] = [
 
 export default function Home() {
   // Contact Form State
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", hp_company: "" });
   const [errors, setErrors] = useState({ name: false, email: false, message: false });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("Message dispatched successfully!");
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -232,13 +253,13 @@ export default function Home() {
     setErrors((prev) => ({ ...prev, [name]: false }));
   };
 
-  // Form submit handler
-  const handleSubmit = (e: React.FormEvent) => {
+  // Form submit handler with real Next.js route handler dispatch
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let hasError = false;
     const newErrors = { name: false, email: false, message: false };
 
-    if (formData.name.trim() === "") {
+    if (formData.name.trim().length < 2) {
       newErrors.name = true;
       hasError = true;
     }
@@ -247,18 +268,43 @@ export default function Home() {
       newErrors.email = true;
       hasError = true;
     }
-    if (formData.message.trim() === "") {
+    if (formData.message.trim().length < 5) {
       newErrors.message = true;
       hasError = true;
     }
 
     setErrors(newErrors);
+    if (hasError) return;
 
-    if (!hasError) {
-      setToastMessage("Thank you! Your message has been received.");
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to dispatch message.");
+      }
+
+      setSubmitStatus("success");
+      setToastMessage(data.message || "Your message has been received! I will respond within 24 hours.");
       setToastOpen(true);
-      setFormData({ name: "", email: "", message: "" });
-      setTimeout(() => setToastOpen(false), 5000);
+      setFormData({ name: "", email: "", message: "", hp_company: "" });
+      setTimeout(() => setToastOpen(false), 6000);
+    } catch (err: unknown) {
+      setSubmitStatus("error");
+      const msg = err instanceof Error ? err.message : "Error dispatching message. Please email directly.";
+      setErrorMessage(msg);
+      setToastMessage(msg);
+      setToastOpen(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -333,6 +379,7 @@ export default function Home() {
                       src="/assets/Cortex.png"
                       alt="Cortex Academic Platform"
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover object-top opacity-95 group-hover:scale-105 transition-all duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
@@ -349,7 +396,7 @@ export default function Home() {
                   </div>
 
                   {/* Card Details */}
-                  <div className="p-6 sm:p-7 space-y-4">
+                  <div className="p-6 sm:p-7 pb-3 sm:pb-3.5 space-y-3.5">
                     <div>
                       <div className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider mb-1">
                         01 / ACADEMIC PLATFORM
@@ -367,7 +414,7 @@ export default function Home() {
                     </p>
 
                     {/* Stack Badges: Java · Spring Boot · PostgreSQL · Docker · Next.js */}
-                    <div className="flex flex-wrap gap-1.5 pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {["Java", "Spring Boot", "PostgreSQL", "Docker", "Next.js"].map((tech) => (
                         <span
                           key={tech}
@@ -381,10 +428,13 @@ export default function Home() {
                 </div>
 
                 {/* Card Action */}
-                <div className="p-6 sm:p-7 pt-0 flex items-center justify-between border-t border-slate-100 mt-4">
-                  <span className="font-mono text-xs text-slate-500 font-bold uppercase tracking-wider">
+                <div className="px-6 sm:px-7 py-3 sm:py-3.5 flex items-center justify-between border-t border-slate-100 mt-2">
+                  <button
+                    onClick={() => setSelectedCaseStudy("cortex")}
+                    className="font-mono text-xs text-slate-500 hover:text-[#2563EB] font-bold uppercase tracking-wider transition-colors text-left cursor-pointer"
+                  >
                     EXPLORE CASE STUDY
-                  </span>
+                  </button>
                   <button
                     onClick={() => setSelectedCaseStudy("cortex")}
                     className="w-11 h-11 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center transition-all group/btn shadow-md hover:shadow-lg shadow-orange-500/25 cursor-pointer"
@@ -404,6 +454,7 @@ export default function Home() {
                       src="/assets/gamehub.png"
                       alt="GameHub — Video Game Discovery & Catalog"
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover object-top opacity-95 group-hover:scale-105 transition-all duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
@@ -420,7 +471,7 @@ export default function Home() {
                   </div>
 
                   {/* Card Details */}
-                  <div className="p-6 sm:p-7 space-y-4">
+                  <div className="p-6 sm:p-7 pb-3 sm:pb-3.5 space-y-3.5">
                     <div>
                       <div className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider mb-1">
                         02 / FULL-STACK WEB APP
@@ -438,7 +489,7 @@ export default function Home() {
                     </p>
 
                     {/* Stack Badges: React · TypeScript · Spring Boot · REST API · Tailwind CSS */}
-                    <div className="flex flex-wrap gap-1.5 pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {["React", "TypeScript", "Spring Boot", "REST API", "Tailwind CSS"].map((tech) => (
                         <span
                           key={tech}
@@ -452,10 +503,13 @@ export default function Home() {
                 </div>
 
                 {/* Card Action */}
-                <div className="p-6 sm:p-7 pt-0 flex items-center justify-between border-t border-slate-100 mt-4">
-                  <span className="font-mono text-xs text-slate-500 font-bold uppercase tracking-wider">
+                <div className="px-6 sm:px-7 py-3 sm:py-3.5 flex items-center justify-between border-t border-slate-100 mt-2">
+                  <button
+                    onClick={() => setSelectedCaseStudy("gamehub")}
+                    className="font-mono text-xs text-slate-500 hover:text-[#2563EB] font-bold uppercase tracking-wider transition-colors text-left cursor-pointer"
+                  >
                     EXPLORE CASE STUDY
-                  </span>
+                  </button>
                   <button
                     onClick={() => setSelectedCaseStudy("gamehub")}
                     className="w-11 h-11 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center transition-all group/btn shadow-md hover:shadow-lg shadow-orange-500/25 cursor-pointer"
@@ -475,6 +529,7 @@ export default function Home() {
                       src="/assets/SnapPOS.png"
                       alt="Enterprise POS System"
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover object-top opacity-95 group-hover:scale-105 transition-all duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
@@ -491,12 +546,12 @@ export default function Home() {
                   </div>
 
                   {/* Card Details */}
-                  <div className="p-6 sm:p-7 space-y-4">
+                  <div className="p-6 sm:p-7 pb-3 sm:pb-3.5 space-y-3.5">
                     <div>
                       <div className="font-mono text-xs text-[#2563EB] font-bold uppercase tracking-wider mb-1">
                         03 / FULL-STACK APPLICATION
                       </div>
-                      <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tight group-hover:text-[#2563EB] transition-colors">
+                      <h3 className="text-2xl font-black text-[#2563EB] uppercase tracking-tight transition-colors">
                         ENTERPRISE POS SYSTEM
                       </h3>
                       <p className="text-xs text-slate-500 font-mono mt-1 font-semibold">
@@ -509,7 +564,7 @@ export default function Home() {
                     </p>
 
                     {/* Stack Badges */}
-                    <div className="flex flex-wrap gap-1.5 pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {["Next.js", "React", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Docker"].map((tech) => (
                         <span
                           key={tech}
@@ -523,10 +578,13 @@ export default function Home() {
                 </div>
 
                 {/* Card Action */}
-                <div className="p-6 sm:p-7 pt-0 flex items-center justify-between border-t border-slate-100 mt-4">
-                  <span className="font-mono text-xs text-slate-500 font-bold uppercase tracking-wider">
+                <div className="px-6 sm:px-7 py-3 sm:py-3.5 flex items-center justify-between border-t border-slate-100 mt-2">
+                  <button
+                    onClick={() => setSelectedCaseStudy("snappos")}
+                    className="font-mono text-xs text-slate-500 hover:text-[#2563EB] font-bold uppercase tracking-wider transition-colors text-left cursor-pointer"
+                  >
                     VIEW LIVE PLATFORM
-                  </span>
+                  </button>
                   <button
                     onClick={() => setSelectedCaseStudy("snappos")}
                     className="w-11 h-11 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center transition-all group/btn shadow-md hover:shadow-lg shadow-orange-500/25 cursor-pointer"
@@ -543,7 +601,7 @@ export default function Home() {
 
 
         {/* ======================================================== */}
-        {/* SECTION 3: CAREER & MILESTONES                           */}
+        {/* SECTION 3: EXPERIENCE & CAREER MILESTONES                */}
         {/* ======================================================== */}
         <section id="milestones" className="py-24 px-6 relative border-t border-slate-200/80 bg-[#F1F5F9]">
           <div className="max-w-7xl mx-auto space-y-12">
@@ -551,15 +609,15 @@ export default function Home() {
             {/* Section Header */}
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] font-mono text-xs font-semibold tracking-wide">
-                [ 03 // CAREER &amp; MILESTONES ]
+                [ 03 // EXPERIENCE &amp; CAREER TIMELINE ]
               </div>
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
                   <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 uppercase tracking-tight">
-                    CAREER &amp; MILESTONES
+                    EXPERIENCE &amp; MILESTONES
                   </h2>
                   <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl font-normal leading-relaxed">
-                    Engineering journey, professional milestones, and technical training.
+                    Engineering journey, industry internships, technical training, and academic background.
                   </p>
                 </div>
                 <div className="font-mono text-xs text-slate-500 flex items-center gap-2 font-medium">
@@ -571,12 +629,13 @@ export default function Home() {
 
             {/* Interactive Segmented Tab Switcher */}
             <div className="flex justify-center">
-              <div className="inline-flex items-center p-1.5 bg-slate-100 rounded-full border border-slate-200/80 mb-10 overflow-x-auto max-w-full shadow-xs">
+              <div className="inline-flex items-center p-1.5 bg-slate-100 rounded-full border border-slate-200/80 mb-6 overflow-x-auto max-w-full shadow-xs">
                 {(["ALL MILESTONES", "EXPERIENCE & TRAINING", "EDUCATION"] as const).map((tab) => (
                   <button
                     key={tab}
+                    type="button"
                     onClick={() => handleTabChange(tab)}
-                    className={`px-5 sm:px-6 py-2 text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer whitespace-nowrap ${
+                    className={`px-5 sm:px-6 py-2 text-xs uppercase tracking-wider rounded-full transition-all cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none ${
                       milestoneTab === tab
                         ? "bg-white text-slate-900 shadow-sm border border-slate-200/60 font-bold"
                         : "font-semibold text-slate-500 hover:text-slate-900"
@@ -588,13 +647,12 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Architectural Framing Container Card with Diagonal Stripes */}
-            <div className="relative rounded-3xl border border-slate-200/90 bg-white/50 p-3 sm:p-5 md:p-6 shadow-sm overflow-hidden">
-              {/* Architectural 45-degree diagonal pattern background */}
+            {/* Architectural Framing Container Card */}
+            <div className="relative rounded-3xl border border-slate-200/90 bg-white/50 p-4 sm:p-6 md:p-8 shadow-sm overflow-hidden">
               <div className="absolute inset-0 bg-diagonal-stripes-light opacity-60 pointer-events-none" />
 
-              {/* Milestone Rows */}
-              <div className="relative z-10 space-y-3">
+              {/* Milestone Cards Grid */}
+              <div className="relative z-10 space-y-4">
                 {MILESTONES.filter((item) => {
                   if (milestoneTab === "ALL MILESTONES") return true;
                   return item.category === milestoneTab;
@@ -603,187 +661,105 @@ export default function Home() {
                   return (
                     <div
                       key={item.id}
-                      className={`transition-all duration-300 group/row ${
+                      className={`transition-all duration-300 rounded-2xl border ${
                         isElevated
-                          ? "bg-white rounded-2xl shadow-md sm:shadow-lg border border-slate-200/90 p-4 sm:p-5 ring-1 ring-slate-900/5 my-1"
-                          : "bg-white/50 hover:bg-white border border-transparent hover:border-slate-200/80 border-b-slate-200/70 rounded-2xl p-4 sm:p-5 hover:shadow-sm"
+                          ? "bg-white shadow-md border-slate-300 ring-1 ring-slate-900/5 p-5 sm:p-6"
+                          : "bg-white/80 hover:bg-white border-slate-200/90 hover:border-slate-300 hover:shadow-xs p-5 sm:p-6"
                       }`}
                     >
-                      {/* Clickable Header Row to toggle open / close */}
-                      <div
+                      {/* Accessible Clickable Header Trigger */}
+                      <button
+                        type="button"
                         onClick={() => toggleMilestone(item.id)}
-                        className="cursor-pointer select-none"
+                        aria-expanded={isElevated}
+                        aria-label={`Toggle curricular details for ${item.organization} - ${item.role}`}
+                        className="w-full text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none rounded-xl"
                       >
-                        {/* Desktop 5-Column Grid (>= lg) */}
-                        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-5 lg:items-center">
-                          {/* Col 1: Year tag */}
-                          <div className="lg:col-span-2">
-                            <span
-                              className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
-                                isElevated
-                                  ? "font-bold text-[#2563EB]"
-                                  : "font-semibold text-slate-500"
-                              }`}
-                            >
-                              {item.year}
-                            </span>
-                          </div>
-
-                          {/* Col 2: Organization Logo + Name */}
-                          <div className="lg:col-span-3 flex items-center gap-3.5 min-w-0">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
+                        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+                          
+                          {/* Left: Logo + Role + Organization + Details */}
+                          <div className="flex items-start gap-4 min-w-0">
+                            <div className="w-12 h-12 rounded-xl bg-white border border-slate-200/80 p-1.5 flex items-center justify-center shrink-0 shadow-xs mt-0.5">
                               <Image
                                 src={item.logo}
                                 alt={item.organization}
-                                width={40}
-                                height={40}
+                                width={48}
+                                height={48}
                                 className="w-full h-full object-contain"
                               />
                             </div>
-                            <h3 className="font-extrabold text-slate-900 text-base tracking-tight leading-snug">
-                              {item.organization}
-                            </h3>
-                          </div>
 
-                          {/* Col 3: Role & Core Responsibilities */}
-                          <div className="lg:col-span-3">
-                            <p className="text-sm text-slate-600 font-normal leading-relaxed">
-                              {item.role}
-                            </p>
-                          </div>
+                            <div className="space-y-1.5 min-w-0">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                                  {item.role}
+                                </h3>
+                                <span className="text-slate-400 font-mono text-xs">·</span>
+                                <span className="font-semibold text-sm sm:text-base text-[#2563EB]">
+                                  {item.organization}
+                                </span>
+                              </div>
 
-                          {/* Col 4: Location / Context Tag */}
-                          <div className="lg:col-span-2">
-                            <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-600 font-medium px-2.5 py-1 rounded-lg bg-slate-100/90 border border-slate-200/70 whitespace-nowrap">
-                              <span className="text-sm">{item.locationIcon}</span>
-                              <span>{item.location}</span>
+                              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
+                                {item.achievement}
+                              </p>
+
+                              {/* Skills Pills */}
+                              <div className="flex flex-wrap gap-1.5 pt-2">
+                                {item.skills.map((skill) => (
+                                  <span
+                                    key={skill}
+                                    className="px-2.5 py-0.5 rounded-md bg-slate-100 border border-slate-200/80 font-mono text-[11px] text-slate-700 font-medium"
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                           </div>
 
-                          {/* Col 5: Interactive Status Pill or Action Button */}
-                          <div className="lg:col-span-2 flex items-center justify-end gap-2.5">
-                            {item.statusType === "current" && (
-                              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/90 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs whitespace-nowrap">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                CURRENT
-                              </span>
-                            )}
-                            {item.statusType === "defense" && (
-                              <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200/90 font-mono text-xs font-bold uppercase shadow-xs whitespace-nowrap">
-                                DEGREE DEFENSE
-                              </span>
-                            )}
-                            {item.statusType === "completed" && (
-                              <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
-                                COMPLETED
-                              </span>
-                            )}
-                            {item.statusType === "graduated" && (
-                              <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs whitespace-nowrap">
-                                GRADUATED
-                              </span>
-                            )}
+                          {/* Right: Period & Status Pill & Chevron Indicator */}
+                          <div className="flex lg:flex-col items-center lg:items-end justify-between lg:justify-start gap-3 shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-100">
+                            <div className="flex items-center gap-2">
+                              {item.statusType === "current" && (
+                                <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                  CURRENT
+                                </span>
+                              )}
+                              {item.statusType === "defense" && (
+                                <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200 font-mono text-xs font-bold uppercase shadow-xs">
+                                  DEGREE DEFENSE
+                                </span>
+                              )}
+                              {item.statusType === "completed" && (
+                                <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs">
+                                  COMPLETED
+                                </span>
+                              )}
+                              {item.statusType === "graduated" && (
+                                <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs">
+                                  GRADUATED
+                                </span>
+                              )}
+                            </div>
 
-                            {isElevated ? (
-                              <div
-                                className="w-10 h-10 rounded-full bg-[#FF5722] hover:bg-[#FF6B2C] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0 group-hover/row:scale-105 transition-all"
-                                aria-label={`Collapse ${item.organization}`}
-                              >
-                                <ChevronUp className="w-4 h-4" />
-                              </div>
-                            ) : (
-                              <div
-                                className="w-9 h-9 rounded-full bg-slate-100 group-hover/row:bg-slate-200 border border-slate-200 text-slate-500 group-hover/row:text-slate-900 flex items-center justify-center transition-all shrink-0"
-                                aria-label={`Expand ${item.organization}`}
-                              >
-                                <ChevronRight className="w-4 h-4 group-hover/row:translate-x-0.5 transition-transform" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Mobile / Tablet Responsive Layout (< lg) */}
-                        <div className="lg:hidden space-y-3">
-                          {/* Top Line: Year + Status Pill */}
-                          <div className="flex items-center justify-between gap-2">
-                            <span
-                              className={`font-mono text-xs sm:text-sm uppercase tracking-wide ${
-                                isElevated
-                                  ? "font-bold text-[#2563EB]"
-                                  : "font-semibold text-slate-500"
-                              }`}
-                            >
+                            <span className="font-mono text-xs font-bold text-slate-500">
                               {item.year}
                             </span>
-                            {item.statusType === "current" && (
-                              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono text-xs font-bold flex items-center gap-1.5 shadow-xs">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                CURRENT
-                              </span>
-                            )}
-                            {item.statusType === "defense" && (
-                              <span className="px-3 py-1 rounded-full bg-orange-50 text-[#FF5722] border border-orange-200 font-mono text-xs font-bold uppercase shadow-xs">
-                                DEGREE DEFENSE
-                              </span>
-                            )}
-                            {item.statusType === "completed" && (
-                              <span className="px-3 py-1 rounded-full bg-white text-slate-700 border border-slate-200 font-mono text-xs font-medium shadow-xs">
-                                COMPLETED
-                              </span>
-                            )}
-                            {item.statusType === "graduated" && (
-                              <span className="px-3 py-1 rounded-full bg-blue-50 text-[#2563EB] border border-blue-200 font-mono text-xs font-medium shadow-xs">
-                                GRADUATED
-                              </span>
-                            )}
-                          </div>
 
-                          {/* Brand: Logo Badge + Org Name */}
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
-                              <Image
-                                src={item.logo}
-                                alt={item.organization}
-                                width={40}
-                                height={40}
-                                className="w-full h-full object-contain"
-                              />
-                            </div>
-                            <div>
-                              <h3 className="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight leading-snug">
-                                {item.organization}
-                              </h3>
-                              <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-500 mt-1">
-                                <span>{item.locationIcon}</span>
-                                <span>{item.location}</span>
-                              </div>
+                            <div className="hidden lg:flex items-center gap-1 text-[11px] font-mono text-slate-400 mt-1">
+                              <span>{isElevated ? "Hide tracks" : "View tracks"}</span>
+                              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isElevated ? "rotate-180 text-[#2563EB]" : ""}`} />
                             </div>
                           </div>
 
-                          {/* Bottom: Role + Circle arrow button */}
-                          <div className="flex items-end justify-between gap-4 pt-1">
-                            <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
-                              {item.role}
-                            </p>
-                            {isElevated ? (
-                              <div className="w-9 h-9 rounded-full bg-[#FF5722] text-white flex items-center justify-center shadow-md shadow-orange-500/25 shrink-0">
-                                <ChevronUp className="w-4 h-4" />
-                              </div>
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center shrink-0">
-                                <ChevronRight className="w-3.5 h-3.5" />
-                              </div>
-                            )}
-                          </div>
                         </div>
-                      </div>
+                      </button>
 
                       {/* Expanded Interactive Curriculum & Details Drawer */}
                       {isElevated && item.tracks && item.tracks.length > 0 && (
-                        <div
-                          onClick={(e) => e.stopPropagation()}
-                          className="mt-5 pt-5 border-t border-slate-200/80 space-y-4"
-                        >
+                        <div className="mt-5 pt-5 border-t border-slate-200/80 space-y-4">
                           <div className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
                             <Layers className="w-3.5 h-3.5 text-[#FF5722]" />
                             <span>Curricular Tracks &amp; Specialization Modules</span>
@@ -798,12 +774,12 @@ export default function Home() {
                             {item.tracks.map((track, idx) => (
                               <div
                                 key={idx}
-                                className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200/90 space-y-3.5 hover:bg-white hover:shadow-xs transition-all"
+                                className="p-4 rounded-xl bg-slate-50 border border-slate-200/90 space-y-3"
                               >
                                 <div className="flex items-center justify-between gap-2">
-                                  <h5 className="font-bold text-slate-900 text-sm sm:text-base">
+                                  <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
                                     {track.title}
-                                  </h5>
+                                  </h4>
                                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-50 text-[#2563EB] border border-blue-200 uppercase tracking-wider shrink-0">
                                     {track.badge}
                                   </span>
@@ -813,31 +789,16 @@ export default function Home() {
                                     {track.description}
                                   </p>
                                 )}
-                                <ul className="space-y-2 pt-2 border-t border-slate-200/70">
-                                  {track.modules.map((m, mIdx) => (
-                                    <li
-                                      key={mIdx}
-                                      className="text-xs text-slate-700 flex items-start gap-2.5 leading-relaxed"
-                                    >
-                                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5722] shrink-0 mt-1.5"></span>
-                                      <span className="font-medium">{m}</span>
+                                <ul className="space-y-1.5 text-xs text-slate-600 border-t border-slate-200/70 pt-2.5">
+                                  {track.modules.map((mod, mIdx) => (
+                                    <li key={mIdx} className="flex items-start gap-1.5">
+                                      <Check className="w-3.5 h-3.5 text-[#FF5722] shrink-0 mt-0.5" />
+                                      <span>{mod}</span>
                                     </li>
                                   ))}
                                 </ul>
                               </div>
                             ))}
-                          </div>
-
-                          {/* Subtle Collapse button at bottom for easy closing */}
-                          <div className="flex justify-end pt-2">
-                            <button
-                              type="button"
-                              onClick={() => toggleMilestone(item.id)}
-                              className="text-xs font-mono text-slate-500 hover:text-slate-900 flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
-                            >
-                              <ChevronUp className="w-3.5 h-3.5 text-[#FF5722]" />
-                              <span>Collapse details</span>
-                            </button>
                           </div>
                         </div>
                       )}
@@ -853,225 +814,225 @@ export default function Home() {
 
         {/* ======================================================== */}
         {/* ======================================================== */}
-        {/* SECTION 4: ENGINEERING SKILLS & TECH STACK (TAXONOMY)   */}
+        {/* SECTION 4: TECHNOLOGY STACK & ENGINEERING SKILLS         */}
         {/* ======================================================== */}
         <section id="capabilities" className="py-24 px-6 relative border-t border-slate-200/80 bg-white">
-          <div className="max-w-7xl mx-auto space-y-10">
+          <div className="max-w-7xl mx-auto space-y-16">
             
             {/* Section Header */}
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#2563EB] font-mono text-xs font-semibold tracking-wide">
-                [ 04 // TECHNICAL TAXONOMY ]
+                [ 04 // TECH STACK &amp; SKILLS ]
               </div>
-              <h2 className="text-3xl sm:text-5xl font-black text-slate-900 uppercase tracking-tight">
-                ENGINEERING SKILLS & TECH STACK
-              </h2>
-              <p className="text-slate-600 text-sm sm:text-base max-w-2xl font-normal">
-                Core technical proficiencies structured across backend microservices, database systems, and infrastructure.
-              </p>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-3xl sm:text-5xl font-black text-slate-900 uppercase tracking-tight">
+                    Technology Stack &amp; Skills
+                  </h2>
+                  <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl font-normal leading-relaxed">
+                    Technologies, frameworks, and architecture practices I use to build scalable backend systems, microservices, and practical local AI applications.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 font-mono text-xs text-slate-500 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>15 CORE TECHNOLOGIES</span>
+                </div>
+              </div>
             </div>
 
-            {/* High-Density Tech Taxonomy Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              
-              {/* Layer 01: Core Backend & API Engineering (Spans 2 Cols) */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs md:col-span-2 lg:col-span-2">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
-                      <Server className="w-5 h-5" />
-                    </div>
-                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      LAYER 01 // RUNTIME &amp; ARCHITECTURE
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      Backend &amp; API Engineering
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Clean service layer architecture, enterprise microservices, and high-concurrency RESTful APIs.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
-                  {[
-                    { name: "Java", icon: FaJava, color: "text-[#E11D48]" },
-                    { name: "Spring Boot", icon: SiSpringboot, color: "text-[#6DB33F]" },
-                    { name: "FastAPI", icon: SiFastapi, color: "text-[#009688]" },
-                    { name: "Python", icon: SiPython, color: "text-[#3776AB]" },
-                    { name: "REST APIs", icon: TbApi, color: "text-[#2563EB]" },
-                    { name: "Microservices", icon: FaNetworkWired, color: "text-[#6366F1]" }
-                  ].map((tech) => (
-                    <span
-                      key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
-                    >
-                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
-                      <span>{tech.name}</span>
-                    </span>
-                  ))}
-                </div>
+            {/* Visual Technology Stack Grid (15 Core Tools matching GitHub Profile) */}
+            <div className="space-y-5">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-slate-900 text-base sm:text-lg">
+                  Technology Stack
+                </h3>
+                <span className="text-xs font-mono text-slate-400">
+                  Daily Tooling &amp; Frameworks
+                </span>
               </div>
 
-              {/* Layer 02: Database Systems */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
-                      <Database className="w-5 h-5" />
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
+                {[
+                  { name: "Java", category: "Core Language", icon: FaJava, color: "text-[#ED8B00]", bg: "hover:border-amber-300" },
+                  { name: "Spring Boot", category: "Backend Engine", icon: SiSpringboot, color: "text-[#6DB33F]", bg: "hover:border-emerald-300" },
+                  { name: "Python", category: "AI & Scripting", icon: SiPython, color: "text-[#3776AB]", bg: "hover:border-sky-300" },
+                  { name: "FastAPI", category: "API Framework", icon: SiFastapi, color: "text-[#009688]", bg: "hover:border-teal-300" },
+                  { name: "PostgreSQL", category: "Relational DB", icon: SiPostgresql, color: "text-[#4169E1]", bg: "hover:border-blue-300" },
+
+                  { name: "Ollama", category: "Local LLM Serving", icon: SiOllama, color: "text-slate-900", bg: "hover:border-slate-400" },
+                  { name: "LangChain", category: "RAG Orchestration", icon: SiLangchain, color: "text-[#1C3C3C]", bg: "hover:border-emerald-400" },
+                  { name: "ChromaDB", category: "Vector Store", isSvg: true, svgSrc: "/images/chroma.svg", color: "text-[#FFDE2D]", bg: "hover:border-yellow-300" },
+                  { name: "Docker", category: "Containers", icon: SiDocker, color: "text-[#2496ED]", bg: "hover:border-blue-400" },
+                  { name: "Linux", category: "OS & Servers", icon: SiLinux, color: "text-[#FCC624]", bg: "hover:border-amber-300" },
+
+                  { name: "Next.js", category: "Web Framework", icon: SiNextdotjs, color: "text-slate-900", bg: "hover:border-slate-400" },
+                  { name: "React", category: "Frontend UI", icon: SiReact, color: "text-[#61DAFB]", bg: "hover:border-cyan-300" },
+                  { name: "TypeScript", category: "Type System", icon: SiTypescript, color: "text-[#3178C6]", bg: "hover:border-blue-400" },
+                  { name: "Tailwind CSS", category: "Styling System", icon: SiTailwindcss, color: "text-[#06B6D4]", bg: "hover:border-cyan-400" },
+                  { name: "Git", category: "Version Control", icon: SiGit, color: "text-[#F05032]", bg: "hover:border-orange-300" },
+                ].map((tech) => (
+                  <div
+                    key={tech.name}
+                    className={`bg-slate-50/70 hover:bg-white border border-slate-200/80 ${tech.bg} rounded-2xl p-4 flex flex-col items-center justify-center text-center transition-all duration-200 shadow-2xs hover:shadow-md hover:-translate-y-1 group cursor-default`}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white border border-slate-200/60 flex items-center justify-center shadow-2xs mb-2.5 group-hover:scale-110 transition-transform">
+                      {tech.isSvg && tech.svgSrc ? (
+                        <img src={tech.svgSrc} alt={tech.name} className="w-6 h-6 object-contain" />
+                      ) : tech.icon ? (
+                        <tech.icon className={`w-6 h-6 ${tech.color}`} />
+                      ) : null}
                     </div>
-                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      LAYER 02 // PERSISTENCE
+                    <span className="font-bold text-xs text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                      {tech.name}
+                    </span>
+                    <span className="font-mono text-[10px] text-slate-400 mt-0.5 font-medium">
+                      {tech.category}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Engineering Skills Matrix */}
+            <div className="space-y-5">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-slate-900 text-base sm:text-lg">
+                  Engineering Skills by Area
+                </h3>
+                <span className="text-xs font-mono text-slate-400">
+                  Categorized Proficiencies
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+                {/* 1. Backend Engineering (Spans 2 cols as primary focus) */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-slate-300 transition-all group space-y-4 shadow-xs md:col-span-2 lg:col-span-2">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                    <span className="font-mono text-[11px] font-bold text-[#2563EB] uppercase tracking-wider">
+                      PRIMARY FOCUS
+                    </span>
+                    <span className="font-mono text-[11px] text-slate-400">
+                      CORE SPECIALTY
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h4 className="text-base font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                      Backend Engineering
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Scalable RESTful services, microservice architectures, and clean service layers.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+                    {["Java", "Spring Boot", "FastAPI", "Node.js", "REST APIs", "Microservices"].map((t) => (
+                      <span key={t} className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. Database Systems */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-slate-300 transition-all group space-y-4 shadow-xs">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      PERSISTENCE
+                    </span>
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       Database Systems
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Relational data modeling, ACID transactions, and optimized schema design.
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Relational schemas, document models, ACID transactions, and query optimization.
                     </p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+                    {["PostgreSQL", "MongoDB", "MySQL", "ACID Transactions"].map((t) => (
+                      <span key={t} className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
-                  {[
-                    { name: "PostgreSQL", icon: SiPostgresql, color: "text-[#4169E1]" },
-                    { name: "MySQL", icon: SiMysql, color: "text-[#4479A1]" },
-                    { name: "MongoDB", icon: SiMongodb, color: "text-[#47A248]" }
-                  ].map((tech) => (
-                    <span
-                      key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
-                    >
-                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
-                      <span>{tech.name}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Layer 03: DevOps & Infrastructure */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
-                      <Boxes className="w-5 h-5" />
-                    </div>
+                {/* 3. API and Security */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-slate-300 transition-all group space-y-4 shadow-xs">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                     <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      LAYER 03 // INFRASTRUCTURE
+                      AUTH &amp; SECURITY
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h4 className="text-base font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                      API &amp; Security
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Token authentication, identity federation, role permissions, and API gateways.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+                    {["REST APIs", "Microservices", "OAuth 2.0", "JWT", "Keycloak", "Spring Security"].map((t) => (
+                      <span key={t} className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. DevOps & Infrastructure */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-slate-300 transition-all group space-y-4 shadow-xs">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                      DEVOPS &amp; OS
+                    </span>
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       DevOps &amp; Infrastructure
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Containerization, Linux system administration, and web server configuration.
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Container orchestration, Linux server setup, reverse proxies, and version control.
                     </p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+                    {["Docker", "Linux", "Nginx", "Git"].map((t) => (
+                      <span key={t} className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
-                  {[
-                    { name: "Docker", icon: SiDocker, color: "text-[#2496ED]" },
-                    { name: "Linux", icon: SiLinux, color: "text-[#FCC624]" },
-                    { name: "Nginx", icon: SiNginx, color: "text-[#009639]" },
-                    { name: "Git", icon: SiGit, color: "text-[#F05032]" }
-                  ].map((tech) => (
-                    <span
-                      key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
-                    >
-                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
-                      <span>{tech.name}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Layer 04: Security & Authentication */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
-                      <ShieldCheck className="w-5 h-5" />
-                    </div>
+                {/* 5. Frontend Development */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-6 hover:shadow-md hover:border-slate-300 transition-all group space-y-4 shadow-xs">
+                  <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                     <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      LAYER 04 // SECURITY &amp; AUTH
+                      CLIENT INTERFACES
                     </span>
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
-                      Security &amp; Authentication
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Distributed access control, identity flows, and token-based authorization.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
-                  {[
-                    { name: "OAuth 2.0", icon: FaKey, color: "text-[#3B82F6]" },
-                    { name: "JWT", icon: SiJsonwebtokens, color: "text-[#D63AFF]" },
-                    { name: "Keycloak", icon: SiKeycloak, color: "text-[#008A87]" },
-                    { name: "Spring Security", icon: SiSpringsecurity, color: "text-[#6DB33F]" },
-                    { name: "RBAC", icon: FaShieldHalved, color: "text-[#8B5CF6]" }
-                  ].map((tech) => (
-                    <span
-                      key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
-                    >
-                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
-                      <span>{tech.name}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Layer 05: Frontend Development */}
-              <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 hover:shadow-md hover:border-slate-300 transition-all duration-200 group flex flex-col justify-between space-y-5 shadow-xs">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-700 flex items-center justify-center font-bold shadow-2xs group-hover:bg-blue-50 group-hover:text-[#2563EB] group-hover:border-blue-200 transition-all">
-                      <Layout className="w-5 h-5" />
-                    </div>
-                    <span className="font-mono text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      LAYER 05 // CLIENT INTERFACE
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
+                    <h4 className="text-base font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors">
                       Frontend Development
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                      Modern, type-safe, responsive client interfaces and reactive state.
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Responsive single-page and server-rendered web applications with type safety.
                     </p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100">
+                    {["Next.js", "React", "TypeScript", "Tailwind CSS"].map((t) => (
+                      <span key={t} className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-slate-100">
-                  {[
-                    { name: "Next.js", icon: SiNextdotjs, color: "text-slate-900" },
-                    { name: "React", icon: SiReact, color: "text-[#61DAFB]" },
-                    { name: "TypeScript", icon: SiTypescript, color: "text-[#3178C6]" },
-                    { name: "Tailwind CSS", icon: SiTailwindcss, color: "text-[#06B6D4]" }
-                  ].map((tech) => (
-                    <span
-                      key={tech.name}
-                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-white border border-slate-200/80 text-xs font-mono font-medium text-slate-700 hover:text-slate-900 shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all cursor-default group/badge"
-                    >
-                      <tech.icon className={`w-3.5 h-3.5 shrink-0 ${tech.color} group-hover/badge:scale-110 transition-transform`} />
-                      <span>{tech.name}</span>
-                    </span>
-                  ))}
-                </div>
               </div>
-
             </div>
+
+
           </div>
         </section>
 
@@ -1143,6 +1104,15 @@ export default function Home() {
                         <div className="p-2 rounded-lg bg-white border border-slate-200/90 text-slate-600 group-hover/email:text-blue-600 group-hover/email:border-blue-200 shadow-2xs shrink-0 transition-colors">
                           {copiedEmail ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                         </div>
+                      </div>
+                      <div className="mt-2 text-right">
+                        <a
+                          href="mailto:pmengheak168@gmail.com"
+                          className="inline-flex items-center gap-1 font-mono text-xs text-blue-600 hover:text-blue-700 hover:underline"
+                        >
+                          <span>Open in mail client</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
                       </div>
                     </div>
 
@@ -1239,6 +1209,31 @@ export default function Home() {
                       </span>
                     </div>
 
+                    {/* Honeypot anti-spam field (hidden from assistive devices and UI) */}
+                    <div className="hidden" aria-hidden="true">
+                      <input
+                        type="text"
+                        name="hp_company"
+                        value={formData.hp_company}
+                        onChange={handleInputChange}
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+                    </div>
+
+                    {/* Submit Status Alerts */}
+                    {submitStatus === "success" && (
+                      <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>Transmission dispatched successfully! I will review your inquiry and follow up shortly.</span>
+                      </div>
+                    )}
+                    {submitStatus === "error" && (
+                      <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center gap-2">
+                        <span>{errorMessage || "Failed to dispatch message. Please email directly at pmengheak168@gmail.com."}</span>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       {/* Your Name */}
                       <div>
@@ -1304,10 +1299,20 @@ export default function Home() {
                     {/* Submit Button */}
                     <button
                       type="submit"
-                      className="w-full py-3.5 px-6 rounded-xl bg-[#2563EB] hover:bg-blue-700 active:bg-blue-800 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-blue-500/20 transition-all cursor-pointer group/btn"
+                      disabled={isSubmitting}
+                      className="w-full py-3.5 px-6 rounded-xl bg-[#2563EB] hover:bg-blue-700 active:bg-blue-800 disabled:bg-blue-400 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-blue-500/20 transition-all cursor-pointer disabled:cursor-not-allowed group/btn focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                      <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                      <span>Dispatch Message</span>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Dispatching Transmission...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                          <span>Dispatch Message</span>
+                        </>
+                      )}
                     </button>
                   </form>
                 </div>
@@ -1394,13 +1399,22 @@ export default function Home() {
 
       {/* Interactive Case Study Modal Popups */}
       {selectedCaseStudy && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-case-study-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedCaseStudy(null);
+          }}
+        >
           <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-2xl text-slate-900">
             
             {/* Modal Close Button */}
             <button
               onClick={() => setSelectedCaseStudy(null)}
-              className="absolute top-6 right-6 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+              aria-label="Close modal dialog"
+              className="absolute top-6 right-6 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1425,6 +1439,7 @@ export default function Home() {
                     src="/assets/Cortex.png"
                     alt="Cortex Interface"
                     fill
+                    sizes="(max-width: 768px) 100vw, 768px"
                     className="object-cover object-top"
                   />
                 </div>
@@ -1481,6 +1496,7 @@ export default function Home() {
                     src="/assets/gamehub.png"
                     alt="GameHub Interface"
                     fill
+                    sizes="(max-width: 768px) 100vw, 768px"
                     className="object-cover object-top"
                   />
                 </div>
@@ -1525,10 +1541,10 @@ export default function Home() {
                     SYSTEM CASE STUDY 03
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase">
-                    SnapPOS Enterprise Full-Stack POS Platform
+                    SnapPOS Enterprise Retail Backend
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 font-mono">
-                    Full-Stack Retail Platform &amp; Real-Time Checkout UI
+                    High-Throughput Retail POS Engine
                   </p>
                 </div>
 
@@ -1537,6 +1553,7 @@ export default function Home() {
                     src="/assets/SnapPOS.png"
                     alt="SnapPOS Interface"
                     fill
+                    sizes="(max-width: 768px) 100vw, 768px"
                     className="object-cover"
                   />
                 </div>
@@ -1548,25 +1565,21 @@ export default function Home() {
                   <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Next.js &amp; React Frontend:</strong> Modern, high-speed cashier terminal interface with live catalog search, dynamic shopping cart, discount calculators, and Tailwind CSS responsive styling.</span>
+                      <span><strong className="text-slate-900">Spring Boot Engine:</strong> Layered MVC architecture with decoupled Service, Repository, and Security token filters.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Spring Boot Engine:</strong> Layered MVC backend architecture with decoupled Service, Repository, and JWT/role-based security token filters.</span>
+                      <span><strong className="text-slate-900">PostgreSQL Concurrency:</strong> Strict ACID transactions for inventory deductions with pessimistic locking on hot stock items.</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">PostgreSQL Concurrency:</strong> Strict ACID transactions for multi-branch inventory deductions with pessimistic locking on high-velocity stock items.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#FF5722] shrink-0 mt-0.5" />
-                      <span><strong className="text-slate-900">Automated KHQR Integrations:</strong> Dynamic Bakong/KHQR QR payload generation with real-time payment webhook verification for cashier checkouts.</span>
+                      <span><strong className="text-slate-900">Automated KHQR Integrations:</strong> Dynamic Bakong/KHQR payload generator with webhook verification for cashier checkouts.</span>
                     </li>
                   </ul>
                 </div>
 
                 <div className="border-t border-slate-200 pt-4 flex items-center justify-between">
-                  <span className="font-mono text-xs text-slate-500">Stack: Next.js, React, Tailwind CSS, Spring Boot, PostgreSQL, Docker</span>
+                  <span className="font-mono text-xs text-slate-500">Stack: Spring Boot, Java, PostgreSQL, Docker</span>
                   <button
                     onClick={() => setSelectedCaseStudy(null)}
                     className="px-6 py-2.5 rounded-xl bg-[#FF5722] hover:bg-[#FF6B2C] text-white font-mono text-xs font-bold cursor-pointer shadow-md"

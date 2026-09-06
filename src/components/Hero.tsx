@@ -9,6 +9,9 @@ export default function Hero() {
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -18,9 +21,9 @@ export default function Hero() {
     const normX = (x - centerX) / centerX;
     const normY = (y - centerY) / centerY;
 
-    // Small cursor-based tilt: rotateX ±3°, rotateY ±4°
-    const rotateX = Math.max(-3, Math.min(3, -normY * 3));
-    const rotateY = Math.max(-4, Math.min(4, normX * 4));
+    // Subtle cursor-based tilt: rotateX ±2°, rotateY ±2.5°
+    const rotateX = Math.max(-2, Math.min(2, -normY * 2));
+    const rotateY = Math.max(-2.5, Math.min(2.5, normX * 2.5));
 
     setTilt({ rotateX, rotateY });
   }, []);
