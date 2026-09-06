@@ -55,7 +55,7 @@ export default function Navbar() {
             href="#milestones"
             className="px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-slate-900 transition-all"
           >
-            ABOUT
+            EXPERIENCE
           </a>
           <a
             href="#capabilities"
@@ -114,8 +114,9 @@ export default function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 rounded-xl bg-slate-100/80 border border-slate-200/70 text-slate-800 shadow-xs hover:bg-slate-200 transition-colors"
-          aria-label="Toggle Menu"
+          aria-expanded={mobileMenuOpen}
+          aria-label="Toggle Navigation Menu"
+          className="md:hidden p-2 rounded-xl bg-slate-100/80 border border-slate-200/70 text-slate-800 shadow-xs hover:bg-slate-200 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
@@ -142,7 +143,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(false)}
             className="block text-xs font-bold tracking-wider uppercase text-slate-700 hover:text-[#2563EB] py-1.5"
           >
-            ABOUT
+            EXPERIENCE
           </a>
           <a
             href="#capabilities"
