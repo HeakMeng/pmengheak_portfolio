@@ -1,0 +1,475 @@
+@import "tailwindcss";
+
+/* ---------- Tokens: cool paper, navy ink, cobalt signal ---------- */
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --color-bg: #F5F7FB;
+  --color-bg-2: #ECF0F7;
+  --color-panel: #FFFFFF;
+  --color-panel-2: #F1F4F9;
+  --color-line: #DCE3EE;
+  --color-fg: #0B1220;
+  --color-muted: #556176;
+  /* accent = fills, lines, dots; accent-ink = accent-coloured text (AA on paper) */
+  --color-accent: #2F5BFF;
+  --color-accent-ink: #2447D6;
+  --color-signal: #0E7A4B;
+}
+
+:root {
+  --bg: #F5F7FB;
+  --fg: #0B1220;
+  --muted: #556176;
+  --line: #DCE3EE;
+  --accent: #2F5BFF;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
+}
+
+html {
+  scroll-padding-top: 5rem;
+  background: var(--bg);
+}
+
+body {
+  font-family: var(--font-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* Viga ships one weight, so headings never fake a bold */
+h1, h2, h3, h4, .display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-weight: 400;
+  font-synthesis: none;
+}
+main h2 {
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+main p {
+  text-wrap: pretty;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #C9D2E0; border-radius: 9999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: #A9B5C8; }
+
+::selection { background: var(--accent); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Shared bits ---------- */
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Outlined display numerals */
+.outline-num {
+  font-family: var(--font-display), sans-serif;
+  color: transparent;
+  -webkit-text-stroke: 1px #C3CDDC;
+  line-height: 0.8;
+}
+
+/* Static grain */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes drift {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* ---------- Hero ---------- */
+/* Two lines on phones, one line from md up; sized from the viewport so it never overflows */
+.hero-name {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.75rem, calc((100vw - 3rem) / 6.4), 6rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+}
+@media (min-width: 768px) {
+  .hero-name {
+    font-size: min(calc((100vw - 3rem) / 9.8), 8.25rem);
+  }
+}
+
+/* Name lines slide up from behind a mask */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.mask-line > span {
+  display: inline-block;
+  animation: mask-up 1000ms var(--ease-out) both;
+  animation-delay: calc(350ms + var(--i, 0) * 110ms);
+}
+@keyframes mask-up {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+
+/* Staggered fade-up for hero copy */
+.rise {
+  animation: rise 800ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Portrait: grows up into place, then the lower body dissolves into the page */
+.portrait {
+  animation: portrait-in 1200ms var(--ease-out) both;
+}
+@keyframes portrait-in {
+  from { opacity: 0; transform: translateY(40px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.portrait-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 56%, transparent 88%);
+  mask-image: linear-gradient(to bottom, #000 56%, transparent 88%);
+}
+
+/* Layers behind the portrait drift with the pointer (vars written on #hero by <Motion />) */
+.px {
+  translate: calc(var(--hx, 0) * var(--k, 10) * 1px) calc(var(--hy, 0) * var(--k, 10) * 1px);
+  transition: translate 600ms var(--ease-out);
+}
+.halo {
+  background: radial-gradient(closest-side, rgba(47, 91, 255, 0.22), rgba(47, 91, 255, 0.08) 55%, transparent 75%);
+}
+/* Orbit: a circle squashed into an ellipse around the portrait. The rotor spins, each pill
+   counter-rotates and un-squashes, so badges travel the ellipse while staying upright. */
+.orbit-system {
+  --squash: 0.62;
+  position: absolute;
+  left: 4%;
+  width: 92%;
+  aspect-ratio: 1;
+  top: 50%;
+  translate: 0 -62%;
+  transform: scaleY(var(--squash));
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .orbit-system {
+    left: -22%;
+    width: 144%;
+  }
+}
+.orbit-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1.5px dashed rgba(11, 18, 32, 0.18);
+}
+.orbit-rotor {
+  position: absolute;
+  inset: 0;
+  animation: spin 70s linear infinite;
+}
+.orbit-arm {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50%;
+  height: 0;
+  transform-origin: 0 0;
+  transform: rotate(var(--a));
+}
+.orbit-pill {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  transform-origin: 0 0;
+  transform: rotate(calc(-1 * var(--a))) scaleY(calc(1 / var(--squash))) translate(-50%, -50%);
+  animation: orbit-counter 70s linear infinite, fade-in 800ms 900ms ease both;
+  pointer-events: auto;
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+}
+.orbit-pill:hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 24px -12px rgba(47, 91, 255, 0.6);
+}
+@keyframes orbit-counter {
+  from { transform: rotate(calc(-1 * var(--a))) scaleY(calc(1 / var(--squash))) translate(-50%, -50%); }
+  to { transform: rotate(calc(-1 * var(--a) - 360deg)) scaleY(calc(1 / var(--squash))) translate(-50%, -50%); }
+}
+/* Hovering any badge stops the whole orbit so it can be read */
+.orbit-system:has(.orbit-pill:hover) .orbit-rotor,
+.orbit-system:has(.orbit-pill:hover) .orbit-pill {
+  animation-play-state: paused;
+}
+
+/* Status dot with an expanding ring (component layer so utilities like `absolute` still win) */
+@layer components {
+  .pulse-dot {
+    position: relative;
+  }
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: pulse-ring 2s var(--ease-out) infinite;
+}
+@keyframes pulse-ring {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(3); opacity: 0; }
+}
+
+/* Endless tech ticker */
+.marquee {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 42s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* The portrait sinks and fades as the hero scrolls away */
+@keyframes hero-exit {
+  to { transform: translateY(8vh) scale(0.95); opacity: 0; }
+}
+@supports (animation-timeline: view()) {
+  #hero {
+    view-timeline: --hero block;
+  }
+  #hero .hero-exit {
+    animation: hero-exit linear both;
+    animation-timeline: --hero;
+    animation-range: exit 0% exit 85%;
+  }
+}
+
+/* ---------- Cards ---------- */
+/* Pointer spotlight: --mx / --my (-1..1) are written by <Motion /> on [data-tilt] / [data-parallax] */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at calc((var(--mx, 0) + 1) * 50%) calc((var(--my, 0) + 1) * 50%),
+    rgba(47, 91, 255, 0.08),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* Project screenshots shift against the pointer and settle on hover */
+.shot {
+  transform: translate3d(calc(var(--mx, 0) * -8px), calc(var(--my, 0) * -6px), 0) scale(1.05);
+  transition: transform 500ms var(--ease-out);
+}
+
+/* Arrow that slides diagonally out and back in on hover */
+.arrow-swap {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+.arrow-swap > svg {
+  transition: transform 350ms var(--ease-out);
+}
+.arrow-swap > svg + svg {
+  position: absolute;
+  inset: 0;
+  transform: translate(-110%, 110%);
+}
+.group:hover .arrow-swap > svg:first-child {
+  transform: translate(110%, -110%);
+}
+.group:hover .arrow-swap > svg + svg {
+  transform: none;
+}
+
+/* ---------- 3D tilt ---------- */
+[data-tilt] {
+  transform-style: preserve-3d;
+  transition:
+    transform 300ms var(--ease-out),
+    translate 300ms var(--ease-out),
+    border-color 250ms ease,
+    background-color 250ms ease,
+    box-shadow 250ms ease;
+}
+/* Only tilted while the pointer is over it (class set by <Motion />) */
+[data-tilt].is-tilting {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+
+/* ---------- Scroll reveal (classes only added by <Motion />, so content is visible without JS) ---------- */
+.reveal-pending {
+  opacity: 0;
+  translate: 0 28px;
+  filter: blur(6px);
+}
+.reveal-pending.reveal-in {
+  opacity: 1;
+  translate: 0 0;
+  filter: blur(0);
+  transition:
+    opacity 700ms var(--ease-out) var(--d, 0ms),
+    translate 900ms var(--ease-out) var(--d, 0ms),
+    filter 700ms var(--ease-out) var(--d, 0ms);
+}
+
+/* Reading-progress bar driven by the scroll timeline (ignored where unsupported) */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 70;
+  height: 3px;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+@keyframes progress {
+  to { transform: scaleX(1); }
+}
+
+/* ---------- Navigation ---------- */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 1.5px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 350ms var(--ease-out);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link[aria-current="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.nav-link[aria-current="true"] { color: var(--fg); }
+
+/* Mobile menu links slide in one by one */
+.menu-item {
+  animation: rise 500ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+/* ---------- Experience timeline ---------- */
+/* Smooth open/close for the curriculum drawer */
+.drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 500ms var(--ease-out);
+}
+.drawer[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.drawer > div {
+  overflow: hidden;
+}
+
+/* ---------- Case study dialog ---------- */
+.modal-backdrop {
+  animation: fade-in 300ms ease both;
+}
+.modal-panel {
+  animation: modal-in 500ms var(--ease-out) both;
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+}
+
+/* ---------- Footer wordmark ---------- */
+.wordmark {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3rem, 13.2vw, 13rem);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px #C3CDDC;
+  transition: color 600ms var(--ease-out), -webkit-text-stroke-color 600ms var(--ease-out);
+}
+.wordmark:hover {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-line > span, .rise, .portrait, .orbit-rotor, .orbit-pill,
+  .pulse-dot::after, .marquee-track, .scroll-progress, .menu-item, #hero .hero-exit,
+  .modal-backdrop, .modal-panel {
+    animation: none !important;
+  }
+  .px, .shot, [data-tilt] {
+    translate: none !important;
+    transform: none !important;
+  }
+  .reveal-pending {
+    opacity: 1 !important;
+    translate: none !important;
+    filter: none !important;
+  }
+  .drawer, .nav-link::after { transition: none; }
+  html { scroll-behavior: auto; }
+}
