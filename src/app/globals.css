@@ -3,153 +3,66 @@
 @theme inline {
   --font-sans: var(--font-space), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  --font-pixel: var(--font-vt323), var(--font-jetbrains), monospace;
-  --font-hand: var(--font-caveat), cursive;
+  --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+
+  --color-paper: #faf7f2;
+  --color-ink: #141414;
+  --color-clay: #d9531e;
 }
 
-/* Page canvas: soft dot mesh */
-.dot-mesh {
-  background-color: #f4f6fa;
-  background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px);
-  background-size: 24px 24px;
+body {
+  background-color: #faf7f2;
+  color: #141414;
 }
 
 ::selection {
-  background: #fde047;
-  color: #0f172a;
+  background: #d9531e;
+  color: #faf7f2;
 }
 
-/* ---------- CRT screen ---------- */
-.crt-scanlines {
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.045) 0px,
-    rgba(255, 255, 255, 0.045) 1px,
-    transparent 1px,
-    transparent 3px
-  );
+/* Paper grain: two offset dot fields, barely there, so the cream reads as stock rather than flat fill */
+.paper {
+  background-color: #faf7f2;
+  background-image:
+    radial-gradient(rgba(20, 20, 20, 0.035) 0.8px, transparent 0.8px),
+    radial-gradient(rgba(217, 83, 30, 0.03) 0.8px, transparent 0.8px);
+  background-size: 22px 22px, 31px 31px;
+  background-position: 0 0, 11px 7px;
 }
 
-/* Phosphor bloom: inherited by every glyph on the screen, tinted by its own colour */
-.phosphor {
-  text-shadow:
-    0 0 1px currentColor,
-    0 0 6px color-mix(in srgb, currentColor 55%, transparent),
-    0 0 14px color-mix(in srgb, currentColor 25%, transparent);
+/* ---------- Poster type ---------- */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px #141414;
+  paint-order: stroke fill;
 }
 
-.crt {
-  box-shadow:
-    inset 0 0 40px rgba(34, 197, 94, 0.07),
-    inset 0 0 2px rgba(255, 255, 255, 0.15);
+/* Portrait dissolves into the paper at the waist */
+.portrait-fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
 }
 
-.cursor-glow {
-  box-shadow:
-    0 0 6px #22c55e,
-    0 0 14px rgba(34, 197, 94, 0.55);
+/* ---------- Case-study modal ---------- */
+.case-study[open] {
+  animation: case-in 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.crt-glow {
-  text-shadow:
-    0 0 2px #fff,
-    0 0 8px rgba(147, 197, 253, 0.85),
-    0 0 24px rgba(37, 99, 235, 0.7);
+.case-study[open]::backdrop {
+  animation: fade-in 260ms ease-out;
 }
 
-.crt-flicker {
-  animation: crt-flicker 5s infinite steps(1);
+@keyframes case-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
 }
 
-@keyframes crt-flicker {
-  0%, 100% { opacity: 1; }
-  47% { opacity: 0.94; }
-  48% { opacity: 1; }
-  82% { opacity: 0.96; }
+@keyframes fade-in {
+  from { opacity: 0; }
 }
 
-.cursor-blink {
-  animation: blink 1.05s steps(1) infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-.pulse-dot {
-  animation: pulse-dot 1.8s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
-  50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
-}
-
-/* ---------- Receipt strip ---------- */
-.receipt-shadow {
-  filter: drop-shadow(0 10px 12px rgba(15, 23, 42, 0.16));
-}
-
-/* Torn zig-zag bottom edge */
-.receipt {
-  --tooth: 5px;
-  mask:
-    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--tooth)) 100%;
-}
-
-/* Row of punched holes just above the tear-off edge */
-.perforation {
-  background: radial-gradient(circle, #cbd5e1 1.4px, transparent 1.8px) 0 50% / 8px 100% repeat-x;
-}
-
-.barcode {
-  background: repeating-linear-gradient(
-    90deg,
-    #0f172a 0 2px,
-    transparent 2px 4px,
-    #0f172a 4px 5px,
-    transparent 5px 8px,
-    #0f172a 8px 11px,
-    transparent 11px 12px
-  );
-}
-
-/* ---------- Lanyard ---------- */
-.lanyard-strap {
-  background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 4px),
-    linear-gradient(90deg, #1e40af, #2563eb 30%, #3b82f6 50%, #2563eb 70%, #1e40af);
-  box-shadow: inset 0 0 0 2px rgba(15, 23, 42, 0.12);
-}
-
-.strap-scroll {
-  display: flex;
-  flex-direction: column;
-  animation: strap-scroll 14s linear infinite;
-}
-
-.strap-scroll-reverse {
-  animation-direction: reverse;
-}
-
-@keyframes strap-scroll {
-  to { transform: translateY(-50%); }
-}
-
-/* Pressed-steel eyelet around the badge punch-hole */
-.grommet {
-  background: conic-gradient(from 210deg, #f8fafc, #94a3b8, #e2e8f0, #64748b, #f1f5f9, #94a3b8, #f8fafc);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.45),
-    0 2px 3px rgba(127, 29, 29, 0.55);
-}
-
-/* ---------- Motion safety ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .crt-flicker,
-  .cursor-blink,
-  .pulse-dot,
-  .strap-scroll {
+  .case-study[open],
+  .case-study[open]::backdrop {
     animation: none;
   }
 }

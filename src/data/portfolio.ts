@@ -5,14 +5,16 @@
 
 export const PROFILE = {
   name: "Pheng Mengheak",
-  title: "Backend Engineer",
-  tagline: "Backend Engineer • Microservices & Distributed Systems",
-  badgeId: "DEV-2026-KH",
-  roleTag: "BACKEND / MICROSERVICES",
+  title: "Backend Developer",
+  tagline: "Backend Developer • Microservices & Distributed Systems",
+  city: "Phnom Penh",
+  timezone: "UTC+7",
   location: "Phnom Penh, Cambodia (UTC+7)",
   email: "pmengheak168@gmail.com",
   resume: "/pmengheak.pdf",
-  photo: "/images/heak-cutout.png",
+  /** Editorial waist-up portrait; the hero falls back to `photoFallback` until this file exists. */
+  photo: "/images/heak-editorial.png",
+  photoFallback: "/images/heak-cutout.png",
   site: "https://pmengheak.vercel.app",
 } as const;
 
@@ -22,7 +24,7 @@ export const BIO = [
 ];
 
 export const FACTS = [
-  { value: "3", label: "Full-stack projects" },
+  { value: "4", label: "Full-stack projects" },
   { value: "2025", label: "Systems internship" },
   { value: "UTC+7", label: "Phnom Penh" },
 ];
@@ -92,6 +94,7 @@ export const EXPERIENCE = [
   {
     org: "Proseth Solutions Co., Ltd.",
     logo: "/logos/proseth.jpg",
+    logoSize: { width: 899, height: 222 },
     role: "IT & Systems Intern",
     period: "05/2025 – 12/2025",
     location: "Phnom Penh, KH",
@@ -103,7 +106,41 @@ export const EXPERIENCE = [
     ],
     tags: ["Linux", "Database Backups", "Monitoring", "Networking"],
   },
+  {
+    org: "Korea Software HRD Center",
+    logo: "/logos/kshrd.png",
+    logoSize: { width: 728, height: 890 },
+    role: "Software Development Trainee",
+    period: "2026 – Present",
+    location: "Phnom Penh, KH",
+    highlights: [
+      "Building Java & Spring Boot microservices with secure RESTful APIs",
+      "Shipping Dockerized deployments backed by PostgreSQL",
+      "Running local LLMs with Ollama and building RAG pipelines",
+      "Android development with Kotlin & Jetpack Compose",
+    ],
+    tags: ["Spring Boot", "Microservices", "Docker", "Ollama"],
+  },
 ];
+
+export const LANGUAGES = [
+  { name: "Khmer", level: "Native", percent: 100 },
+  { name: "English", level: "Fluent", percent: 85 },
+  { name: "Korean", level: "Conversational", percent: 45 },
+];
+
+export const AI_ARCHITECTURE = [
+  {
+    id: "ollama",
+    title: "Ollama / Local LLMs",
+    summary: "Self-hosted models and RAG pipelines that keep data on your own hardware.",
+  },
+  {
+    id: "spring-cloud",
+    title: "Spring Cloud / Microservices",
+    summary: "Discovery, gateways, and OAuth2-secured services that scale independently.",
+  },
+] as const;
 
 export const CORE_SKILLS = [
   "Java 21",
@@ -119,30 +156,24 @@ export const CORE_SKILLS = [
   "Linux / Bash",
 ];
 
-export type StackTile = {
-  name: string;
-  /** Image in /public; tiles without one render their brand mark inline. */
-  src?: string;
-  mark?: "postgresql" | "linux";
-};
-
-export const TECH_STACK: StackTile[] = [
-  { name: "Java", src: "/images/java.svg" },
-  { name: "Spring", src: "/images/spring.svg" },
-  { name: "Docker", src: "/images/docker.svg" },
-  { name: "PostgreSQL", mark: "postgresql" },
-  { name: "Linux", mark: "linux" },
-  { name: "Git", src: "/images/git.svg" },
-  { name: "Ollama", src: "/images/ollama.png" },
-  { name: "FastAPI", src: "/images/fastapi.svg" },
-];
+/** Rendered as app-icon tiles in the capabilities bar. */
+export const STACK = ["Java", "Spring", "PostgreSQL", "Docker", "Linux", "Git"] as const;
 
 export type Project = {
   id: string;
   title: string;
   subtitle: string;
+  /** Short uppercase tag shown beside the card number. */
+  category: string;
   description: string;
-  highlights: string[];
+  /** Where the project came from, e.g. a programme or team context. */
+  context?: string;
+  /** Case-study bullets: my own work on a team project. */
+  contributions?: string[];
+  /** Case-study bullets: how the system is put together. */
+  architecture?: string[];
+  /** Case-study bullets: persistence, transactions, and API surface. */
+  dataApi?: string[];
   tech: string[];
   image: string;
   imageAlt: string;
@@ -151,16 +182,42 @@ export type Project = {
   demoUrl?: string;
 };
 
+/** The first entry is rendered as the full-width featured card. */
 export const PROJECTS: Project[] = [
+  {
+    id: "insighthub",
+    title: "InsightHub",
+    subtitle: "AI-Powered Learning Assistant",
+    category: "AI Learning",
+    context: "Final Project · KSHRD 14th Generation",
+    description:
+      "Private B2B AI learning companion for schools that turns instructor lecture materials into cited explanations, summaries, quizzes, and flashcards—powered by a fully local RAG pipeline with Khmer and English support.",
+    contributions: [
+      "Built the multi-module Spring Boot user & authentication module integrated with self-hosted Keycloak (OIDC, MFA/2-step verification, password policies, and audit logs)",
+      "Engineered the Admin Dashboard frontend (Next.js/TypeScript) and backend APIs, including bulk Excel student import with validation, preview, and automated welcome emails",
+      "Integrated with a FastAPI + Ollama local RAG pipeline and pgvector store enforcing strict classroom/workspace scope filtering and page/timestamp citations",
+    ],
+    tech: ["Java 21", "Spring Boot", "Keycloak", "PostgreSQL / pgvector", "Next.js", "FastAPI", "Ollama"],
+    image: "/projects/InsightHub.png",
+    imageAlt: "InsightHub landing page with a teacher dashboard of classrooms, students, and courses",
+    demoUrl: "https://insighthub.kshrd.app",
+  },
   {
     id: "snappos",
     title: "SnapPOS",
     subtitle: "Retail POS engine & KHQR payments",
     description:
       "Multi-branch point-of-sale platform with real-time stock control, a responsive cashier checkout, KHQR payment integration, and role-based security.",
-    highlights: [
-      "Layered Spring Boot service with ACID inventory transactions and pessimistic locking on hot stock",
-      "Bakong/KHQR payload generation with webhook verification",
+    category: "Retail POS",
+    architecture: [
+      "Layered Spring Boot service (controller → service → repository) behind a Next.js + Tailwind cashier client",
+      "Multi-branch model with role-based security for cashiers and managers",
+      "Dockerized services for repeatable local and server deployments",
+    ],
+    dataApi: [
+      "PostgreSQL inventory with ACID transactions and pessimistic locking on hot stock",
+      "Real-time stock control across branches",
+      "Bakong/KHQR payment payload generation with webhook verification",
     ],
     tech: ["Spring Boot", "PostgreSQL", "Docker", "Next.js", "Tailwind CSS"],
     image: "/projects/snappos.png",
@@ -172,9 +229,16 @@ export const PROJECTS: Project[] = [
     subtitle: "Academic copilot & learning platform",
     description:
       "Full-stack educational platform with structured knowledge navigation, curriculum indexing, and course material search.",
-    highlights: [
-      "Spring Boot REST backend on PostgreSQL with connection pooling, deployed with Docker",
-      "Next.js client with type-safe validation and study-group workflows",
+    category: "EdTech",
+    architecture: [
+      "Spring Boot REST backend consumed by a Next.js client",
+      "Type-safe validation on the client and study-group workflows",
+      "Containerized with Docker",
+    ],
+    dataApi: [
+      "PostgreSQL with connection pooling",
+      "Curriculum indexing and structured knowledge navigation",
+      "Course-material search endpoints",
     ],
     tech: ["Java", "Spring Boot", "PostgreSQL", "Docker", "Next.js"],
     image: "/projects/cortex.png",
@@ -186,9 +250,14 @@ export const PROJECTS: Project[] = [
     subtitle: "Video game discovery & catalog",
     description:
       "Game discovery app with a React client consuming a custom Spring Boot REST API for genres, catalog search, and game details.",
-    highlights: [
+    category: "Catalog",
+    architecture: [
+      "React + TypeScript client decoupled from a custom Spring Boot REST API",
+      "Tailwind CSS UI for browsing genres, search results, and game details",
+    ],
+    dataApi: [
+      "REST endpoints for genres, catalog search, and game details",
       "Genre filtering and sorting by relevance, release date, and rating",
-      "Decoupled client–server architecture over REST",
     ],
     tech: ["React", "TypeScript", "Spring Boot", "REST API", "Tailwind CSS"],
     image: "/projects/gamehub.png",
@@ -202,9 +271,3 @@ export const ACHIEVEMENTS = [
   { period: "2026", title: "KSHRD Trainee Scholarship", detail: "Software Development · 3 tracks" },
 ];
 
-export const RECEIPT = [
-  ["STATUS", "200 OK"],
-  ["STACK", "Java 21 | Spring Boot 3.x | PostgreSQL | Docker"],
-  ["SYSTEM", "Active Trainee @ KSHRD (3 tracks) | SETEC MIS"],
-  ["UPTIME", "99.9%"],
-] as const;
