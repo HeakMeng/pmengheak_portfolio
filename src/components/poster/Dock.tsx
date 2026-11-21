@@ -48,7 +48,7 @@ export default function Dock() {
   return (
     <nav
       aria-label="Sections"
-      className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink/95 px-2 py-2 text-paper sm:px-4 shadow-xl shadow-ink/25 backdrop-blur-md"
+      className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border-2 border-edge bg-surface/90 px-2 py-2 text-ink shadow-[0_12px_32px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,122,26,0.18)] backdrop-blur-md sm:px-4"
     >
       <ul className="flex items-center sm:gap-1">
         {LINKS.map(({ id, label }) => {
@@ -60,14 +60,14 @@ export default function Dock() {
                 aria-current={on ? "location" : undefined}
                 className={cn(
                   "relative flex items-center gap-1 rounded-full px-2 py-1.5 text-[10px] font-medium uppercase tracking-wider transition-colors sm:gap-1.5 sm:px-3 sm:text-xs",
-                  on ? "text-paper" : "text-paper/55 hover:text-paper",
+                  on ? "text-ink" : "text-ink/55 hover:text-ink",
                 )}
               >
                 <span className="relative flex h-1.5 w-1.5 items-center justify-center" aria-hidden="true">
                   {on && (
                     <motion.span
                       layoutId="dock-dot"
-                      className="absolute h-1.5 w-1.5 rounded-full bg-clay"
+                      className="absolute h-1.5 w-1.5 rounded-full bg-accent"
                       transition={{ type: "spring", stiffness: 500, damping: 38 }}
                     />
                   )}

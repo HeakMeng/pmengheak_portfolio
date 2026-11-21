@@ -1,8 +1,11 @@
 import { ArrowUpRight } from "lucide-react";
 import { Enter } from "@/components/Motion";
+import HeroParallax from "@/components/fx/HeroParallax";
+import Magnetic from "@/components/fx/Magnetic";
+import SplitText from "@/components/fx/SplitText";
 import { PROFILE } from "@/data/portfolio";
 import Portrait from "./Portrait";
-import TechToken from "./TechToken";
+import LogoBadge from "./LogoBadge";
 
 /** Hairline downward arrow, drawn rather than typed so it can be long and thin. */
 function DownArrow() {
@@ -18,46 +21,39 @@ export default function Hero() {
   return (
     <header id="top" className="relative isolate overflow-hidden px-4 pt-5 sm:px-6 sm:pt-6">
       {/* Masthead strip: the only chrome on the page, no navbar */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between border-b border-ink pb-3 font-mono text-[10px] uppercase tracking-[0.18em] sm:text-[11px]">
+      <div className="mx-auto flex max-w-7xl items-center justify-between border-b border-edge pb-3 font-mono text-[10px] uppercase tracking-[0.18em] sm:text-[11px]">
         <span>{PROFILE.name}</span>
         <span className="hidden sm:inline">Java · Spring Boot · Microservices</span>
         <span className="inline-flex items-center gap-2">
           <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-clay opacity-60 motion-reduce:animate-none" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-clay" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
           </span>
           Open to work
         </span>
       </div>
 
-      {/* Extruded clay logos framing the poster: top-left, middle-right, bottom-left */}
-      <TechToken
-        logo="springboot"
-        label="Spring Boot"
-        tilt={-12}
-        className="absolute left-[3%] top-[7%] z-[5] w-14 sm:left-[5%] sm:top-[9%] sm:w-20 lg:w-24"
-      />
-      <TechToken
-        logo="docker"
-        label="Docker"
-        tilt={12}
-        delay={1.3}
-        className="absolute right-[2%] top-[42%] z-[5] w-16 sm:right-[4%] sm:w-24 lg:w-32"
-      />
-      <TechToken
-        logo="kotlin"
-        label="Kotlin"
-        tilt={-6}
-        delay={2.6}
-        className="absolute bottom-[6%] left-[3%] z-[5] hidden w-14 sm:block sm:w-[4.5rem]"
-      />
+      {/* Real brand logos on floating tiles framing the poster: Spring top-left, Docker middle-right, Keycloak bottom-left */}
+      {/* Each token drifts at its own speed on scroll, so they read as floating at different depths. */}
+      <HeroParallax y={[0, -160]} className="absolute left-[3%] top-[7%] z-[5] w-14 sm:left-[5%] sm:top-[9%] sm:w-20 lg:w-24">
+        <LogoBadge src="/logos/tech/spring.svg" label="Spring" tilt={-12} className="w-full" />
+      </HeroParallax>
+      <HeroParallax y={[0, -260]} className="absolute right-[2%] top-[42%] z-[5] w-14 sm:right-[4%] sm:w-20 lg:w-28">
+        <LogoBadge src="/logos/tech/docker.svg" label="Docker" tilt={10} delay={1.3} padding="7%" className="w-full" />
+      </HeroParallax>
+      <HeroParallax y={[0, 30]} className="absolute bottom-[6%] left-[3%] z-[5] hidden w-14 sm:block sm:w-20">
+        <LogoBadge src="/logos/tech/keycloak.svg" label="Keycloak" tilt={-8} delay={2.6} className="w-full" />
+      </HeroParallax>
 
       <div className="relative mx-auto max-w-7xl">
         <h1 className="relative z-0 mt-8 text-center font-display uppercase sm:mt-10">
-          <span className="block text-[clamp(3.25rem,15vw,11rem)] leading-[0.86] tracking-[-0.01em]">Backend</span>
-          <span className="text-outline mt-1 block text-[clamp(3.5rem,22vw,14rem)] leading-[0.9] tracking-[0.01em] sm:mt-2">
-            Developer
-          </span>
+          {/* Viga is a wide face, so these sizes run ~25% smaller than a condensed display font would need. */}
+          <HeroParallax as="span" x={["0%", "-14%"]} distance={700} className="block text-[clamp(2.5rem,12.5vw,9.25rem)] leading-[0.9] tracking-[-0.01em]">
+            <SplitText text="Backend" trigger="load" delay={0.1} stagger={0.045} />
+          </HeroParallax>
+          <HeroParallax as="span" x={["0%", "14%"]} distance={700} className="text-outline mt-1 block text-[clamp(2.75rem,15.5vw,11.25rem)] leading-[0.92] tracking-[-0.005em] sm:mt-2">
+            <SplitText text="Developer" trigger="load" delay={0.35} stagger={0.045} />
+          </HeroParallax>
         </h1>
 
         {/*
@@ -66,9 +62,11 @@ export default function Hero() {
           To change the photo, drop the new file at /public/images/heak-editorial.png
           (see PROFILE.photo in src/data/portfolio.ts); Portrait falls back to heak-cutout.png.
         */}
-        <div className="pointer-events-none relative z-10 -mt-[19vw] grid grid-cols-1 items-end sm:-mt-[clamp(7.5rem,16vw,10rem)] lg:grid-cols-[1fr_minmax(0,460px)_1fr] lg:gap-6">
+        <div className="pointer-events-none relative z-10 -mt-[14vw] grid grid-cols-1 items-end sm:-mt-[clamp(6rem,12.5vw,8rem)] lg:grid-cols-[1fr_minmax(0,460px)_1fr] lg:gap-6">
           <Enter delay={0.15} className="pointer-events-auto mx-auto w-[78vw] max-w-[380px] lg:order-2 lg:w-full lg:max-w-[460px]">
-            <Portrait />
+            <HeroParallax y={[0, 70]}>
+              <Portrait />
+            </HeroParallax>
           </Enter>
 
           <Enter delay={0.35} className="pointer-events-auto order-3 mt-2 flex flex-col items-center gap-5 pb-10 lg:order-1 lg:mt-0 lg:items-start lg:pb-40">
@@ -76,32 +74,35 @@ export default function Hero() {
               <DownArrow />
             </span>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 lg:flex-col lg:items-start">
+              <Magnetic>
               <a
                 href="#projects"
-                className="rounded-full bg-ink px-6 py-2.5 text-sm font-medium uppercase tracking-wider text-paper transition-colors hover:bg-clay focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-clay"
+                className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold uppercase tracking-wider text-on-accent shadow-[4px_4px_0px_var(--color-accent-deep)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[5px_5px_0px_var(--color-accent-deep)] active:translate-y-[2px] active:shadow-[2px_2px_0px_var(--color-accent-deep)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
               >
                 Portfolio
               </a>
+              </Magnetic>
+              <Magnetic strength={0.2}>
               <a
                 href={PROFILE.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 border-b border-ink pb-0.5 text-sm font-medium uppercase tracking-wider transition-colors hover:border-clay hover:text-clay"
+                className="group inline-flex items-center gap-1 border-b-2 border-ink pb-0.5 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
               >
                 Résumé
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
               </a>
+              </Magnetic>
             </div>
           </Enter>
 
-          <Enter delay={0.45} className="pointer-events-auto order-2 -mt-6 text-center lg:order-3 lg:mt-0 lg:pb-24 lg:text-right">
+          <Enter delay={0.6} className="pointer-events-auto order-2 -mt-6 text-center lg:order-3 lg:mt-0 lg:pb-24 lg:text-right">
             <p className="font-display text-[clamp(2.5rem,11vw,3.25rem)] uppercase leading-[0.9] lg:text-[clamp(3rem,4.6vw,4.25rem)]">
-              Pheng
-              <br />
-              Mengheak
+              <SplitText text="Pheng" trigger="load" delay={0.7} className="block" />
+              <SplitText text="Mengheak" trigger="load" delay={0.85} className="block" />
             </p>
-            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-ink/70">
-              {PROFILE.title} · <span className="text-clay">Java / Spring</span>
+            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+              {PROFILE.title} · <span className="text-accent">{PROFILE.role2}</span>
             </p>
           </Enter>
         </div>

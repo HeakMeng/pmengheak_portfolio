@@ -6,7 +6,9 @@
 export const PROFILE = {
   name: "Pheng Mengheak",
   title: "Backend Developer",
-  tagline: "Backend Developer • Microservices & Distributed Systems",
+  tagline: "Backend Developer • AI Engineer • Microservices & Distributed Systems",
+  /** Second role from the CV, shown beside the title in the hero. */
+  role2: "AI Engineer",
   city: "Phnom Penh",
   timezone: "UTC+7",
   location: "Phnom Penh, Cambodia (UTC+7)",
@@ -19,8 +21,8 @@ export const PROFILE = {
 } as const;
 
 export const BIO = [
-  "I started on the infrastructure side: as an IT & Systems Intern at Proseth Solutions I maintained client database integrity, monitored Linux servers, and ran scheduled backups. That work pointed me toward backend engineering, where I build the services that sit on top of that data.",
-  "Today I'm a Software Development Trainee at Korea Software HRD Center, building Java and Spring Boot microservices, secure RESTful APIs, and Dockerized deployments, while studying Management Information Systems at SETEC Institute. I care about clean architecture, relational data done right, and distributed systems that are simple to run.",
+  "I started on the infrastructure side: as an IT intern at Proseth Solutions I supported payment-integration infrastructure for Bakong-connected financial services, ran Linux servers behind Nginx, managed Docker containers, and kept PostgreSQL backed up and healthy. That work pointed me toward backend engineering, where I build the services that sit on top of that data.",
+  "Today I build Java and Spring Boot microservices with a focus on PostgreSQL design, transactional concurrency, and secure APIs (OAuth2, JWT, Keycloak). I've integrated Bakong KHQR payments, tuned performance with Redis, and engineered schema-validated local LLM and RAG workflows. After the Basic Course at Korea Software HRD Center I was selected for its Advanced Course in Spring microservices, Android, and local AI engineering, alongside my MIS degree at SETEC Institute.",
 ];
 
 export const FACTS = [
@@ -64,29 +66,29 @@ export const EDUCATION: EducationItem[] = [
     org: "Korea Software HRD Center",
     short: "KSHRD",
     logo: "/logos/kshrd.png",
-    role: "Software Development Trainee",
-    period: "2026 – Present",
+    role: "Full-Stack Software Engineering & AI Development",
+    period: "02/2026 – 11/2026",
     current: true,
-    note: "Full-time engineering training across three tracks.",
-    tracks: ["Spring Boot & Microservices", "Android · Kotlin & Compose", "Local LLMs · Ollama & RAG"],
+    note: "Completed the 5-month full-time Basic Course and was selected for the Advanced Course.",
+    tracks: ["Spring Microservices & Enterprise Java", "Android · Kotlin, Compose & MVVM", "Local AI · Ollama, vLLM & RAG"],
   },
   {
     org: "SETEC Institute",
     short: "SETEC",
     logo: "/logos/setec.png",
-    role: "Bachelor of Science in MIS",
+    role: "Bachelor of Management Information Systems",
     period: "2024 – Present",
     current: true,
-    note: "System analysis, distributed relational databases, and enterprise architecture.",
+    note: "Java & C#, data structures, relational database design (Oracle & SQL Server), system analysis, networking, and Linux administration.",
   },
   {
     org: "PUC Institute of Foreign Languages",
     short: "PUC",
     logo: "/logos/puc.png",
-    role: "Diploma in English Communication",
+    role: "Diploma in Academic English",
     period: "2023 – 2025",
     current: false,
-    note: "Technical documentation, engineering presentations, and professional writing.",
+    note: "1,128-hour full-time programme: academic reading, structured writing, listening, and workplace communication.",
   },
 ];
 
@@ -95,65 +97,81 @@ export const EXPERIENCE = [
     org: "Proseth Solutions Co., Ltd.",
     logo: "/logos/proseth.jpg",
     logoSize: { width: 899, height: 222 },
-    role: "IT & Systems Intern",
+    /** Shown as the open file in the card's editor title bar. */
+    file: "proseth.log",
+    role: "IT Intern · Systems & Infrastructure Support",
     period: "05/2025 – 12/2025",
     location: "Phnom Penh, KH",
     highlights: [
-      "Administered Linux server environments and shell utilities",
-      "Maintained client database integrity with scheduled backup & recovery routines",
-      "Monitored infrastructure uptime and supported network operations",
-      "Troubleshot environment and connectivity issues for the team",
+      "Supported payment-integration infrastructure and transaction-monitoring workflows for Bakong-connected financial services",
+      "Administered Linux servers, configuring Nginx reverse proxies and managing Docker containers for application hosting",
+      "Maintained PostgreSQL databases: automated backups, query verification, and performance monitoring",
     ],
-    tags: ["Linux", "Database Backups", "Monitoring", "Networking"],
+    tags: ["Linux", "Nginx", "Docker", "PostgreSQL", "Bakong"],
   },
   {
     org: "Korea Software HRD Center",
     logo: "/logos/kshrd.png",
     logoSize: { width: 728, height: 890 },
-    role: "Software Development Trainee",
-    period: "2026 – Present",
+    file: "kshrd.log",
+    role: "Full-Stack Software Engineering & AI · Advanced Course",
+    period: "02/2026 – 11/2026",
     location: "Phnom Penh, KH",
     highlights: [
-      "Building Java & Spring Boot microservices with secure RESTful APIs",
-      "Shipping Dockerized deployments backed by PostgreSQL",
-      "Running local LLMs with Ollama and building RAG pipelines",
-      "Android development with Kotlin & Jetpack Compose",
+      "Spring microservices: API Gateway, Service Discovery, OpenFeign, Config Server, Circuit Breaker, and distributed tracing",
+      "Event-driven messaging with Kafka and RabbitMQ, plus WebSocket real-time features",
+      "Local AI engineering: Ollama & vLLM serving, LangChain, LlamaIndex, Spring AI, RAG evaluation, and agent tool-calling",
+      "Native Android with Kotlin, Jetpack Compose, and MVVM; Docker Compose deployments",
     ],
-    tags: ["Spring Boot", "Microservices", "Docker", "Ollama"],
+    tags: ["Spring Cloud", "Kafka", "Spring AI", "Android"],
   },
 ];
 
 export const LANGUAGES = [
   { name: "Khmer", level: "Native", percent: 100 },
-  { name: "English", level: "Fluent", percent: 85 },
+  { name: "English", level: "Working", percent: 80 },
   { name: "Korean", level: "Conversational", percent: 45 },
 ];
 
 export const AI_ARCHITECTURE = [
   {
     id: "ollama",
-    title: "Ollama / Local LLMs",
-    summary: "Self-hosted models and RAG pipelines that keep data on your own hardware.",
+    title: "Local LLMs & RAG",
+    summary: "Ollama-served models, RAG pipelines, and schema-validated tool-calling that keep data on your own hardware.",
   },
   {
     id: "spring-cloud",
     title: "Spring Cloud / Microservices",
-    summary: "Discovery, gateways, and OAuth2-secured services that scale independently.",
+    summary: "Gateways, discovery, circuit breakers, and OAuth2-secured services that scale independently.",
+  },
+  {
+    id: "messaging",
+    title: "Event-Driven Messaging",
+    summary: "Kafka and RabbitMQ for decoupled services, with Redis caching on hot paths.",
   },
 ] as const;
 
 export const CORE_SKILLS = [
   "Java 21",
   "Spring Boot",
+  "Spring Security",
+  "JPA / Hibernate",
   "Microservices",
-  "PostgreSQL",
-  "Docker",
-  "Keycloak / OAuth2",
   "REST APIs",
-  "FastAPI",
-  "Ollama",
-  "Git",
+  "PostgreSQL",
+  "Redis",
+  "Kafka",
+  "RabbitMQ",
+  "Keycloak",
+  "JWT / OAuth2",
+  "Docker",
+  "Nginx",
+  "GitHub Actions",
   "Linux / Bash",
+  "Ollama",
+  "FastAPI",
+  "Kotlin / Compose",
+  "Git",
 ];
 
 /** Rendered as app-icon tiles in the capabilities bar. */
@@ -191,13 +209,13 @@ export const PROJECTS: Project[] = [
     category: "AI Learning",
     context: "Final Project · KSHRD 14th Generation",
     description:
-      "Private B2B AI learning companion for schools that turns instructor lecture materials into cited explanations, summaries, quizzes, and flashcards—powered by a fully local RAG pipeline with Khmer and English support.",
+      "Private B2B AI learning platform for schools that turns lecture material—PPTX, PDF, Word, audio, and video/YouTube—into cited summaries, quizzes, flashcards, and a multilingual AI tutor, powered by a fully local RAG pipeline across web and Android clients.",
     contributions: [
-      "Built the multi-module Spring Boot user & authentication module integrated with self-hosted Keycloak (OIDC, MFA/2-step verification, password policies, and audit logs)",
+      "Architected the multi-module Spring Boot backend and its Keycloak (OAuth2/OIDC, JWT) security: MFA/2-step verification, password policies, and audit logs",
       "Engineered the Admin Dashboard frontend (Next.js/TypeScript) and backend APIs, including bulk Excel student import with validation, preview, and automated welcome emails",
-      "Integrated with a FastAPI + Ollama local RAG pipeline and pgvector store enforcing strict classroom/workspace scope filtering and page/timestamp citations",
+      "Engineered the local RAG pipeline (FastAPI + Ollama) on PostgreSQL/pgvector, with strict classroom/workspace scope filtering and slide, page, and timestamp source citations",
     ],
-    tech: ["Java 21", "Spring Boot", "Keycloak", "PostgreSQL / pgvector", "Next.js", "FastAPI", "Ollama"],
+    tech: ["Java 21", "Spring Boot", "Keycloak", "PostgreSQL / pgvector", "FastAPI", "Ollama", "Next.js", "Android"],
     image: "/projects/InsightHub.png",
     imageAlt: "InsightHub landing page with a teacher dashboard of classrooms, students, and courses",
     demoUrl: "https://insighthub.kshrd.app",
@@ -207,11 +225,12 @@ export const PROJECTS: Project[] = [
     title: "SnapPOS",
     subtitle: "Retail POS engine & KHQR payments",
     description:
-      "Multi-branch point-of-sale platform with real-time stock control, a responsive cashier checkout, KHQR payment integration, and role-based security.",
+      "Multi-branch point-of-sale and inventory platform with real-time stock control, Bakong KHQR payments, role-based security, and SnapTrack—a mobile PWA for branch stock transfers and supplier receiving. I led the backend architecture.",
     category: "Retail POS",
     architecture: [
       "Layered Spring Boot service (controller → service → repository) behind a Next.js + Tailwind cashier client",
       "Multi-branch model with role-based security for cashiers and managers",
+      "SnapTrack PWA for branch-to-branch stock transfers and supplier receiving",
       "Dockerized services for repeatable local and server deployments",
     ],
     dataApi: [
@@ -226,13 +245,14 @@ export const PROJECTS: Project[] = [
   {
     id: "cortex",
     title: "Cortex Platform",
-    subtitle: "Academic copilot & learning platform",
+    subtitle: "EdTech community & AI study assistant",
     description:
-      "Full-stack educational platform with structured knowledge navigation, curriculum indexing, and course material search.",
+      "Full-stack EdTech learning community where students ask technical questions, collaborate through real-time group chat and video calls, and get help from a conversational AI study assistant.",
     category: "EdTech",
     architecture: [
       "Spring Boot REST backend consumed by a Next.js client",
-      "Type-safe validation on the client and study-group workflows",
+      "Real-time group chat and video calls for study groups",
+      "Conversational AI study assistant built into the learning flow",
       "Containerized with Docker",
     ],
     dataApi: [

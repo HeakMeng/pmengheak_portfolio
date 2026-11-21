@@ -1,39 +1,72 @@
 @import "tailwindcss";
 
+/*
+ * Navy & Orange palette (dark). Every colour on the page comes from these tokens,
+ * so a palette change is an edit here only.
+ *
+ * Roles: `paper` is the page and also the dark text that sits on light or orange fills;
+ * `ink` is the main text and the light fill for chips and badges; `edge` is for borders.
+ */
 @theme inline {
-  --font-sans: var(--font-space), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-gsans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+  --font-display: var(--font-viga), "Arial Black", sans-serif;
 
-  --color-paper: #faf7f2;
-  --color-ink: #141414;
-  --color-clay: #d9531e;
+  --color-paper: #0B1426;        /* dark navy page; dark text on light/orange fills */
+  --color-surface: #14233F;      /* navy cards, dialog, dock */
+  --color-sunken: #0F1B33;       /* image placeholders */
+  --color-tint: #101D36;         /* navy feature bands (Work, Skills, footer) */
+  --color-line: #22324F;         /* quiet tracks (language rings) */
+  --color-edge: #33466B;         /* card and section borders */
+  --color-ink: #EEF2F8;          /* primary text; light fills for chips and badges */
+  --color-muted: #9AA8C2;        /* secondary text */
+  --color-accent: #FF7A1A;       /* orange: buttons, offset shadows, icons, numbers */
+  --color-accent-hover: #FF9447;
+  --color-accent-deep: #A8430A;  /* pressed-depth shadow under orange buttons */
+  --color-on-accent: #0B1426;    /* text on orange (white on orange is too low-contrast) */
+  --color-pop: #FFB547;          /* amber highlight, used sparingly */
+  --color-dot-red: #FF5F57;      /* editor window controls (Work cards) */
+  --color-dot-amber: #FEBC2E;
+  --color-dot-green: #28C840;
+}
+
+:root {
+  color-scheme: dark;
 }
 
 body {
-  background-color: #faf7f2;
-  color: #141414;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
 }
 
 ::selection {
-  background: #d9531e;
-  color: #faf7f2;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
-/* Paper grain: two offset dot fields, barely there, so the cream reads as stock rather than flat fill */
-.paper {
-  background-color: #faf7f2;
+/*
+ * Night blueprint: faint drafting lines on dark navy, a fine 40px grid with a heavier major
+ * line every 200px, like an engineering drawing sheet.
+ */
+.paper,
+.band-grid {
   background-image:
-    radial-gradient(rgba(20, 20, 20, 0.035) 0.8px, transparent 0.8px),
-    radial-gradient(rgba(217, 83, 30, 0.03) 0.8px, transparent 0.8px);
-  background-size: 22px 22px, 31px 31px;
-  background-position: 0 0, 11px 7px;
+    linear-gradient(rgba(255, 255, 255, 0.06) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 2px, transparent 2px),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 200px 200px, 200px 200px, 40px 40px, 40px 40px;
+  background-position: -1px -1px;
+}
+
+.paper {
+  background-color: var(--color-paper);
 }
 
 /* ---------- Poster type ---------- */
 .text-outline {
-  color: transparent;
-  -webkit-text-stroke: 2px #141414;
+  color: rgba(255, 122, 26, 0.08);
+  -webkit-text-stroke: 2px var(--color-ink);
   paint-order: stroke fill;
 }
 
@@ -41,6 +74,21 @@ body {
 .portrait-fade {
   -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+}
+
+/* Blinking terminal caret */
+.caret {
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
 }
 
 /* ---------- Case-study modal ---------- */

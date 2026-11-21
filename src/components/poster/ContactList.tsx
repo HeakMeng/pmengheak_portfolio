@@ -8,8 +8,8 @@ import { CHANNELS, PROFILE } from "@/data/portfolio";
 const telegram = CHANNELS.find((c) => c.id === "telegram")!;
 const github = CHANNELS.find((c) => c.id === "github")!;
 
-const row = "flex items-center gap-4 border-b border-ink/15 py-3.5 last:border-b-0";
-const label = "w-20 shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-ink/55";
+const row = "flex items-center gap-4 border-b border-edge py-3.5 last:border-b-0";
+const label = "w-20 shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-muted";
 
 export default function ContactList() {
   const [copied, setCopied] = useState(false);
@@ -25,12 +25,12 @@ export default function ContactList() {
   }
 
   return (
-    <ul className="mt-6">
+    <ul className="mt-6 rounded-2xl border-2 border-edge bg-surface p-5 shadow-[4px_4px_0px_var(--color-accent)]">
       <li className={row}>
         <span className={label}>Based</span>
-        <span className="flex min-w-0 items-center gap-2 font-medium">
-          <MapPin className="h-4 w-4 shrink-0 text-clay" aria-hidden="true" />
-          {PROFILE.city} <span className="text-ink/55">({PROFILE.timezone})</span>
+        <span className="flex min-w-0 items-center gap-2 font-medium text-ink">
+          <MapPin className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+          {PROFILE.city} <span className="text-muted">({PROFILE.timezone})</span>
         </span>
       </li>
       <li className={row}>
@@ -38,17 +38,17 @@ export default function ContactList() {
         <button
           type="button"
           onClick={copyEmail}
-          className="group flex min-w-0 items-center gap-2 text-left font-medium transition-colors hover:text-clay"
+          className="group flex min-w-0 items-center gap-2 text-left font-medium text-ink transition-colors hover:text-accent"
           aria-label={`Copy email address ${PROFILE.email}`}
         >
           <span className="truncate">{PROFILE.email}</span>
           {copied ? (
-            <Check className="h-4 w-4 shrink-0 text-clay" aria-hidden="true" />
+            <Check className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
           ) : (
-            <Copy className="h-4 w-4 shrink-0 text-ink/40 transition-colors group-hover:text-clay" aria-hidden="true" />
+            <Copy className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
           )}
         </button>
-        <span aria-live="polite" className="ml-auto hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-clay sm:inline">
+        <span aria-live="polite" className="ml-auto hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-accent sm:inline">
           {copied ? "Copied" : ""}
         </span>
       </li>
@@ -62,11 +62,11 @@ export default function ContactList() {
             href={c.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex min-w-0 items-center gap-2 font-medium transition-colors hover:text-clay"
+            className="group flex min-w-0 items-center gap-2 font-medium text-ink transition-colors hover:text-accent"
           >
             <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span className="truncate">{c.handle}</span>
-            <ArrowUpRight className="h-4 w-4 shrink-0 text-ink/40 transition-colors group-hover:text-clay" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
           </a>
         </li>
       ))}

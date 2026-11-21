@@ -1,24 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Google_Sans_Flex, JetBrains_Mono, Viga } from "next/font/google";
 import { MotionProvider } from "@/components/Motion";
 import "./globals.css";
 
-const sans = Space_Grotesk({ variable: "--font-space", subsets: ["latin"] });
+const sans = Google_Sans_Flex({ variable: "--font-gsans", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"] });
-const display = Anton({ variable: "--font-anton", subsets: ["latin"], weight: "400" });
+const display = Viga({ variable: "--font-viga", subsets: ["latin"], weight: "400" });
 
 export const viewport: Viewport = {
-  themeColor: "#faf7f2",
+  themeColor: "#0B1426",
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://pmengheak.vercel.app"),
-  title: "Pheng Mengheak | Backend Developer",
+  title: "Pheng Mengheak | Backend Developer & AI Engineer",
   description:
-    "Backend Developer building Java & Spring Boot microservices, secure REST APIs, and distributed systems with PostgreSQL and Docker.",
+    "Backend Developer and AI Engineer building Java & Spring Boot microservices, secure OAuth2/Keycloak APIs, Kafka-driven systems, and local LLM & RAG pipelines with PostgreSQL, Redis, and Docker.",
   openGraph: {
-    title: "Pheng Mengheak | Backend Developer",
-    description: "Spring Boot microservices, secure APIs, and distributed systems.",
+    title: "Pheng Mengheak | Backend Developer & AI Engineer",
+    description: "Spring Boot microservices, secure APIs, distributed systems, and local AI.",
     siteName: "Pheng Mengheak",
     type: "website",
   },

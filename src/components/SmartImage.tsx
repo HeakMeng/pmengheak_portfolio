@@ -30,7 +30,7 @@ export default function SmartImage({ fallback = "image", alt, className, fill, w
         role="img"
         aria-label={alt || undefined}
         aria-hidden={alt ? undefined : true}
-        className={cn("flex items-center justify-center bg-[#F1ECE3] text-[#141414]/40", fill ? "absolute inset-0" : className)}
+        className={cn("flex items-center justify-center bg-sunken text-ink/40", fill ? "absolute inset-0" : className)}
       >
         <Icon className="h-1/2 max-h-10 w-1/2 max-w-10" aria-hidden="true" />
       </span>

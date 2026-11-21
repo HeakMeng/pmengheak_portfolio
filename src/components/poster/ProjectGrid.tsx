@@ -1,23 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink, X } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { Reveal } from "@/components/Motion";
+import TiltCard from "@/components/fx/TiltCard";
 import SmartImage from "@/components/SmartImage";
 import { PROJECTS, type Project } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
 
-const pill = "rounded-full border border-ink/80 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em]";
+const pill = "rounded-full border border-edge bg-surface px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted";
 const tag = "rounded-full bg-ink px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-paper";
-const kicker = "font-mono text-[10px] uppercase tracking-[0.16em] text-ink/55";
+const kicker = "font-mono text-[10px] uppercase tracking-[0.16em] text-muted";
 const caseBtn =
-  "inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-medium uppercase tracking-wider text-paper shadow-[0_3px_0_#D9531E] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:shadow-[0_5px_0_#D9531E] active:translate-y-[3px] active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-clay";
+  "inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-medium uppercase tracking-wider text-paper shadow-[0_3px_0_var(--color-accent)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:shadow-[0_5px_0_var(--color-accent)] hover:bg-accent active:translate-y-[3px] active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent";
 const iconLink =
-  "flex h-9 w-9 items-center justify-center rounded-full border-2 border-ink transition-colors hover:bg-ink hover:text-paper";
-const card = "flex w-full overflow-hidden rounded-2xl border-2 border-ink bg-paper shadow-[6px_6px_0px_#141414]";
+  "flex h-9 w-9 items-center justify-center rounded-full border-2 border-edge bg-surface transition-colors hover:bg-ink hover:text-paper";
+const card = "flex w-full overflow-hidden rounded-2xl border-2 border-edge bg-surface shadow-[6px_6px_0px_var(--color-accent)]";
 
 function ProjectLinks({ p, withLabels = false }: { p: Project; withLabels?: boolean }) {
   if (!p.repoUrl && !p.demoUrl) return null;
@@ -54,12 +56,16 @@ function Shot({
   imgClassName?: string;
 }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onOpen}
       aria-label={`Open ${p.title} case study`}
+      initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
+      whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
+      viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
       className={cn(
-        "group relative block aspect-[16/10] w-full overflow-hidden border-ink bg-[#F1ECE3] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-clay",
+        "group relative block aspect-[16/10] w-full overflow-hidden border-edge bg-sunken focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-accent",
         className,
       )}
     >
@@ -70,7 +76,7 @@ function Shot({
         sizes={sizes}
         className={cn("object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]", imgClassName)}
       />
-    </button>
+    </motion.button>
   );
 }
 
@@ -88,7 +94,7 @@ function Pills({ p }: { p: Project }) {
 
 function CardFooter({ p, onOpen }: { p: Project; onOpen: () => void }) {
   return (
-    <div className="mt-6 flex items-center justify-between gap-3 border-t-2 border-ink px-5 py-4 sm:px-6">
+    <div className="mt-6 flex items-center justify-between gap-3 border-t-2 border-edge px-5 py-4 sm:px-6">
       <button type="button" onClick={onOpen} className={caseBtn}>
         Case study
         <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -104,7 +110,7 @@ function CardFooter({ p, onOpen }: { p: Project; onOpen: () => void }) {
  */
 function FeaturedCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   return (
-    <article className={cn(card, "flex-col lg:grid lg:grid-cols-12")}>
+    <TiltCard max={3} className={cn(card, "flex-col lg:grid lg:grid-cols-12")}>
       <Shot
         p={p}
         onOpen={onOpen}
@@ -114,54 +120,54 @@ function FeaturedCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
       />
       <div className="flex flex-col lg:col-span-5">
         <div className="flex items-end justify-between gap-3 px-5 pt-5 sm:px-6">
-          <span className="font-display text-6xl leading-none text-clay">{num(0)}</span>
+          <span className="font-display text-6xl leading-none text-accent">{num(0)}</span>
           <div className="flex flex-wrap justify-end gap-1.5">
-            <span className="rounded-full border border-clay px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-clay">Flagship</span>
+            <span className="rounded-full border border-accent px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">Flagship</span>
             <span className={tag}>{p.category}</span>
           </div>
         </div>
         <div className="flex flex-1 flex-col px-5 pt-4 sm:px-6">
-          <h3 className="font-display text-[clamp(2.25rem,5vw,3rem)] uppercase leading-none">{p.title}</h3>
+          <h3 className="font-display text-[clamp(2.25rem,5vw,3rem)] uppercase leading-none text-ink">{p.title}</h3>
           <p className={cn(kicker, "mt-1.5")}>{p.subtitle}</p>
-          {p.context && <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-clay">{p.context}</p>}
-          <p className="mt-4 text-sm leading-relaxed text-ink/80 sm:text-[15px]">{p.description}</p>
+          {p.context && <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">{p.context}</p>}
+          <p className="mt-4 text-sm leading-relaxed text-muted sm:text-[15px]">{p.description}</p>
           <div className="mt-4">
             <Pills p={p} />
           </div>
         </div>
         <CardFooter p={p} onOpen={onOpen} />
       </div>
-    </article>
+    </TiltCard>
   );
 }
 
 function ProjectCard({ p, index, onOpen }: { p: Project; index: number; onOpen: () => void }) {
   return (
-    <article className={cn(card, "flex-col")}>
+    <TiltCard className={cn(card, "flex-col")}>
       <div className="flex items-end justify-between px-5 pb-3 pt-4">
-        <span className="font-display text-5xl leading-none text-clay">{num(index)}</span>
+        <span className="font-display text-5xl leading-none text-accent">{num(index)}</span>
         <span className={tag}>{p.category}</span>
       </div>
       <Shot p={p} onOpen={onOpen} sizes="(min-width: 1024px) 360px, (min-width: 768px) 31vw, 92vw" className="border-y-2" />
       <div className="flex flex-1 flex-col px-5 pt-5">
-        <h3 className="font-display text-[1.9rem] uppercase leading-none">{p.title}</h3>
+        <h3 className="font-display text-[1.9rem] uppercase leading-none text-ink">{p.title}</h3>
         <p className={cn(kicker, "mt-1")}>{p.subtitle}</p>
-        <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-ink/80">{p.description}</p>
+        <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted">{p.description}</p>
         <div className="mt-4">
           <Pills p={p} />
         </div>
       </div>
       <CardFooter p={p} onOpen={onOpen} />
-    </article>
+    </TiltCard>
   );
 }
 
 function Bullets({ items }: { items: string[] }) {
   return (
-    <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-ink/80">
+    <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-muted">
       {items.map((item) => (
         <li key={item} className="flex gap-3">
-          <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-clay" aria-hidden="true" />
+          <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
           {item}
         </li>
       ))}
@@ -217,39 +223,39 @@ export default function ProjectGrid() {
           // A click that lands on the <dialog> itself (not its content) is a backdrop click.
           if (e.target === e.currentTarget) setOpen(null);
         }}
-        className="case-study m-auto max-h-[92dvh] w-[calc(100%-2rem)] max-w-4xl overflow-hidden rounded-2xl border-2 border-ink bg-paper p-0 text-ink shadow-[8px_8px_0_#141414] backdrop:bg-ink/55 backdrop:backdrop-blur-sm"
+        className="case-study m-auto max-h-[92dvh] w-[calc(100%-2rem)] max-w-4xl overflow-hidden rounded-2xl border-2 border-edge bg-surface p-0 text-ink shadow-[8px_8px_0_var(--color-accent)] backdrop:bg-paper/80 backdrop:backdrop-blur-sm"
       >
         {p && open !== null && (
           <div className="flex max-h-[92dvh] flex-col">
-            <header className="flex items-start justify-between gap-4 border-b-2 border-ink px-5 py-4 sm:px-7">
+            <header className="flex items-start justify-between gap-4 border-b-2 border-edge bg-paper px-5 py-4 sm:px-7">
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
-                  <span className="font-display text-3xl leading-none text-clay">{num(open)}</span>
+                  <span className="font-display text-3xl leading-none text-accent">{num(open)}</span>
                   <span className={tag}>{p.category}</span>
                 </div>
                 <h3 id="case-study-title" className="mt-2 font-display text-[clamp(2rem,6vw,3rem)] uppercase leading-none">
                   {p.title}
                 </h3>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/55 sm:text-[11px]">{p.subtitle}</p>
-                {p.context && <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-clay sm:text-[11px]">{p.context}</p>}
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:text-[11px]">{p.subtitle}</p>
+                {p.context && <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-accent sm:text-[11px]">{p.context}</p>}
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(null)}
                 aria-label="Close case study"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-ink transition-colors hover:bg-ink hover:text-paper"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-edge transition-colors hover:bg-ink hover:text-paper"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
               </button>
             </header>
 
             <div className="overflow-y-auto overscroll-contain">
-              <div className="relative aspect-[16/10] w-full border-b-2 border-ink bg-[#F1ECE3]">
+              <div className="relative aspect-[16/10] w-full border-b-2 border-edge bg-sunken">
                 <SmartImage src={p.image} alt={p.imageAlt} fill sizes="(min-width: 896px) 896px, 100vw" className="object-cover object-top" />
               </div>
 
               <div className="px-5 py-6 sm:px-7 sm:py-8">
-                <p className="max-w-3xl text-[15px] leading-relaxed sm:text-base">{p.description}</p>
+                <p className="max-w-3xl text-[15px] leading-relaxed text-muted sm:text-base">{p.description}</p>
 
                 {p.contributions?.length ? (
                   <section className="mt-8">
@@ -259,7 +265,7 @@ export default function ProjectGrid() {
                 ) : null}
 
                 {columns.length > 0 && (
-                  <div className={cn("mt-8 grid gap-8", columns.length > 1 && "md:grid-cols-2 md:gap-0 md:divide-x-2 md:divide-ink")}>
+                  <div className={cn("mt-8 grid gap-8", columns.length > 1 && "md:grid-cols-2 md:gap-0 md:divide-x-2 md:divide-edge")}>
                     {columns.map((col, ci) => (
                       <section key={col.title} className={cn(columns.length > 1 && (ci === 0 ? "md:pr-7" : "md:pl-7"))}>
                         <h4 className="font-display text-xl uppercase tracking-wide">{col.title}</h4>
@@ -269,7 +275,7 @@ export default function ProjectGrid() {
                   </div>
                 )}
 
-                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t-2 border-ink pt-5">
+                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t-2 border-edge pt-5">
                   <Pills p={p} />
                   <ProjectLinks p={p} withLabels />
                 </div>
