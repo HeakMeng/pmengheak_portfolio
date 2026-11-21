@@ -16,7 +16,7 @@ const pill = "rounded-full border border-edge bg-surface px-2.5 py-0.5 font-mono
 const tag = "rounded-full bg-ink px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-paper";
 const kicker = "font-mono text-[10px] uppercase tracking-[0.16em] text-muted";
 const caseBtn =
-  "inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-medium uppercase tracking-wider text-paper shadow-[0_3px_0_var(--color-accent)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:shadow-[0_5px_0_var(--color-accent)] hover:bg-accent active:translate-y-[3px] active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent";
+  "inline-flex items-center gap-1.5 rounded-full bg-fill px-4 py-2 text-xs font-medium uppercase tracking-wider text-on-fill shadow-[0_3px_0_var(--color-accent)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:shadow-[0_5px_0_var(--color-accent)] hover:bg-fill-hover active:translate-y-[3px] active:shadow-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent";
 const iconLink =
   "flex h-9 w-9 items-center justify-center rounded-full border-2 border-edge bg-surface transition-colors hover:bg-ink hover:text-paper";
 const card = "flex w-full overflow-hidden rounded-2xl border-2 border-edge bg-surface shadow-[6px_6px_0px_var(--color-accent)]";
@@ -120,16 +120,16 @@ function FeaturedCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
       />
       <div className="flex flex-col lg:col-span-5">
         <div className="flex items-end justify-between gap-3 px-5 pt-5 sm:px-6">
-          <span className="font-display text-6xl leading-none text-accent">{num(0)}</span>
+          <span className="font-display text-6xl leading-none text-accent-ink">{num(0)}</span>
           <div className="flex flex-wrap justify-end gap-1.5">
-            <span className="rounded-full border border-accent px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">Flagship</span>
+            <span className="rounded-full border border-accent px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-ink">Flagship</span>
             <span className={tag}>{p.category}</span>
           </div>
         </div>
         <div className="flex flex-1 flex-col px-5 pt-4 sm:px-6">
           <h3 className="font-display text-[clamp(2.25rem,5vw,3rem)] uppercase leading-none text-ink">{p.title}</h3>
           <p className={cn(kicker, "mt-1.5")}>{p.subtitle}</p>
-          {p.context && <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">{p.context}</p>}
+          {p.context && <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-ink">{p.context}</p>}
           <p className="mt-4 text-sm leading-relaxed text-muted sm:text-[15px]">{p.description}</p>
           <div className="mt-4">
             <Pills p={p} />
@@ -145,7 +145,7 @@ function ProjectCard({ p, index, onOpen }: { p: Project; index: number; onOpen: 
   return (
     <TiltCard className={cn(card, "flex-col")}>
       <div className="flex items-end justify-between px-5 pb-3 pt-4">
-        <span className="font-display text-5xl leading-none text-accent">{num(index)}</span>
+        <span className="font-display text-5xl leading-none text-accent-ink">{num(index)}</span>
         <span className={tag}>{p.category}</span>
       </div>
       <Shot p={p} onOpen={onOpen} sizes="(min-width: 1024px) 360px, (min-width: 768px) 31vw, 92vw" className="border-y-2" />
@@ -230,14 +230,14 @@ export default function ProjectGrid() {
             <header className="flex items-start justify-between gap-4 border-b-2 border-edge bg-paper px-5 py-4 sm:px-7">
               <div className="min-w-0">
                 <div className="flex items-center gap-3">
-                  <span className="font-display text-3xl leading-none text-accent">{num(open)}</span>
+                  <span className="font-display text-3xl leading-none text-accent-ink">{num(open)}</span>
                   <span className={tag}>{p.category}</span>
                 </div>
                 <h3 id="case-study-title" className="mt-2 font-display text-[clamp(2rem,6vw,3rem)] uppercase leading-none">
                   {p.title}
                 </h3>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted sm:text-[11px]">{p.subtitle}</p>
-                {p.context && <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-accent sm:text-[11px]">{p.context}</p>}
+                {p.context && <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-accent-ink sm:text-[11px]">{p.context}</p>}
               </div>
               <button
                 type="button"

@@ -22,8 +22,15 @@ export const PROFILE = {
 
 export const BIO = [
   "I started on the infrastructure side: as an IT intern at Proseth Solutions I supported payment-integration infrastructure for Bakong-connected financial services, ran Linux servers behind Nginx, managed Docker containers, and kept PostgreSQL backed up and healthy. That work pointed me toward backend engineering, where I build the services that sit on top of that data.",
-  "Today I build Java and Spring Boot microservices with a focus on PostgreSQL design, transactional concurrency, and secure APIs (OAuth2, JWT, Keycloak). I've integrated Bakong KHQR payments, tuned performance with Redis, and engineered schema-validated local LLM and RAG workflows. After the Basic Course at Korea Software HRD Center I was selected for its Advanced Course in Spring microservices, Android, and local AI engineering, alongside my MIS degree at SETEC Institute.",
+  "Today I build Java and Spring Boot microservices with a focus on PostgreSQL design, transactional concurrency, and secure APIs (OAuth2, JWT, Keycloak). I've integrated Bakong KHQR payments and engineered schema-validated local LLM and RAG workflows. After the Basic Course at Korea Software HRD Center I was selected for its Advanced Course in Spring microservices, Android, and local AI engineering, alongside my MIS degree at SETEC Institute.",
 ];
+
+/** Candid photo shown under the "About me" heading. */
+export const ABOUT_PHOTO = {
+  src: "/pmegheak.jpg",
+  alt: "Pheng Mengheak smiling and holding the KSHRD Champions trophy on a football pitch",
+  caption: "KSHRD Champions · Winner of the month",
+};
 
 export const FACTS = [
   { value: "4", label: "Full-stack projects" },
@@ -67,7 +74,7 @@ export const EDUCATION: EducationItem[] = [
     short: "KSHRD",
     logo: "/logos/kshrd.png",
     role: "Full-Stack Software Engineering & AI Development",
-    period: "02/2026 – 11/2026",
+    period: "02/2026 – Present",
     current: true,
     note: "Completed the 5-month full-time Basic Course and was selected for the Advanced Course.",
     tracks: ["Spring Microservices & Enterprise Java", "Android · Kotlin, Compose & MVVM", "Local AI · Ollama, vLLM & RAG"],
@@ -115,7 +122,7 @@ export const EXPERIENCE = [
     logoSize: { width: 728, height: 890 },
     file: "kshrd.log",
     role: "Full-Stack Software Engineering & AI · Advanced Course",
-    period: "02/2026 – 11/2026",
+    period: "02/2026 – Present",
     location: "Phnom Penh, KH",
     highlights: [
       "Spring microservices: API Gateway, Service Discovery, OpenFeign, Config Server, Circuit Breaker, and distributed tracing",
@@ -130,7 +137,7 @@ export const EXPERIENCE = [
 export const LANGUAGES = [
   { name: "Khmer", level: "Native", percent: 100 },
   { name: "English", level: "Working", percent: 80 },
-  { name: "Korean", level: "Conversational", percent: 45 },
+  { name: "Korean", level: "Elementary", percent: 30 },
 ];
 
 export const AI_ARCHITECTURE = [
@@ -147,19 +154,18 @@ export const AI_ARCHITECTURE = [
   {
     id: "messaging",
     title: "Event-Driven Messaging",
-    summary: "Kafka and RabbitMQ for decoupled services, with Redis caching on hot paths.",
+    summary: "Kafka and RabbitMQ for decoupled, resilient services that communicate through events.",
   },
 ] as const;
 
 export const CORE_SKILLS = [
-  "Java 21",
+  "Java",
   "Spring Boot",
   "Spring Security",
   "JPA / Hibernate",
   "Microservices",
   "REST APIs",
   "PostgreSQL",
-  "Redis",
   "Kafka",
   "RabbitMQ",
   "Keycloak",
@@ -215,7 +221,7 @@ export const PROJECTS: Project[] = [
       "Engineered the Admin Dashboard frontend (Next.js/TypeScript) and backend APIs, including bulk Excel student import with validation, preview, and automated welcome emails",
       "Engineered the local RAG pipeline (FastAPI + Ollama) on PostgreSQL/pgvector, with strict classroom/workspace scope filtering and slide, page, and timestamp source citations",
     ],
-    tech: ["Java 21", "Spring Boot", "Keycloak", "PostgreSQL / pgvector", "FastAPI", "Ollama", "Next.js", "Android"],
+    tech: ["Java", "Spring Boot", "Keycloak", "PostgreSQL / pgvector", "FastAPI", "Ollama", "Next.js", "Android"],
     image: "/projects/InsightHub.png",
     imageAlt: "InsightHub landing page with a teacher dashboard of classrooms, students, and courses",
     demoUrl: "https://insighthub.kshrd.app",

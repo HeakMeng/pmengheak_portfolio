@@ -1,5 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect x="2" y="2" width="60" height="60" rx="11" fill="#FFFFFF" stroke="#0B1730" stroke-width="3"/>
-  <path d="M13 47V17H20a7 7 0 0 1 0 14H13" fill="none" stroke="#0B1730" stroke-width="5.5" stroke-linejoin="miter"/>
-  <path d="M33.25 47V17H40L43.5 27L47 17H53.75V47H48.25V28.5L44.8 38H42.2L38.75 28.5V47Z" fill="#0B1730"/>
+  <!-- pm_ : lowercase monogram with a terminal cursor, in the site's navy and electric blue -->
+  <rect width="64" height="64" rx="15" fill="#0F1E3A"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 18V46"/>
+    <path d="M12 26a8 8 0 1 0 16 0a8 8 0 1 0 -16 0"/>
+    <path d="M33 34V24a5 5 0 0 1 10 0V34M43 24a5 5 0 0 1 10 0V34"/>
+  </g>
+  <rect x="33" y="41" width="20" height="5.5" rx="2.75" fill="#3B82F6"/>
 </svg>

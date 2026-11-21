@@ -29,7 +29,7 @@ export default function ContactList() {
       <li className={row}>
         <span className={label}>Based</span>
         <span className="flex min-w-0 items-center gap-2 font-medium text-ink">
-          <MapPin className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+          <MapPin className="h-4 w-4 shrink-0 text-accent-ink" aria-hidden="true" />
           {PROFILE.city} <span className="text-muted">({PROFILE.timezone})</span>
         </span>
       </li>
@@ -38,17 +38,17 @@ export default function ContactList() {
         <button
           type="button"
           onClick={copyEmail}
-          className="group flex min-w-0 items-center gap-2 text-left font-medium text-ink transition-colors hover:text-accent"
+          className="group flex min-w-0 items-center gap-2 text-left font-medium text-ink transition-colors hover:text-accent-ink"
           aria-label={`Copy email address ${PROFILE.email}`}
         >
           <span className="truncate">{PROFILE.email}</span>
           {copied ? (
-            <Check className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+            <Check className="h-4 w-4 shrink-0 text-accent-ink" aria-hidden="true" />
           ) : (
-            <Copy className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
+            <Copy className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent-ink" aria-hidden="true" />
           )}
         </button>
-        <span aria-live="polite" className="ml-auto hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-accent sm:inline">
+        <span aria-live="polite" className="ml-auto hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-ink sm:inline">
           {copied ? "Copied" : ""}
         </span>
       </li>
@@ -62,11 +62,11 @@ export default function ContactList() {
             href={c.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex min-w-0 items-center gap-2 font-medium text-ink transition-colors hover:text-accent"
+            className="group flex min-w-0 items-center gap-2 font-medium text-ink transition-colors hover:text-accent-ink"
           >
             <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span className="truncate">{c.handle}</span>
-            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent" aria-hidden="true" />
+            <ArrowUpRight className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent-ink" aria-hidden="true" />
           </a>
         </li>
       ))}

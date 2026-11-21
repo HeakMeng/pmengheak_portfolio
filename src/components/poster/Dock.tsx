@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import ThemeToggle from "@/components/fx/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -48,7 +49,7 @@ export default function Dock() {
   return (
     <nav
       aria-label="Sections"
-      className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border-2 border-edge bg-surface/90 px-2 py-2 text-ink shadow-[0_12px_32px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,122,26,0.18)] backdrop-blur-md sm:px-4"
+      className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-dock-edge bg-dock/65 px-2 py-2 text-dock-ink shadow-[0_12px_32px_rgba(15,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-xl backdrop-saturate-150 sm:px-4"
     >
       <ul className="flex items-center sm:gap-1">
         {LINKS.map(({ id, label }) => {
@@ -60,7 +61,7 @@ export default function Dock() {
                 aria-current={on ? "location" : undefined}
                 className={cn(
                   "relative flex items-center gap-1 rounded-full px-2 py-1.5 text-[10px] font-medium uppercase tracking-wider transition-colors sm:gap-1.5 sm:px-3 sm:text-xs",
-                  on ? "text-ink" : "text-ink/55 hover:text-ink",
+                  on ? "text-dock-ink" : "text-dock-ink/55 hover:text-dock-ink",
                 )}
               >
                 <span className="relative flex h-1.5 w-1.5 items-center justify-center" aria-hidden="true">
@@ -77,6 +78,9 @@ export default function Dock() {
             </li>
           );
         })}
+        <li className="ml-1 flex items-center border-l border-dock-ink/20 pl-1.5 sm:ml-2 sm:pl-2.5">
+          <ThemeToggle />
+        </li>
       </ul>
     </nav>
   );

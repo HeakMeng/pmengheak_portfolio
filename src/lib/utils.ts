@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /** Small celebratory burst from a given element; loaded lazily so it never ships in the first paint. */
-export async function burstFrom(el: HTMLElement | null, colors = ["#FF7A1A", "#FFB547", "#EEF2F8", "#33466B"]) {
+export async function burstFrom(el: HTMLElement | null, colors = ["#2563EB", "#60A5FA", "#0F1E3A", "#FFFFFF"]) {
   if (typeof window === "undefined") return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const { default: confetti } = await import("canvas-confetti");

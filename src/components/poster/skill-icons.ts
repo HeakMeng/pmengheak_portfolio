@@ -16,7 +16,6 @@ import {
   SiOpenjdk,
   SiPostgresql,
   SiRabbitmq,
-  SiRedis,
   SiSpringboot,
   SiSpringsecurity,
 } from "react-icons/si";
@@ -25,14 +24,13 @@ type Icon = ComponentType<{ className?: string }>;
 
 /** Icon for each entry in CORE_SKILLS; shared by the Skills grid and the hero ticker. */
 const SKILL_ICONS: Record<string, Icon> = {
-  "Java 21": SiOpenjdk,
+  Java: SiOpenjdk,
   "Spring Boot": SiSpringboot,
   "Spring Security": SiSpringsecurity,
   "JPA / Hibernate": SiHibernate,
   Microservices: Network,
   "REST APIs": Braces,
   PostgreSQL: SiPostgresql,
-  Redis: SiRedis,
   Kafka: SiApachekafka,
   RabbitMQ: SiRabbitmq,
   Keycloak: SiKeycloak,

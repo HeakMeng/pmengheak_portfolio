@@ -15,6 +15,7 @@ import { CountUp, RevealRule, Ring } from "@/components/fx/Misc";
 import SplitText from "@/components/fx/SplitText";
 import SmartImage from "@/components/SmartImage";
 import {
+  ABOUT_PHOTO,
   AI_ARCHITECTURE,
   BIO,
   CORE_SKILLS,
@@ -84,6 +85,24 @@ export function About() {
             <SplitText text="About" className="block" />
             <SplitText text="Me" delay={0.15} className="block" />
           </h2>
+
+          {/* Photo card: tilted like a pinned print, straightens on hover. */}
+          <figure className="mt-8 max-w-[18rem] -rotate-2 rounded-2xl border-2 border-edge bg-surface p-2.5 shadow-[6px_6px_0px_var(--color-accent)] transition-transform duration-500 hover:rotate-0 motion-reduce:transition-none lg:max-w-[20rem]">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-sunken">
+              <SmartImage
+                src={ABOUT_PHOTO.src}
+                alt={ABOUT_PHOTO.alt}
+                fill
+                sizes="(min-width: 1024px) 320px, 288px"
+                fallback="user"
+                className="object-cover object-[center_30%]"
+              />
+            </div>
+            <figcaption className="flex items-center gap-2 px-1 pb-0.5 pt-2.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+              {ABOUT_PHOTO.caption}
+            </figcaption>
+          </figure>
         </div>
         <div className="lg:col-span-8">
           <p className="text-[clamp(1.2rem,2.4vw,1.6rem)] font-medium leading-snug text-ink">{lede}</p>
@@ -96,7 +115,7 @@ export function About() {
             {FACTS.map(({ value, label }, i) => (
               <div key={label} className={cn("flex flex-col-reverse pt-4", i > 0 && "border-l border-edge pl-4")}>
                 <dt className="mt-1 text-[11px] leading-tight text-muted sm:text-xs">{label}</dt>
-                <dd className="font-display text-3xl text-accent sm:text-4xl">
+                <dd className="font-display text-3xl text-accent-ink sm:text-4xl">
                   <CountUp value={value} />
                 </dd>
               </div>
@@ -128,7 +147,7 @@ export function EducationContact() {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                       <h3 className="font-bold leading-snug text-ink">{e.org}</h3>
-                      <span className={cn(pill, e.current && "border-accent bg-accent/10 text-accent")}>{e.period}</span>
+                      <span className={cn(pill, e.current && "border-fill bg-fill text-on-fill")}>{e.period}</span>
                     </div>
                     <p className="mt-0.5 text-sm text-muted">{e.role}</p>
                     {e.tracks && <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{e.tracks.join(" · ")}</p>}
@@ -174,7 +193,7 @@ export function WorkExperience() {
     <section id="experience" aria-labelledby="experience-h" className="band-grid relative my-16 border-y-2 border-edge bg-tint py-16 text-ink sm:my-24 sm:py-20">
       <div className={shell}>
         <p className="mb-5 text-center font-mono text-[11px] text-muted sm:text-xs" aria-hidden="true">
-          <span className="text-accent">~/career</span> <span className="text-ink">$</span> git log --author=&quot;pheng&quot; --reverse
+          <span className="text-accent-ink">~/career</span> <span className="text-ink">$</span> git log --author=&quot;pheng&quot; --reverse
           <span className="caret ml-1 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] bg-accent" />
         </p>
         <Divider id="experience-h">Work Experience</Divider>
@@ -193,7 +212,7 @@ export function WorkExperience() {
                   <span className="hidden sm:inline">~/experience/</span>
                   <span className="font-semibold text-ink">{x.file}</span>
                 </span>
-                <span className="ml-auto shrink-0 rounded-md bg-accent px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-on-accent">
+                <span className="ml-auto shrink-0 rounded-md bg-fill px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-on-fill">
                   {x.period}
                 </span>
               </div>
@@ -204,7 +223,7 @@ export function WorkExperience() {
                     <h3 className="text-lg font-bold leading-snug text-ink">{x.org}</h3>
                     <p className="text-sm text-muted">{x.role}</p>
                     <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
-                      <span className="text-accent">@</span> {x.location}
+                      <span className="text-accent-ink">@</span> {x.location}
                     </p>
                   </div>
                   <span className="flex h-11 shrink-0 items-center rounded-xl border border-edge bg-white px-2 py-1.5 sm:h-14 sm:px-3 sm:py-2">
@@ -223,7 +242,7 @@ export function WorkExperience() {
                 <ol className="mt-5 space-y-2 border-l-2 border-accent/25 text-[15px] leading-relaxed text-muted">
                   {x.highlights.map((h, n) => (
                     <li key={h} className="grid grid-cols-[2.25rem_1fr] gap-2">
-                      <span className="select-none pt-[0.2em] pr-2 text-right font-mono text-xs text-accent/60" aria-hidden="true">
+                      <span className="select-none pt-[0.2em] pr-2 text-right font-mono text-xs text-accent-ink/60" aria-hidden="true">
                         {String(n + 1).padStart(2, "0")}
                       </span>
                       <span>{h}</span>
@@ -231,7 +250,7 @@ export function WorkExperience() {
                   ))}
                 </ol>
 
-                <ul className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-5 font-mono text-[11px] text-accent" aria-label={`${x.org} tags`}>
+                <ul className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-5 font-mono text-[11px] text-accent-ink" aria-label={`${x.org} tags`}>
                   {x.tags.map((t) => (
                     <li key={t}>#{t.toLowerCase().replace(/\s+/g, "-")}</li>
                   ))}
@@ -295,7 +314,7 @@ export function Capabilities() {
               const Icon = STACK_ICONS[name];
               return (
                 <li key={name} className="flex flex-col items-center gap-1.5">
-                  <span className="flex aspect-square w-full max-w-16 items-center justify-center rounded-[1.1rem] bg-ink text-paper shadow-[inset_0_-4px_0_rgba(0,0,0,0.35),3px_3px_0px_var(--color-accent)] transition-colors hover:bg-accent hover:text-paper">
+                  <span className="flex aspect-square w-full max-w-16 items-center justify-center rounded-[1.1rem] bg-ink text-paper shadow-[inset_0_-4px_0_rgba(0,0,0,0.35),3px_3px_0px_var(--color-accent)] transition-transform hover:-translate-y-1">
                     <Icon className="h-7 w-7" aria-hidden="true" />
                   </span>
                   <span className="text-[11px] font-medium text-muted">{name}</span>
@@ -346,9 +365,9 @@ export function Skills() {
                 as="li"
                 key={s}
                 delay={(i % 4) * 0.05}
-                className="flex min-w-0 items-center gap-2.5 rounded-full border-2 border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink shadow-[4px_4px_0px_var(--color-accent)] transition-[transform,box-shadow,color] hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_var(--color-accent)] hover:text-accent"
+                className="flex min-w-0 items-center gap-2.5 rounded-full border-2 border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink shadow-[4px_4px_0px_var(--color-accent)] transition-[transform,box-shadow,color] hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_var(--color-accent)] hover:text-accent-ink"
               >
-                <Icon className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                <Icon className="h-4 w-4 shrink-0 text-accent-ink" aria-hidden="true" />
                 <span className="truncate">{s}</span>
               </Reveal>
             );

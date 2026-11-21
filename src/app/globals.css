@@ -1,37 +1,90 @@
 @import "tailwindcss";
 
-/*
- * Navy & Orange palette (dark). Every colour on the page comes from these tokens,
- * so a palette change is an edit here only.
- *
- * Roles: `paper` is the page and also the dark text that sits on light or orange fills;
- * `ink` is the main text and the light fill for chips and badges; `edge` is for borders.
- */
+/* `dark:` variant follows the html[data-theme] switch rather than the OS setting alone. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme inline {
   --font-sans: var(--font-gsans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
   --font-display: var(--font-viga), "Arial Black", sans-serif;
+}
 
-  --color-paper: #0B1426;        /* dark navy page; dark text on light/orange fills */
-  --color-surface: #14233F;      /* navy cards, dialog, dock */
-  --color-sunken: #0F1B33;       /* image placeholders */
-  --color-tint: #101D36;         /* navy feature bands (Work, Skills, footer) */
-  --color-line: #22324F;         /* quiet tracks (language rings) */
-  --color-edge: #33466B;         /* card and section borders */
-  --color-ink: #EEF2F8;          /* primary text; light fills for chips and badges */
-  --color-muted: #9AA8C2;        /* secondary text */
-  --color-accent: #FF7A1A;       /* orange: buttons, offset shadows, icons, numbers */
-  --color-accent-hover: #FF9447;
-  --color-accent-deep: #A8430A;  /* pressed-depth shadow under orange buttons */
-  --color-on-accent: #0B1426;    /* text on orange (white on orange is too low-contrast) */
-  --color-pop: #FFB547;          /* amber highlight, used sparingly */
-  --color-dot-red: #FF5F57;      /* editor window controls (Work cards) */
+/*
+ * Navy & Electric Blue palette, light by default. Colours live in a plain (non-inline) @theme so the
+ * utilities read them as CSS variables, which the dark theme below overrides. Every colour on
+ * the page comes from these tokens.
+ *
+ * Roles: `paper` is the page (and light text on navy fills); `ink` is the main text and the fill
+ * for chips and tiles; `edge` is for borders; `dock` is the floating nav. Vivid `accent` is for
+ * shadows, icons and indicators; blue text uses the deeper `accent-ink` so it stays readable at small sizes.
+ */
+@theme {
+  --color-paper: #F3F5F9;
+  --color-surface: #FFFFFF;
+  --color-sunken: #E6EAF1;
+  --color-tint: #E4E9F2;
+  --color-line: #D3DAE6;
+  --color-edge: #0F1E3A;
+  --color-rule: #0F1E3A;
+  --color-ink: #0F1E3A;
+  --color-muted: #4B5872;
+  --color-accent: #2563EB;
+  --color-accent-ink: #1D4ED8;
+  --color-on-accent: #FFFFFF;
+  /* Solid emphasis backgrounds (CTA, date badges, hovers): navy in light, off-white in dark */
+  --color-fill: #0F1E3A;
+  --color-fill-hover: #1D3360;
+  --color-on-fill: #FFFFFF;
+  /* Floating nav: frosted white glass in light mode (used at ~65% opacity with blur) */
+  --color-dock: #FFFFFF;
+  --color-dock-ink: #0F1E3A;
+  --color-dock-edge: #C9D2E1;
+  /* Ticker status bar (`status`) and its fixed branch label (`branch`) */
+  --color-status: #0F1E3A;
+  --color-status-ink: #F3F5F9;
+  --color-status-mark: #3B82F6;
+  --color-branch: #E4E9F2;
+  --color-branch-ink: #0F1E3A;
+  --color-dot-red: #FF5F57;
   --color-dot-amber: #FEBC2E;
   --color-dot-green: #28C840;
 }
 
 :root {
+  color-scheme: light;
+  --grid-major: rgba(15, 30, 58, 0.07);
+  --grid-minor: rgba(15, 30, 58, 0.04);
+}
+
+/* Dark theme: deep navy page, navy cards, off-white text, bright blue. */
+:root[data-theme="dark"] {
   color-scheme: dark;
+  --grid-major: rgba(255, 255, 255, 0.06);
+  --grid-minor: rgba(255, 255, 255, 0.035);
+
+  --color-paper: #0B1426;
+  --color-surface: #14233F;
+  --color-sunken: #0F1B33;
+  --color-tint: #101D36;
+  --color-line: #22324F;
+  --color-edge: #33466B;
+  --color-rule: #5C6B88;
+  --color-ink: #EEF2F8;
+  --color-muted: #9AA8C2;
+  --color-accent: #3B82F6;
+  --color-accent-ink: #60A5FA;
+  --color-on-accent: #FFFFFF;
+  --color-fill: #EEF2F8;
+  --color-fill-hover: #FFFFFF;
+  --color-on-fill: #0B1426;
+  --color-dock: #14233F;
+  --color-dock-ink: #EEF2F8;
+  --color-dock-edge: #33466B;
+  --color-status: #14233F;
+  --color-status-ink: #EEF2F8;
+  --color-status-mark: #60A5FA;
+  --color-branch: #EEF2F8;
+  --color-branch-ink: #0B1426;
 }
 
 body {
@@ -45,16 +98,16 @@ body {
 }
 
 /*
- * Night blueprint: faint drafting lines on dark navy, a fine 40px grid with a heavier major
- * line every 200px, like an engineering drawing sheet.
+ * Blueprint grid: faint drafting lines, a fine 40px grid with a heavier major line every 200px,
+ * like an engineering drawing sheet. Line colour follows the theme.
  */
 .paper,
 .band-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.06) 2px, transparent 2px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 2px, transparent 2px),
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(var(--grid-major) 2px, transparent 2px),
+    linear-gradient(90deg, var(--grid-major) 2px, transparent 2px),
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
   background-size: 200px 200px, 200px 200px, 40px 40px, 40px 40px;
   background-position: -1px -1px;
 }
@@ -63,9 +116,28 @@ body {
   background-color: var(--color-paper);
 }
 
+/*
+ * Theme switch: the new theme is revealed in a circle growing from the toggle button
+ * (--theme-x/--theme-y/--theme-r are set by ThemeToggle just before the view transition).
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: theme-reveal 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 100%)); }
+  to { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 100%)); }
+}
+
 /* ---------- Poster type ---------- */
 .text-outline {
-  color: rgba(255, 122, 26, 0.08);
+  color: rgba(37, 99, 235, 0.07);
   -webkit-text-stroke: 2px var(--color-ink);
   paint-order: stroke fill;
 }

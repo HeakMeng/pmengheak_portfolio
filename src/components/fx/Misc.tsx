@@ -18,7 +18,7 @@ export function RevealRule({ side, className }: { side: "left" | "right"; classN
   return (
     <motion.span
       aria-hidden="true"
-      className={cn("h-0.5 flex-1 bg-ink/40", side === "left" ? "origin-right" : "origin-left", className)}
+      className={cn("h-0.5 flex-1 bg-rule", side === "left" ? "origin-right" : "origin-left", className)}
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true, margin: "0px 0px -60px 0px" }}

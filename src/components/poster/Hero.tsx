@@ -77,7 +77,7 @@ export default function Hero() {
               <Magnetic>
               <a
                 href="#projects"
-                className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold uppercase tracking-wider text-on-accent shadow-[4px_4px_0px_var(--color-accent-deep)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[5px_5px_0px_var(--color-accent-deep)] active:translate-y-[2px] active:shadow-[2px_2px_0px_var(--color-accent-deep)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                className="rounded-full bg-fill px-6 py-2.5 text-sm font-semibold uppercase tracking-wider text-on-fill shadow-[4px_4px_0px_var(--color-accent)] transition-[transform,box-shadow,background-color] hover:-translate-y-0.5 hover:bg-fill-hover hover:shadow-[5px_5px_0px_var(--color-accent)] active:translate-y-[2px] active:shadow-[2px_2px_0px_var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
               >
                 Portfolio
               </a>
@@ -87,7 +87,7 @@ export default function Hero() {
                 href={PROFILE.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-1 border-b-2 border-ink pb-0.5 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                className="group inline-flex items-center gap-1 border-b-2 border-ink pb-0.5 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-accent hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
               >
                 Résumé
                 <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
@@ -102,7 +102,7 @@ export default function Hero() {
               <SplitText text="Mengheak" trigger="load" delay={0.85} className="block" />
             </p>
             <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-              {PROFILE.title} · <span className="text-accent">{PROFILE.role2}</span>
+              {PROFILE.title} · <span className="text-accent-ink">{PROFILE.role2}</span>
             </p>
           </Enter>
         </div>

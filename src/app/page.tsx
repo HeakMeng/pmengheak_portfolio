@@ -34,7 +34,7 @@ export default function Home() {
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Open to backend roles &amp; collaborations</p>
             <a
               href={`mailto:${PROFILE.email}`}
-              className="mt-3 inline-block break-all font-display text-[clamp(1.6rem,6vw,3.75rem)] uppercase leading-none text-ink transition-colors hover:text-accent"
+              className="mt-3 inline-block break-all font-display text-[clamp(1.6rem,6vw,3.75rem)] uppercase leading-none text-ink transition-colors hover:text-accent-ink"
             >
               {PROFILE.email}
             </a>

@@ -22,7 +22,7 @@ export default function TiltCard({ children, className, max = 6 }: { children: R
   const rotateY = useSpring(useTransform(px, [0, 1], [-max, max]), spring);
   const gx = useTransform(px, (v) => `${v * 100}%`);
   const gy = useTransform(py, (v) => `${v * 100}%`);
-  const glare = useMotionTemplate`radial-gradient(380px circle at ${gx} ${gy}, rgba(255,122,26,0.10), transparent 65%)`;
+  const glare = useMotionTemplate`radial-gradient(380px circle at ${gx} ${gy}, rgba(37,99,235,0.08), transparent 65%)`;
 
   function move(e: PointerEvent) {
     if (reduce || e.pointerType !== "mouse" || !ref.current) return;
