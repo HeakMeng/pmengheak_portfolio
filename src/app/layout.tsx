@@ -20,12 +20,17 @@ export const metadata: Metadata = {
   title: "Pheng Mengheak | Backend Developer & AI Engineer",
   description:
     "Backend Developer and AI Engineer building Java & Spring Boot microservices, secure OAuth2/Keycloak APIs, Kafka-driven systems, and local LLM & RAG pipelines with PostgreSQL and Docker.",
+  alternates: { canonical: "/" },
+  // og:image comes from app/opengraph-image.tsx; X/Twitter falls back to it.
   openGraph: {
     title: "Pheng Mengheak | Backend Developer & AI Engineer",
     description: "Spring Boot microservices, secure APIs, distributed systems, and local AI.",
+    url: "/",
     siteName: "Pheng Mengheak",
-    type: "website",
+    locale: "en_US",
+    type: "profile",
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

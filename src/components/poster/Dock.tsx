@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { id: "top", label: "Top" },
   { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
   { id: "experience", label: "Work" },
   { id: "skills", label: "Skills" },
   { id: "projects", label: "Projects" },
@@ -49,22 +50,23 @@ export default function Dock() {
   return (
     <nav
       aria-label="Sections"
-      className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-dock-edge bg-dock/65 px-2 py-2 text-dock-ink shadow-[0_12px_32px_rgba(15,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-xl backdrop-saturate-150 sm:px-4"
+      className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-dock-edge bg-dock/65 px-1.5 py-2 text-dock-ink shadow-[0_12px_32px_rgba(15,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-xl backdrop-saturate-150 sm:px-4"
     >
       <ul className="flex items-center sm:gap-1">
         {LINKS.map(({ id, label }) => {
           const on = active === id;
           return (
-            <li key={id}>
+            // Six links do not fit a 375px phone; there the page's own top is a short swipe away.
+            <li key={id} className={id === "top" ? "hidden sm:block" : undefined}>
               <a
                 href={`#${id}`}
                 aria-current={on ? "location" : undefined}
                 className={cn(
-                  "relative flex items-center gap-1 rounded-full px-2 py-1.5 text-[10px] font-medium uppercase tracking-wider transition-colors sm:gap-1.5 sm:px-3 sm:text-xs",
+                  "relative flex items-center gap-1 rounded-full px-1.5 py-1.5 text-[10px] font-medium uppercase tracking-wide transition-colors sm:gap-1.5 sm:px-3 sm:text-xs sm:tracking-wider",
                   on ? "text-dock-ink" : "text-dock-ink/55 hover:text-dock-ink",
                 )}
               >
-                <span className="relative flex h-1.5 w-1.5 items-center justify-center" aria-hidden="true">
+                <span className={cn("relative h-1.5 w-1.5 items-center justify-center sm:flex", on ? "flex" : "hidden")} aria-hidden="true">
                   {on && (
                     <motion.span
                       layoutId="dock-dot"
@@ -78,7 +80,7 @@ export default function Dock() {
             </li>
           );
         })}
-        <li className="ml-1 flex items-center border-l border-dock-ink/20 pl-1.5 sm:ml-2 sm:pl-2.5">
+        <li className="ml-0.5 flex items-center border-l border-dock-ink/20 pl-1 sm:ml-2 sm:pl-2.5">
           <ThemeToggle />
         </li>
       </ul>

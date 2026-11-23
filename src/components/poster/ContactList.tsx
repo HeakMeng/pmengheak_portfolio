@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { ArrowUpRight, Check, Copy, MapPin } from "lucide-react";
+import { FaLinkedin } from "react-icons/fa6";
 import { SiGithub, SiTelegram } from "react-icons/si";
 import { CHANNELS, PROFILE } from "@/data/portfolio";
 
 const telegram = CHANNELS.find((c) => c.id === "telegram")!;
 const github = CHANNELS.find((c) => c.id === "github")!;
+const linkedin = CHANNELS.find((c) => c.id === "linkedin")!;
 
 const row = "flex items-center gap-4 border-b border-edge py-3.5 last:border-b-0";
 const label = "w-20 shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-muted";
@@ -48,13 +50,14 @@ export default function ContactList() {
             <Copy className="h-4 w-4 shrink-0 text-muted transition-colors group-hover:text-accent-ink" aria-hidden="true" />
           )}
         </button>
-        <span aria-live="polite" className="ml-auto hidden shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-ink sm:inline">
+        <span aria-live="polite" className="sr-only ml-auto shrink-0 font-mono sm:not-sr-only text-[10px] uppercase tracking-[0.18em] text-accent-ink sm:inline">
           {copied ? "Copied" : ""}
         </span>
       </li>
       {[
         { c: telegram, Icon: SiTelegram },
         { c: github, Icon: SiGithub },
+        { c: linkedin, Icon: FaLinkedin },
       ].map(({ c, Icon }) => (
         <li key={c.id} className={row}>
           <span className={label}>{c.label}</span>

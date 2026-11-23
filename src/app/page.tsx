@@ -10,11 +10,31 @@ import {
   WorkExperience,
 } from "@/components/poster/Sections";
 import Ticker from "@/components/poster/Ticker";
-import { PROFILE } from "@/data/portfolio";
+import { CHANNELS, CORE_SKILLS, EDUCATION, PROFILE } from "@/data/portfolio";
+
+/** schema.org Person, so search engines can tie the name to this site and the linked profiles. */
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: PROFILE.name,
+  jobTitle: [PROFILE.title, PROFILE.role2],
+  url: PROFILE.site,
+  image: `${PROFILE.site}${PROFILE.photo}`,
+  email: `mailto:${PROFILE.email}`,
+  address: { "@type": "PostalAddress", addressLocality: PROFILE.city, addressCountry: "KH" },
+  sameAs: CHANNELS.filter((c) => c.href.startsWith("https://")).map((c) => c.href),
+  alumniOf: EDUCATION.map((e) => ({ "@type": "EducationalOrganization", name: e.org })),
+  knowsAbout: CORE_SKILLS,
+};
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Escape "<" so no string in the data can close the script tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
+      />
       <ScrollProgress />
       <Hero />
       <Ticker />
