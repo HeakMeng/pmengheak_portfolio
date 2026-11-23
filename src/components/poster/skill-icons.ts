@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import { Braces, Network } from "lucide-react";
+import { FaAws } from "react-icons/fa6";
 import {
   SiApachekafka,
   SiDocker,
@@ -36,6 +37,7 @@ const SKILL_ICONS: Record<string, Icon> = {
   Keycloak: SiKeycloak,
   "JWT / OAuth2": SiJsonwebtokens,
   Docker: SiDocker,
+  AWS: FaAws,
   Nginx: SiNginx,
   "GitHub Actions": SiGithubactions,
   "Linux / Bash": SiGnubash,

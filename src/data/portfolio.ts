@@ -171,6 +171,7 @@ export const CORE_SKILLS = [
   "Keycloak",
   "JWT / OAuth2",
   "Docker",
+  "AWS",
   "Nginx",
   "GitHub Actions",
   "Linux / Bash",
