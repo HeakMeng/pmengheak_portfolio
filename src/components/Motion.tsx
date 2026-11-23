@@ -2,6 +2,7 @@
 
 import { MotionConfig, motion } from "framer-motion";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 /** Honour the visitor's reduced-motion setting everywhere. */
 export function MotionProvider({ children }: { children: ReactNode }) {
@@ -36,16 +37,25 @@ export function Reveal({
   );
 }
 
-/** Load-time entrance for hero pieces (they are above the fold, so no scroll trigger). */
-export function Enter({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+/**
+ * Load-time entrance for hero pieces (they are above the fold, so no scroll trigger).
+ * A CSS animation (see globals.css), so it runs before hydration. `fade={false}` only rises,
+ * for content that should paint immediately such as the hero portrait.
+ */
+export function Enter({
+  children,
+  className,
+  delay = 0,
+  fade = true,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  fade?: boolean;
+}) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease, delay }}
-    >
+    <div className={cn(fade ? "hero-rise" : "portrait-rise", className)} style={{ animationDelay: `${delay}s` }}>
       {children}
-    </motion.div>
+    </div>
   );
 }

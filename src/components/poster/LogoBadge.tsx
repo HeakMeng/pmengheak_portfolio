@@ -24,9 +24,9 @@ type Props = {
 export default function LogoBadge({ src, label, tilt, delay = 0, padding = "17%", className }: Props) {
   return (
     <div className={cn("pointer-events-none", className)}>
+      {/* Decoration only, so hidden from screen readers; the tooltip still names it for mouse users. */}
       <motion.div
-        role="img"
-        aria-label={`${label} logo`}
+        aria-hidden="true"
         title={label}
         className="pointer-events-auto flex aspect-square w-full cursor-default items-center justify-center rounded-[28%] border-2 border-edge bg-white shadow-[5px_5px_0px_var(--color-accent)]"
         style={{ padding }}
