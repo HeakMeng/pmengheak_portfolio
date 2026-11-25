@@ -9,18 +9,6 @@ import { skillIcon } from "./skill-icons";
 
 type Icon = ComponentType<{ className?: string }>;
 
-/** Brand colour for each tool tile (the icon is drawn in white on it, like an app icon). */
-const TILE_COLORS: Record<string, string> = {
-  Java: "#E76F00",
-  "Spring Boot": "#5FA83A",
-  PostgreSQL: "#336791",
-  Docker: "#1D8FE1",
-  Kafka: "#231F20",
-  Keycloak: "#008AAA",
-  Ollama: "#3B3B3B",
-  "Linux / Bash": "#2E8B3A",
-};
-
 const heading = "font-display text-[2rem] font-semibold leading-tight text-ink sm:text-[2.4rem]";
 const btnPrimary =
   "inline-flex items-center gap-2 rounded-full bg-fill px-5 py-3 text-sm font-semibold text-on-fill transition-colors hover:bg-fill-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent";
@@ -125,11 +113,20 @@ export function Background() {
             const Icon = skillIcon(t.name) as Icon;
             return (
               <li key={t.name} className="flex items-center gap-3">
-                <span
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.1rem] text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.18)]"
-                  style={{ backgroundColor: TILE_COLORS[t.name] ?? "var(--color-fill)" }}
-                >
-                  <Icon className="h-7 w-7" aria-hidden="true" />
+                {/* White app-icon tile: the real full-colour logo, or the drawn icon in ink when there is no file */}
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.1rem] bg-white shadow-[inset_0_-4px_0_rgba(36,32,90,0.08)] ring-1 ring-line">
+                  {t.logo ? (
+                    <SmartImage
+                      src={t.logo}
+                      alt=""
+                      width={36}
+                      height={36}
+                      unoptimized={t.logo.endsWith(".svg")}
+                      className="h-9 w-9 object-contain"
+                    />
+                  ) : (
+                    <Icon className="h-7 w-7 text-[#24205A]" aria-hidden="true" />
+                  )}
                 </span>
                 <span className="min-w-0">
                   <span className="block font-semibold leading-snug text-ink">{t.name}</span>
