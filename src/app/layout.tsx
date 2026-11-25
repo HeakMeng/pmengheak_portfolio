@@ -9,10 +9,8 @@ const sans = Lexend({ variable: "--font-lexend", subsets: ["latin"] });
 const hand = Caveat({ variable: "--font-caveat", subsets: ["latin"] });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#D6ECFA" },
-    { media: "(prefers-color-scheme: dark)", color: "#0F1533" },
-  ],
+  // Light by default, so the browser bar matches the light sky even on a dark-mode OS.
+  themeColor: "#D6ECFA",
 };
 
 export const metadata: Metadata = {
@@ -35,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // data-theme is corrected before first paint by THEME_SCRIPT (saved choice, else OS preference).
+    // data-theme is corrected before first paint by THEME_SCRIPT (saved choice, else light).
     <html
       lang="en"
       data-theme="light"
