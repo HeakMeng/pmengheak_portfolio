@@ -182,11 +182,22 @@ body {
   animation: draw 1.2s 0.6s ease-out both;
 }
 
+/* Dashes march along the path toward the arrowhead; 20 = one dash plus one gap. */
+.dash-flow {
+  animation: dash-flow 1s linear infinite;
+}
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-rise,
   .boat-bob,
   .cloud-drift,
-  .doodle-draw {
+  .doodle-draw,
+  .dash-flow {
     animation: none;
   }
 }

@@ -3,7 +3,7 @@ import { Download } from "lucide-react";
 import SmartImage from "@/components/SmartImage";
 import { BIO, EDUCATION, EXPERIENCE, LANGUAGES, PROFILE, SKILL_GROUPS, TOOLS } from "@/data/portfolio";
 import ContactList from "./ContactList";
-import { CurvedArrow, SmallArrow, Sparkle, Squiggle } from "./Doodles";
+import { CurvedArrow, DashedArrow, SmallArrow, Sparkle, Squiggle } from "./Doodles";
 import ProjectGrid from "./ProjectGrid";
 import { skillIcon } from "./skill-icons";
 
@@ -116,28 +116,6 @@ export function Background() {
             </li>
           ))}
         </ol>
-
-        <div className="mt-12 flex items-end gap-1">
-          <h2 className={heading}>Skills</h2>
-          <SmallArrow className="mb-3 h-8 w-10 text-pink" />
-        </div>
-        <dl className="mt-5 space-y-3 text-[15px]">
-          {SKILL_GROUPS.map((g) => (
-            <div key={g.area} className="grid grid-cols-[7.5rem_1fr] gap-3">
-              <dt className="font-semibold text-ink">{g.area}</dt>
-              <dd className="text-muted">{g.items.join(", ")}</dd>
-            </div>
-          ))}
-        </dl>
-
-        <h3 className="mt-10 font-semibold text-ink">Languages</h3>
-        <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-[15px] text-muted">
-          {LANGUAGES.map((l) => (
-            <li key={l.name}>
-              <span className="text-ink">{l.name}</span> ({l.level.toLowerCase()})
-            </li>
-          ))}
-        </ul>
       </div>
 
       <div>
@@ -162,6 +140,49 @@ export function Background() {
           })}
         </ul>
       </div>
+
+      <div>
+        <div className="flex items-end gap-1">
+          <h2 className={heading}>Skills</h2>
+          <SmallArrow className="mb-3 h-8 w-10 text-pink" />
+        </div>
+        <dl className="mt-5 space-y-3 text-[15px]">
+          {SKILL_GROUPS.map((g) => (
+            <div key={g.area} className="grid grid-cols-[7.5rem_1fr] gap-3">
+              <dt className="font-semibold text-ink">{g.area}</dt>
+              <dd className="text-muted">{g.items.join(", ")}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <h3 className="mt-10 font-semibold text-ink">Languages</h3>
+        <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-[15px] text-muted">
+          {LANGUAGES.map((l) => (
+            <li key={l.name}>
+              <span className="text-ink">{l.name}</span> ({l.level.toLowerCase()})
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Off the clock: a pen arrow from the skills list to a photo from the pitch */}
+      <figure className="flex flex-col items-center gap-2 lg:flex-row lg:items-center lg:gap-4 lg:self-center">
+        <DashedArrow className="h-12 w-28 rotate-90 text-pink lg:h-16 lg:w-44 lg:rotate-0" />
+        <div className="relative flex flex-col items-center">
+          <div className="relative h-44 w-44 overflow-hidden rounded-full bg-tint ring-8 ring-tint sm:h-52 sm:w-52">
+            <SmartImage
+              src="/pmegheak.jpg"
+              alt={`${PROFILE.name} holding the KSHRD Champions football trophy on the pitch`}
+              fill
+              sizes="208px"
+              fallback="user"
+              className="object-cover object-[50%_38%]"
+            />
+          </div>
+          <Sparkle className="absolute -right-5 top-0 h-7 w-7 text-pink" />
+          <figcaption className="mt-4 -rotate-3 font-hand text-[1.75rem] leading-none text-ink">I can play football too!</figcaption>
+        </div>
+      </figure>
     </section>
   );
 }
