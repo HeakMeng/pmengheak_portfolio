@@ -11,12 +11,12 @@ function currentTheme(): Theme {
   return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
+/** The visitor's saved choice, otherwise light: dark mode is opt-in through the toggle. */
 function resolveTheme(): Theme {
   try {
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved === "light" || saved === "dark") return saved;
+    if (localStorage.getItem(THEME_KEY) === "dark") return "dark";
   } catch {}
-  return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return "light";
 }
 
 /**

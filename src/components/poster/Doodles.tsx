@@ -40,6 +40,23 @@ export function SmallArrow({ className }: { className?: string }) {
   );
 }
 
+/** A hand-drawn dashed arrow "- - - ->" whose dashes keep flowing toward the head. */
+export function DashedArrow({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 60" className={className} fill="none" aria-hidden="true">
+      <path
+        className="dash-flow"
+        d="M6 38 C 50 18, 110 46, 178 28"
+        stroke="currentColor"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeDasharray="10 10"
+      />
+      <path d="M162 15 L182 27 L164 42" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function Sparkle({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 30 30" className={className} fill="none" aria-hidden="true">

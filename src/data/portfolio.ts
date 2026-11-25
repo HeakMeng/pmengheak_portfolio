@@ -189,16 +189,17 @@ export const CORE_SKILLS = [
 export const STACK = ["Java", "Spring", "PostgreSQL", "Docker", "Linux", "Git"] as const;
 
 /** Tool tiles in the About sheet: what each one is used for, in plain words. */
-export const TOOLS = [
-  { name: "Java", use: "Main language" },
-  { name: "Spring Boot", use: "REST APIs and microservices" },
-  { name: "PostgreSQL", use: "Schemas, transactions, pgvector" },
-  { name: "Docker", use: "Containers and Compose deploys" },
+/** Tools shown as app-icon tiles; `logo` is a full-colour file in /public, otherwise a drawn icon is used. */
+export const TOOLS: { name: string; use: string; logo?: string }[] = [
+  { name: "Java", use: "Main language", logo: "/java.png" },
+  { name: "Spring", use: "REST APIs and microservices", logo: "/spring.png" },
+  { name: "PostgreSQL", use: "Schemas, transactions, pgvector", logo: "/postgresql.png" },
+  { name: "Docker", use: "Containers and Compose deploys", logo: "/docker.png" },
   { name: "Kafka", use: "Event-driven messaging" },
-  { name: "Keycloak", use: "OAuth2, OIDC and MFA" },
-  { name: "Ollama", use: "Local LLMs and RAG" },
-  { name: "Linux / Bash", use: "Servers, Nginx, scripting" },
-] as const;
+  { name: "Keycloak", use: "OAuth2, OIDC and MFA", logo: "/keycloak.png" },
+  { name: "Ollama", use: "Local LLMs and RAG", logo: "/ollama-logo.svg" },
+  { name: "Linux / Bash", use: "Servers, Nginx, scripting", logo: "/linux.png" },
+];
 
 /** Skills grouped by area for the About sheet. */
 export const SKILL_GROUPS = [

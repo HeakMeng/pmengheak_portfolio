@@ -3,23 +3,11 @@ import { Download } from "lucide-react";
 import SmartImage from "@/components/SmartImage";
 import { BIO, EDUCATION, EXPERIENCE, LANGUAGES, PROFILE, SKILL_GROUPS, TOOLS } from "@/data/portfolio";
 import ContactList from "./ContactList";
-import { CurvedArrow, SmallArrow, Sparkle, Squiggle } from "./Doodles";
+import { CurvedArrow, DashedArrow, SmallArrow, Sparkle, Squiggle } from "./Doodles";
 import ProjectGrid from "./ProjectGrid";
 import { skillIcon } from "./skill-icons";
 
 type Icon = ComponentType<{ className?: string }>;
-
-/** Brand colour for each tool tile (the icon is drawn in white on it, like an app icon). */
-const TILE_COLORS: Record<string, string> = {
-  Java: "#E76F00",
-  "Spring Boot": "#5FA83A",
-  PostgreSQL: "#336791",
-  Docker: "#1D8FE1",
-  Kafka: "#231F20",
-  Keycloak: "#008AAA",
-  Ollama: "#3B3B3B",
-  "Linux / Bash": "#2E8B3A",
-};
 
 const heading = "font-display text-[2rem] font-semibold leading-tight text-ink sm:text-[2.4rem]";
 const btnPrimary =
@@ -116,8 +104,42 @@ export function Background() {
             </li>
           ))}
         </ol>
+      </div>
 
-        <div className="mt-12 flex items-end gap-1">
+      <div>
+        <h2 className={heading}>Tools I use</h2>
+        <ul className="mt-6 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+          {TOOLS.map((t) => {
+            const Icon = skillIcon(t.name) as Icon;
+            return (
+              <li key={t.name} className="flex items-center gap-3">
+                {/* White app-icon tile: the real full-colour logo, or the drawn icon in ink when there is no file */}
+                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.1rem] bg-white shadow-[inset_0_-4px_0_rgba(36,32,90,0.08)] ring-1 ring-line">
+                  {t.logo ? (
+                    <SmartImage
+                      src={t.logo}
+                      alt=""
+                      width={36}
+                      height={36}
+                      unoptimized={t.logo.endsWith(".svg")}
+                      className="h-9 w-9 object-contain"
+                    />
+                  ) : (
+                    <Icon className="h-7 w-7 text-[#24205A]" aria-hidden="true" />
+                  )}
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-semibold leading-snug text-ink">{t.name}</span>
+                  <span className="block text-sm leading-snug text-muted">{t.use}</span>
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div>
+        <div className="flex items-end gap-1">
           <h2 className={heading}>Skills</h2>
           <SmallArrow className="mb-3 h-8 w-10 text-pink" />
         </div>
@@ -140,28 +162,24 @@ export function Background() {
         </ul>
       </div>
 
-      <div>
-        <h2 className={heading}>Tools I use</h2>
-        <ul className="mt-6 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
-          {TOOLS.map((t) => {
-            const Icon = skillIcon(t.name) as Icon;
-            return (
-              <li key={t.name} className="flex items-center gap-3">
-                <span
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.1rem] text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.18)]"
-                  style={{ backgroundColor: TILE_COLORS[t.name] ?? "var(--color-fill)" }}
-                >
-                  <Icon className="h-7 w-7" aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block font-semibold leading-snug text-ink">{t.name}</span>
-                  <span className="block text-sm leading-snug text-muted">{t.use}</span>
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      {/* Off the clock: a pen arrow from the skills list to a photo from the pitch */}
+      <figure className="flex flex-col items-center gap-2 lg:flex-row lg:items-center lg:gap-4 lg:self-center">
+        <DashedArrow className="h-12 w-28 rotate-90 text-pink lg:h-16 lg:w-44 lg:rotate-0" />
+        <div className="relative flex flex-col items-center">
+          <div className="relative h-44 w-44 overflow-hidden rounded-full bg-tint ring-8 ring-tint sm:h-52 sm:w-52">
+            <SmartImage
+              src="/pmegheak.jpg"
+              alt={`${PROFILE.name} holding the KSHRD Champions football trophy on the pitch`}
+              fill
+              sizes="208px"
+              fallback="user"
+              className="object-cover object-[50%_38%]"
+            />
+          </div>
+          <Sparkle className="absolute -right-5 top-0 h-7 w-7 text-pink" />
+          <figcaption className="mt-4 -rotate-3 font-hand text-[1.75rem] leading-none text-ink">I can play football too!</figcaption>
+        </div>
+      </figure>
     </section>
   );
 }
