@@ -1,17 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Google_Sans_Flex, JetBrains_Mono, Viga } from "next/font/google";
+import { Caveat, Lexend } from "next/font/google";
 import { MotionProvider } from "@/components/Motion";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
-const sans = Google_Sans_Flex({ variable: "--font-gsans", subsets: ["latin"] });
-const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"] });
-const display = Viga({ variable: "--font-viga", subsets: ["latin"], weight: "400" });
+// Lexend: heavy geometric display and readable body. Caveat: the handwritten notes and doodle labels.
+const sans = Lexend({ variable: "--font-lexend", subsets: ["latin"] });
+const hand = Caveat({ variable: "--font-caveat", subsets: ["latin"] });
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F3F5F9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0B1426" },
+    { media: "(prefers-color-scheme: light)", color: "#D6ECFA" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F1533" },
   ],
 };
 
@@ -40,12 +40,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       lang="en"
       data-theme="light"
       suppressHydrationWarning
-      className={`${sans.variable} ${mono.variable} ${display.variable} scroll-smooth`}
+      className={`${sans.variable} ${hand.variable} scroll-smooth`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body className="paper min-h-svh overflow-x-clip font-sans text-ink antialiased">
+      <body className="sky min-h-svh overflow-x-clip font-sans text-ink antialiased">
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

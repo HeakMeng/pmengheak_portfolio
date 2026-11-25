@@ -9,8 +9,8 @@ const LINKS = [
   { id: "top", label: "Top" },
   { id: "about", label: "About" },
   { id: "contact", label: "Contact" },
-  { id: "experience", label: "Work" },
   { id: "skills", label: "Skills" },
+  { id: "experience", label: "Work" },
   { id: "projects", label: "Projects" },
 ] as const;
 
@@ -62,7 +62,7 @@ export default function Dock() {
                 href={`#${id}`}
                 aria-current={on ? "location" : undefined}
                 className={cn(
-                  "relative flex items-center gap-1 rounded-full px-1.5 py-1.5 text-[10px] font-medium uppercase tracking-wide transition-colors sm:gap-1.5 sm:px-3 sm:text-xs sm:tracking-wider",
+                  "relative flex items-center gap-1 rounded-full px-1.5 py-1.5 text-[11px] font-medium tracking-normal transition-colors sm:gap-1.5 sm:px-3 sm:text-sm sm:tracking-normal",
                   on ? "text-dock-ink" : "text-dock-ink/55 hover:text-dock-ink",
                 )}
               >

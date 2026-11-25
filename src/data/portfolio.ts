@@ -5,10 +5,12 @@
 
 export const PROFILE = {
   name: "Pheng Mengheak",
+  /** Short name shown as "a.k.a." under the big name. */
+  nickname: "Heak",
   title: "Backend Developer",
   tagline: "Backend Developer • AI Engineer • Microservices & Distributed Systems",
   /** Second role from the CV, shown beside the title in the hero. */
-  role2: "AI Engineer",
+  role2: "AI Engineer: Mastering Local LLM",
   /** One-sentence pitch under the name in the hero. */
   pitch: "I build secure Spring Boot microservices, event-driven systems with Kafka, and local AI (RAG) pipelines.",
   city: "Phnom Penh",
@@ -186,6 +188,28 @@ export const CORE_SKILLS = [
 /** Rendered as app-icon tiles in the capabilities bar. */
 export const STACK = ["Java", "Spring", "PostgreSQL", "Docker", "Linux", "Git"] as const;
 
+/** Tool tiles in the About sheet: what each one is used for, in plain words. */
+export const TOOLS = [
+  { name: "Java", use: "Main language" },
+  { name: "Spring Boot", use: "REST APIs and microservices" },
+  { name: "PostgreSQL", use: "Schemas, transactions, pgvector" },
+  { name: "Docker", use: "Containers and Compose deploys" },
+  { name: "Kafka", use: "Event-driven messaging" },
+  { name: "Keycloak", use: "OAuth2, OIDC and MFA" },
+  { name: "Ollama", use: "Local LLMs and RAG" },
+  { name: "Linux / Bash", use: "Servers, Nginx, scripting" },
+] as const;
+
+/** Skills grouped by area for the About sheet. */
+export const SKILL_GROUPS = [
+  { area: "Backend", items: ["Java", "Spring Boot", "Spring Cloud", "JPA / Hibernate", "REST APIs"] },
+  { area: "Data", items: ["PostgreSQL", "pgvector", "Transactions and locking"] },
+  { area: "Messaging", items: ["Kafka", "RabbitMQ", "WebSocket"] },
+  { area: "Security", items: ["Keycloak", "OAuth2 / OIDC", "JWT", "Spring Security"] },
+  { area: "Infrastructure", items: ["Docker", "Nginx", "Linux / Bash", "GitHub Actions"] },
+  { area: "AI", items: ["Ollama", "vLLM", "RAG pipelines", "FastAPI", "Spring AI"] },
+] as const;
+
 export type Project = {
   id: string;
   title: string;
@@ -226,7 +250,7 @@ export const PROJECTS: Project[] = [
     ],
     tech: ["Java", "Spring Boot", "Keycloak", "PostgreSQL / pgvector", "FastAPI", "Ollama", "Next.js", "Android"],
     image: "/projects/InsightHub.png",
-    imageAlt: "InsightHub landing page with a teacher dashboard of classrooms, students, and courses",
+    imageAlt: "InsightHub at a glance: the web app on a laptop, the Android app on a phone, the AI tutor answering with slide, page and timestamp citations, and the lecture file types it reads",
     demoUrl: "https://insighthub.kshrd.app",
   },
   {
@@ -249,7 +273,7 @@ export const PROJECTS: Project[] = [
     ],
     tech: ["Spring Boot", "PostgreSQL", "Docker", "Next.js", "Tailwind CSS"],
     image: "/projects/snappos.png",
-    imageAlt: "SnapPOS cashier screen with a product grid and shopping cart",
+    imageAlt: "SnapPOS at a glance: the cashier screen on a laptop, the SnapTrack stock-transfer app on a phone, a KHQR payment ticket and three branch shops",
   },
   {
     id: "cortex",
@@ -271,7 +295,7 @@ export const PROJECTS: Project[] = [
     ],
     tech: ["Java", "Spring Boot", "PostgreSQL", "Docker", "Next.js"],
     image: "/projects/cortex.png",
-    imageAlt: "Cortex platform home page showing the learning dashboard",
+    imageAlt: "Cortex at a glance: the web app on a laptop, Cortex Copilot explaining Spring Boot and Java on a phone, and a study-group video call",
   },
   {
     id: "gamehub",
@@ -290,7 +314,7 @@ export const PROJECTS: Project[] = [
     ],
     tech: ["React", "TypeScript", "Spring Boot", "REST API", "Tailwind CSS"],
     image: "/projects/gamehub.png",
-    imageAlt: "GameHub catalog showing a grid of video game cards",
+    imageAlt: "GameHub at a glance: the game catalog on a laptop, genre filters and sort options, a search bar and a game details card",
   },
 ];
 
