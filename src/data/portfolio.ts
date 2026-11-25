@@ -8,7 +8,7 @@ export const PROFILE = {
   title: "Backend Developer",
   tagline: "Backend Developer • AI Engineer • Microservices & Distributed Systems",
   /** Second role from the CV, shown beside the title in the hero. */
-  role2: "AI Engineer",
+  role2: "AI Engineer: Mastering Local LLM",
   /** One-sentence pitch under the name in the hero. */
   pitch: "I build secure Spring Boot microservices, event-driven systems with Kafka, and local AI (RAG) pipelines.",
   city: "Phnom Penh",
