@@ -1,375 +1,163 @@
 import type { ComponentType } from "react";
-import { GraduationCap, Network, User } from "lucide-react";
-import {
-  SiApachekafka,
-  SiDocker,
-  SiGit,
-  SiLinux,
-  SiOllama,
-  SiOpenjdk,
-  SiPostgresql,
-  SiSpring,
-} from "react-icons/si";
-import { Reveal } from "@/components/Motion";
-import { CountUp, RevealRule, Ring } from "@/components/fx/Misc";
-import SplitText from "@/components/fx/SplitText";
+import { Download } from "lucide-react";
 import SmartImage from "@/components/SmartImage";
-import {
-  ABOUT_PHOTO,
-  AI_ARCHITECTURE,
-  BIO,
-  CORE_SKILLS,
-  EDUCATION,
-  EXPERIENCE,
-  FACTS,
-  LANGUAGES,
-  STACK,
-} from "@/data/portfolio";
-import { cn } from "@/lib/utils";
+import { BIO, EDUCATION, EXPERIENCE, LANGUAGES, PROFILE, SKILL_GROUPS, TOOLS } from "@/data/portfolio";
 import ContactList from "./ContactList";
-import { skillIcon } from "./skill-icons";
+import { CurvedArrow, SmallArrow, Sparkle, Squiggle } from "./Doodles";
 import ProjectGrid from "./ProjectGrid";
+import { skillIcon } from "./skill-icons";
 
 type Icon = ComponentType<{ className?: string }>;
 
-const shell = "mx-auto max-w-6xl px-4 sm:px-6";
-const kicker = "font-mono text-[10px] uppercase tracking-[0.2em] text-muted sm:text-[11px]";
+/** Brand colour for each tool tile (the icon is drawn in white on it, like an app icon). */
+const TILE_COLORS: Record<string, string> = {
+  Java: "#E76F00",
+  "Spring Boot": "#5FA83A",
+  PostgreSQL: "#336791",
+  Docker: "#1D8FE1",
+  Kafka: "#231F20",
+  Keycloak: "#008AAA",
+  Ollama: "#3B3B3B",
+  "Linux / Bash": "#2E8B3A",
+};
 
-/* ---------------- Shared poster pieces ---------------- */
-
-/** Solid black disc holding a line icon: the recurring section mark. */
-function Badge({ icon: Icon, className }: { icon: Icon; className?: string }) {
-  return (
-    <span className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink text-paper shadow-[2px_2px_0px_var(--color-accent)]", className)} aria-hidden="true">
-      <Icon className="h-5 w-5" />
-    </span>
-  );
-}
-
-/** Centred title flanked by two ink rules. */
-function Divider({ id, children }: { id: string; children: string }) {
-  return (
-    <div className="flex items-center gap-4 sm:gap-6">
-      <RevealRule side="left" />
-      <h2 id={id} className="shrink-0 text-center font-display text-[clamp(1.9rem,6vw,3.25rem)] uppercase leading-none tracking-wide">
-        <SplitText text={children} />
-      </h2>
-      <RevealRule side="right" />
-    </div>
-  );
-}
-
-function ColumnTitle({ id, icon, children }: { id: string; icon: Icon; children: string }) {
-  return (
-    <div className="flex items-center gap-4">
-      <Badge icon={icon} />
-      <h2 id={id} className="font-display text-[clamp(1.75rem,4vw,2.5rem)] uppercase leading-none tracking-wide">
-        <SplitText text={children} />
-      </h2>
-    </div>
-  );
-}
-
-const pill = "rounded-full border border-edge px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em]";
+const heading = "font-display text-[2rem] font-semibold leading-tight text-ink sm:text-[2.4rem]";
+const btnPrimary =
+  "inline-flex items-center gap-2 rounded-full bg-fill px-5 py-3 text-sm font-semibold text-on-fill transition-colors hover:bg-fill-hover focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent";
+const btnSecondary =
+  "inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-ink ring-2 ring-ink/15 transition-colors hover:ring-accent hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent";
 
 /* ---------------- About ---------------- */
 
 export function About() {
   const [lede, ...rest] = BIO;
   return (
-    <section id="about" aria-labelledby="about-h" className={cn(shell, "py-16 sm:py-24")}>
-      <Reveal className="grid gap-8 lg:grid-cols-12">
-        <div className="lg:col-span-4">
-          <p className={kicker}>01 — Profile</p>
-          <h2 id="about-h" className="mt-3 font-display text-[clamp(3rem,9vw,5.5rem)] uppercase leading-[0.88]">
-            <SplitText text="About" className="block" />
-            <SplitText text="Me" delay={0.15} className="block" />
-          </h2>
+    <section id="about" aria-labelledby="about-h" className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+      <div>
+        <p className="font-hand text-3xl text-muted sm:text-4xl">About me!</p>
+        <h2 id="about-h" className="mt-6 font-display text-[clamp(2.9rem,8vw,5rem)] font-extrabold uppercase leading-[0.86] tracking-[-0.02em] text-ink">
+          Pheng
+          <br />
+          Mengheak
+        </h2>
+        <p className="mt-3 text-sm text-muted">
+          a.k.a. <span className="font-semibold text-ink">{PROFILE.nickname}</span>
+        </p>
 
-          {/* Photo card: tilted like a pinned print, straightens on hover. */}
-          <figure className="mt-8 max-w-[18rem] -rotate-2 rounded-2xl border-2 border-edge bg-surface p-2.5 shadow-[6px_6px_0px_var(--color-accent)] transition-transform duration-500 hover:rotate-0 motion-reduce:transition-none lg:max-w-[20rem]">
-            <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-sunken">
-              <SmartImage
-                src={ABOUT_PHOTO.src}
-                alt={ABOUT_PHOTO.alt}
-                fill
-                sizes="(min-width: 1024px) 320px, 288px"
-                fallback="user"
-                className="object-cover object-[center_30%]"
-              />
-            </div>
-            <figcaption className="flex items-center gap-2 px-1 pb-0.5 pt-2.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted">
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-              {ABOUT_PHOTO.caption}
-            </figcaption>
-          </figure>
+        <p className="mt-6 max-w-[36rem] text-[15px] leading-relaxed text-ink sm:text-base">
+          <span className="mr-2 font-hand text-[2.6rem] font-bold leading-none">Hi!</span>
+          {lede}
+        </p>
+        {rest.map((p) => (
+          <p key={p.slice(0, 24)} className="mt-4 max-w-[36rem] text-[15px] leading-relaxed text-muted sm:text-base">
+            {p}
+          </p>
+        ))}
+
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a href="#projects" className={btnPrimary}>
+            See my projects
+          </a>
+          <a href={PROFILE.resume} target="_blank" rel="noopener noreferrer" className={btnSecondary}>
+            <Download className="h-4 w-4" aria-hidden="true" />
+            Download résumé
+          </a>
         </div>
-        <div className="lg:col-span-8">
-          <p className="text-[clamp(1.2rem,2.4vw,1.6rem)] font-medium leading-snug text-ink">{lede}</p>
-          {rest.map((p) => (
-            <p key={p.slice(0, 24)} className="mt-5 max-w-2xl text-[15px] leading-relaxed text-muted sm:text-base">
-              {p}
-            </p>
-          ))}
-          <dl className="mt-10 grid grid-cols-3 border-t-2 border-edge">
-            {FACTS.map(({ value, label }, i) => (
-              <div key={label} className={cn("flex flex-col-reverse pt-4", i > 0 && "border-l border-edge pl-4")}>
-                <dt className="mt-1 text-[11px] leading-tight text-muted sm:text-xs">{label}</dt>
-                <dd className="font-display text-3xl text-accent-ink sm:text-4xl">
-                  <CountUp value={value} />
-                </dd>
-              </div>
-            ))}
-          </dl>
+      </div>
+
+      <div className="relative flex flex-col items-center lg:items-start">
+        {/* Pen arrow from the introduction to the photo */}
+        <CurvedArrow className="absolute -left-28 top-6 hidden h-20 w-40 text-ink lg:block" />
+
+        <div className="relative">
+          <div className="relative h-64 w-64 overflow-hidden rounded-full bg-gradient-to-b from-tint to-sunken ring-8 ring-tint sm:h-72 sm:w-72">
+            <SmartImage
+              src={PROFILE.photoFallback}
+              alt={`Photo of ${PROFILE.name}`}
+              fill
+              priority
+              sizes="(min-width: 640px) 288px, 256px"
+              fallback="user"
+              className="object-cover object-top"
+            />
+          </div>
+          <Sparkle className="absolute -right-6 top-2 h-8 w-8 text-pink" />
         </div>
-      </Reveal>
-    </section>
-  );
-}
 
-/* ---------------- Education | Contact ---------------- */
-
-export function EducationContact() {
-  return (
-    <section aria-label="Education and contact" className={shell}>
-      <div className="grid border-t-2 border-edge md:grid-cols-2">
-        <Reveal className="py-10 md:pr-10 md:pt-12">
-          <section id="education" aria-labelledby="education-h">
-            <ColumnTitle id="education-h" icon={GraduationCap}>
-              Education
-            </ColumnTitle>
-            <ol className="mt-6 space-y-3">
-              {EDUCATION.map((e) => (
-                <li key={e.short} className="flex gap-4 rounded-2xl border-2 border-edge bg-surface p-4 shadow-[4px_4px_0px_var(--color-accent)]">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-edge bg-white p-1">
-                    <SmartImage src={e.logo} alt="" width={36} height={36} fallback="school" className="h-full w-full rounded-full object-contain" />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                      <h3 className="font-bold leading-snug text-ink">{e.org}</h3>
-                      <span className={cn(pill, e.current && "border-fill bg-fill text-on-fill")}>{e.period}</span>
-                    </div>
-                    <p className="mt-0.5 text-sm text-muted">{e.role}</p>
-                    {e.tracks && <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{e.tracks.join(" · ")}</p>}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </Reveal>
-
-        <Reveal delay={0.1} className="border-t-2 border-edge py-10 md:border-l-2 md:border-t-0 md:pl-10 md:pt-12">
-          <section id="contact" aria-labelledby="contact-h">
-            <ColumnTitle id="contact-h" icon={User}>
-              Contact
-            </ColumnTitle>
-            <ContactList />
-          </section>
-        </Reveal>
+        <div id="contact" className="mt-8 w-full max-w-sm scroll-mt-24">
+          <ContactList />
+        </div>
       </div>
     </section>
   );
 }
 
-/* ---------------- Work experience ---------------- */
+/* ---------------- Education, skills and tools ---------------- */
 
-/** Three window-control dots, as on a code editor or terminal title bar. */
-function WindowDots() {
+export function Background() {
   return (
-    <span className="flex shrink-0 gap-1.5" aria-hidden="true">
-      <span className="h-3 w-3 rounded-full border border-edge bg-dot-red" />
-      <span className="h-3 w-3 rounded-full border border-edge bg-dot-amber" />
-      <span className="h-3 w-3 rounded-full border border-edge bg-dot-green" />
-    </span>
-  );
-}
-
-/**
- * Work history styled as an engineer's workspace: a `git log` prompt above the title, and each job
- * as an editor window with a file tab, numbered lines, and #tags.
- */
-export function WorkExperience() {
-  return (
-    <section id="experience" aria-labelledby="experience-h" className="band-grid relative my-16 border-y-2 border-edge bg-tint py-16 text-ink sm:my-24 sm:py-20">
-      <div className={shell}>
-        <p className="mb-5 text-center font-mono text-[11px] text-muted sm:text-xs" aria-hidden="true">
-          <span className="text-accent-ink">~/career</span> <span className="text-ink">$</span> git log --author=&quot;pheng&quot; --reverse
-          <span className="caret ml-1 inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] bg-accent" />
-        </p>
-        <Divider id="experience-h">Work Experience</Divider>
-        <ol className="mt-10 grid gap-6 md:grid-cols-2">
-          {EXPERIENCE.map((x, i) => (
-            <Reveal
-              as="li"
-              key={x.org}
-              delay={i * 0.1}
-              className="flex flex-col overflow-hidden rounded-2xl border-2 border-edge bg-surface shadow-[6px_6px_0px_var(--color-accent)]"
-            >
-              {/* Editor title bar */}
-              <div className="flex items-center gap-3 border-b-2 border-edge bg-paper px-4 py-2.5">
-                <WindowDots />
-                <span className="min-w-0 truncate font-mono text-[11px] text-muted">
-                  <span className="hidden sm:inline">~/experience/</span>
-                  <span className="font-semibold text-ink">{x.file}</span>
-                </span>
-                <span className="ml-auto shrink-0 rounded-md bg-fill px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-on-fill">
-                  {x.period}
-                </span>
+    <section id="skills" aria-label="Education, skills and tools" className="mt-20 grid scroll-mt-24 gap-14 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <div className="flex items-center gap-2">
+          <Squiggle className="h-9 w-12 text-pink" />
+          <h2 className={heading}>Education</h2>
+        </div>
+        <ol className="mt-6 space-y-5">
+          {EDUCATION.map((e) => (
+            <li key={e.short} className="flex gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-line">
+                <SmartImage src={e.logo} alt="" width={40} height={40} fallback="school" className="h-full w-full object-contain" />
+              </span>
+              <div className="min-w-0">
+                <h3 className="font-semibold leading-snug text-ink">{e.org}</h3>
+                <p className="text-sm text-muted">{e.role}</p>
+                <p className="mt-0.5 font-hand text-xl leading-tight text-accent-ink">{e.period}</p>
               </div>
-
-              <div className="flex flex-1 flex-col p-6 sm:p-7">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <h3 className="text-lg font-bold leading-snug text-ink">{x.org}</h3>
-                    <p className="text-sm text-muted">{x.role}</p>
-                    <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
-                      <span className="text-accent-ink">@</span> {x.location}
-                    </p>
-                  </div>
-                  <span className="flex h-11 shrink-0 items-center rounded-xl border border-edge bg-white px-2 py-1.5 sm:h-14 sm:px-3 sm:py-2">
-                    <SmartImage
-                      src={x.logo}
-                      alt={`${x.org} logo`}
-                      width={Math.round((40 * x.logoSize.width) / x.logoSize.height)}
-                      height={40}
-                      fallback="building"
-                      className="h-full w-auto max-w-[6rem] object-contain sm:max-w-[8.5rem]"
-                    />
-                  </span>
-                </div>
-
-                {/* Highlights as numbered editor lines */}
-                <ol className="mt-5 space-y-2 border-l-2 border-accent/25 text-[15px] leading-relaxed text-muted">
-                  {x.highlights.map((h, n) => (
-                    <li key={h} className="grid grid-cols-[2.25rem_1fr] gap-2">
-                      <span className="select-none pt-[0.2em] pr-2 text-right font-mono text-xs text-accent-ink/60" aria-hidden="true">
-                        {String(n + 1).padStart(2, "0")}
-                      </span>
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ol>
-
-                <ul className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-5 font-mono text-[11px] text-accent-ink" aria-label={`${x.org} tags`}>
-                  {x.tags.map((t) => (
-                    <li key={t}>#{t.toLowerCase().replace(/\s+/g, "-")}</li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
+            </li>
           ))}
         </ol>
+
+        <div className="mt-12 flex items-end gap-1">
+          <h2 className={heading}>Skills</h2>
+          <SmallArrow className="mb-3 h-8 w-10 text-pink" />
+        </div>
+        <dl className="mt-5 space-y-3 text-[15px]">
+          {SKILL_GROUPS.map((g) => (
+            <div key={g.area} className="grid grid-cols-[7.5rem_1fr] gap-3">
+              <dt className="font-semibold text-ink">{g.area}</dt>
+              <dd className="text-muted">{g.items.join(", ")}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <h3 className="mt-10 font-semibold text-ink">Languages</h3>
+        <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-[15px] text-muted">
+          {LANGUAGES.map((l) => (
+            <li key={l.name}>
+              <span className="text-ink">{l.name}</span> ({l.level.toLowerCase()})
+            </li>
+          ))}
+        </ul>
       </div>
-    </section>
-  );
-}
 
-/* ---------------- Capabilities bar ---------------- */
-
-const STACK_ICONS: Record<(typeof STACK)[number], Icon> = {
-  Java: SiOpenjdk,
-  Spring: SiSpring,
-  PostgreSQL: SiPostgresql,
-  Docker: SiDocker,
-  Linux: SiLinux,
-  Git: SiGit,
-};
-
-const AI_ICONS: Record<(typeof AI_ARCHITECTURE)[number]["id"], Icon> = {
-  ollama: SiOllama,
-  "spring-cloud": Network,
-  messaging: SiApachekafka,
-};
-
-const capTitle = "font-display text-2xl uppercase tracking-wide";
-
-export function Capabilities() {
-  return (
-    <section aria-label="Capabilities" className={cn(shell, "pt-16 sm:pt-24")}>
-      <div className="grid overflow-hidden rounded-[2rem] border-2 border-edge bg-surface/65 shadow-[6px_6px_0px_var(--color-accent)] backdrop-blur-md lg:grid-cols-3">
-        <Reveal className="p-6 sm:p-8">
-          <h2 className={capTitle}>
-            <SplitText text="Languages" />
-          </h2>
-          <ul className="mt-6 grid grid-cols-3 gap-2">
-            {LANGUAGES.map((l) => (
-              <li key={l.name} className="flex flex-col items-center text-center">
-                <div className="relative">
-                  <Ring percent={l.percent} />
-                  <span className="absolute inset-0 flex items-center justify-center font-mono text-[11px] font-semibold text-ink">{l.percent}%</span>
-                </div>
-                <p className="mt-2 font-bold text-ink">{l.name}</p>
-                <p className="text-[11px] uppercase tracking-[0.12em] text-muted">{l.level}</p>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={0.08} className="border-t-2 border-edge p-6 sm:p-8 lg:border-l-2 lg:border-t-0">
-          <h2 className={capTitle}>
-            <SplitText text="Software & Stack" />
-          </h2>
-          <ul className="mt-6 grid grid-cols-3 gap-x-3 gap-y-4 sm:grid-cols-6 lg:grid-cols-3">
-            {STACK.map((name) => {
-              const Icon = STACK_ICONS[name];
-              return (
-                <li key={name} className="flex flex-col items-center gap-1.5">
-                  <span className="flex aspect-square w-full max-w-16 items-center justify-center rounded-[1.1rem] bg-ink text-paper shadow-[inset_0_-4px_0_rgba(0,0,0,0.35),3px_3px_0px_var(--color-accent)] transition-transform hover:-translate-y-1">
-                    <Icon className="h-7 w-7" aria-hidden="true" />
-                  </span>
-                  <span className="text-[11px] font-medium text-muted">{name}</span>
-                </li>
-              );
-            })}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={0.16} className="border-t-2 border-edge p-6 sm:p-8 lg:border-l-2 lg:border-t-0">
-          <h2 className={capTitle}>
-            <SplitText text="AI & Architecture" />
-          </h2>
-          <ul className="mt-6 space-y-5">
-            {AI_ARCHITECTURE.map((a) => {
-              const Icon = AI_ICONS[a.id];
-              return (
-                <li key={a.id} className="flex items-start gap-4">
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-edge bg-surface shadow-[3px_3px_0px_var(--color-accent)] outline outline-offset-[3px] outline-accent/60" aria-hidden="true">
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <div>
-                    <h3 className="font-bold leading-snug text-ink">{a.title}</h3>
-                    <p className="mt-1 text-sm leading-snug text-muted">{a.summary}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
-/* ---------------- Skills ---------------- */
-
-export function Skills() {
-  return (
-    <section id="skills" aria-labelledby="skills-h" className="band-grid mt-16 border-y-2 border-edge bg-tint py-16 sm:mt-24 sm:py-20">
-      <div className={shell}>
-        <Divider id="skills-h">Skills</Divider>
-        <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {CORE_SKILLS.map((s, i) => {
-            const Icon = skillIcon(s);
+      <div>
+        <h2 className={heading}>Tools I use</h2>
+        <ul className="mt-6 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+          {TOOLS.map((t) => {
+            const Icon = skillIcon(t.name) as Icon;
             return (
-              <Reveal
-                as="li"
-                key={s}
-                delay={(i % 4) * 0.05}
-                className="flex min-w-0 items-center gap-2.5 rounded-full border-2 border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink shadow-[4px_4px_0px_var(--color-accent)] transition-[transform,box-shadow,color] hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_var(--color-accent)] hover:text-accent-ink"
-              >
-                <Icon className="h-4 w-4 shrink-0 text-accent-ink" aria-hidden="true" />
-                <span className="truncate">{s}</span>
-              </Reveal>
+              <li key={t.name} className="flex items-center gap-3">
+                <span
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.1rem] text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.18)]"
+                  style={{ backgroundColor: TILE_COLORS[t.name] ?? "var(--color-fill)" }}
+                >
+                  <Icon className="h-7 w-7" aria-hidden="true" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-semibold leading-snug text-ink">{t.name}</span>
+                  <span className="block text-sm leading-snug text-muted">{t.use}</span>
+                </span>
+              </li>
             );
           })}
         </ul>
@@ -378,13 +166,73 @@ export function Skills() {
   );
 }
 
-/* ---------------- Selected projects ---------------- */
+/* ---------------- Work ---------------- */
+
+export function WorkExperience() {
+  return (
+    <section id="experience" aria-labelledby="experience-h" className="mt-24 scroll-mt-24">
+      <div className="flex items-center gap-2">
+        <Squiggle className="h-9 w-12 text-pink" />
+        <h2 id="experience-h" className={heading}>
+          Where I&rsquo;ve worked
+        </h2>
+      </div>
+
+      {/* A real timeline, oldest first: one line joins the entries */}
+      <ol className="relative mt-8 space-y-10 border-l-2 border-dashed border-line pl-8 sm:ml-3">
+        {EXPERIENCE.map((x) => (
+          <li key={x.org} className="relative">
+            <span className="absolute -left-[2.6rem] top-1 h-4 w-4 rounded-full border-[3px] border-paper bg-accent ring-2 ring-accent" aria-hidden="true" />
+            <p className="font-hand text-2xl leading-none text-accent-ink">{x.period}</p>
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <h3 className="text-xl font-semibold text-ink">{x.org}</h3>
+              <span className="flex h-9 items-center rounded-xl bg-white px-2 py-1 ring-1 ring-line">
+                <SmartImage
+                  src={x.logo}
+                  alt={`${x.org} logo`}
+                  width={Math.round((28 * x.logoSize.width) / x.logoSize.height)}
+                  height={28}
+                  fallback="building"
+                  className="h-full w-auto max-w-[7rem] object-contain"
+                />
+              </span>
+            </div>
+            <p className="text-[15px] text-muted">
+              {x.role}, {x.location}
+            </p>
+            <ul className="mt-4 max-w-3xl space-y-2 text-[15px] leading-relaxed text-ink">
+              {x.highlights.map((h) => (
+                <li key={h} className="flex gap-3">
+                  <span className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-pink" aria-hidden="true" />
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/* ---------------- Projects ---------------- */
 
 export function Projects() {
   return (
-    <section id="projects" aria-labelledby="projects-h" className={cn(shell, "scroll-mt-6 pt-16 sm:pt-24")}>
-      <Divider id="projects-h">Selected Projects</Divider>
+    <section id="projects" aria-labelledby="projects-h" className="mt-24 scroll-mt-24">
+      <div className="flex items-end gap-1">
+        <h2 id="projects-h" className={heading}>
+          Things I&rsquo;ve built
+        </h2>
+        <SmallArrow className="mb-3 h-8 w-10 text-pink" />
+      </div>
       <ProjectGrid />
+      <p className="mt-10 text-sm text-muted">
+        Want the details on any of these?{" "}
+        <a href={`mailto:${PROFILE.email}`} className="font-semibold text-accent-ink underline underline-offset-4 hover:no-underline">
+          Email me
+        </a>
+      </p>
     </section>
   );
 }

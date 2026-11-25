@@ -1,15 +1,6 @@
 import Dock from "@/components/poster/Dock";
-import { ScrollProgress } from "@/components/fx/Misc";
 import Hero from "@/components/poster/Hero";
-import {
-  About,
-  Capabilities,
-  EducationContact,
-  Projects,
-  Skills,
-  WorkExperience,
-} from "@/components/poster/Sections";
-import Ticker from "@/components/poster/Ticker";
+import { About, Background, Projects, WorkExperience } from "@/components/poster/Sections";
 import { CHANNELS, CORE_SKILLS, EDUCATION, PROFILE } from "@/data/portfolio";
 
 /** schema.org Person, so search engines can tie the name to this site and the linked profiles. */
@@ -35,35 +26,29 @@ export default function Home() {
         // Escape "<" so no string in the data can close the script tag.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
       />
-      <ScrollProgress />
       <Hero />
-      <Ticker />
-      <main>
-        <About />
-        <EducationContact />
-        <WorkExperience />
-        <Capabilities />
-        <Skills />
-        <Projects />
+
+      {/* One white sheet laid over the bottom of the illustration, like a page clipped onto a sketchbook cover */}
+      <main className="relative z-10 mx-3 -mt-24 sm:mx-6 sm:-mt-32">
+        <div className="mx-auto max-w-[1760px] rounded-[2.25rem] bg-paper px-5 pb-16 pt-10 shadow-[0_-20px_60px_-40px_rgba(36,32,90,0.5)] sm:px-10 sm:pt-14 lg:px-14 xl:px-20">
+          <About />
+          <Background />
+          <WorkExperience />
+          <Projects />
+        </div>
       </main>
 
-      {/* Footer fades from the paper into the deeper blueprint blue. */}
-      <footer className="mt-16 bg-linear-to-b from-transparent to-tint sm:mt-24">
-        <div className="mx-auto max-w-6xl px-4 pb-28 sm:px-6">
-          <div className="border-t-2 border-edge pt-10 text-center">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Open to backend roles &amp; collaborations</p>
-            <a
-              href={`mailto:${PROFILE.email}`}
-              className="mt-3 inline-block break-all font-display text-[clamp(1.6rem,6vw,3.75rem)] uppercase leading-none text-ink transition-colors hover:text-accent-ink"
-            >
-              {PROFILE.email}
-            </a>
-          </div>
-          <div className="mt-10 flex flex-col items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted sm:flex-row">
-            <p>© 2026 {PROFILE.name}</p>
-            <p>{PROFILE.location}</p>
-          </div>
-        </div>
+      <footer className="mx-auto max-w-6xl px-5 pb-32 pt-16 text-center sm:px-10">
+        <p className="font-hand text-3xl text-muted">Let&rsquo;s build something</p>
+        <a
+          href={`mailto:${PROFILE.email}`}
+          className="mt-2 inline-block break-all font-display text-[clamp(1.5rem,5vw,3rem)] font-extrabold leading-tight text-ink underline-offset-8 transition-colors hover:text-accent-ink hover:underline"
+        >
+          {PROFILE.email}
+        </a>
+        <p className="mt-8 text-sm text-muted">
+          © 2026 {PROFILE.name}, {PROFILE.location}
+        </p>
       </footer>
 
       <Dock />
